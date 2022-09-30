@@ -12,7 +12,7 @@
 
 **Project Goal:** *Designing a WebApp to manage the sales of IoT devices, but also their installation and maintenance.*
 
-**What's considered done?:** *Deployment on Lene Group ICTs servers at. The Customer wll teach its users how to use the software. Maintenance will not be handled*
+**What's considered done?:** *Deployment on Ardeeno ICTs servers. The Customer wll teach its users how to use the software. Maintenance will not be handled*
 
 ## Milestones/Deliverables
   |**Milestone**                |**Deliverable**            |**Due Date**|
