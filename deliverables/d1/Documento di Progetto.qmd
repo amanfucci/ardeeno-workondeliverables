@@ -1,0 +1,60 @@
+---
+title: | 
+  ![](../../.common-media/logo-unitn-ardeeno-512.png){width=10cm}
+
+  Ardeeno WebApp
+
+subtitle: |
+  T41-SE22
+
+  D1-Documento di Progetto
+
+  v0.1
+author: [alessandro.manfucci@studenti.unitn.it, enrico.cescato@studenti.unitn.it ,m.sottocornola-1@studenti.unitn.it]
+date: "26-09-2022"
+lang: it
+format:
+  pdf:
+    include-in-header:
+      text: |
+        \usepackage{graphicx}
+        \usepackage{wrapfig}
+    documentclass: article
+    classoption: titlepage
+    toc: true
+    toc-title: Indice
+    papersize: a4
+    number-sections: true
+    geometry:
+    - top=1in
+    - bottom=1in
+    - right=1in
+    - left=1in
+---
+
+\pagebreak
+
+## Abstract {.unnumbered}
+Questo documento descrive ad alto livello - ed in maniera non tecnica - quello che sarà il sistema da realizzare.
+Si definiscono gli obiettivi e poi - con linguaggio naturale - i requisiti funzionali e non funzionali. Vedremo poi un mock-up della WebApp e faremo delle prime considerazioni su come il sistema interagisce con il BackEnd già esistente.
+
+
+## Obiettivi del progetto
+Il progetto ha come obiettivo lo sviluppo di una WebApp che gestisca la vendita di impianti Internet of Things, la loro installazione, manutenzione, riparazione e dismissione; e che permetta ai clienti di visualizzare le misurazioni dei propri impianti e richiedere eventuali riparazioni.
+
+Nel dettaglio:
+
+1. Un utente anonimo potrà visualizzare le informazioni generali relative all'azienda, come le recensioni dei clienti, i possibili tipi di impianti ed il loro costo. L'utente potrà poi registrarsi e autenticarsi. Un utente autenticato potrà visualizzare e modificare i propri dati. 
+2. Un cliente potrà accquistare degli impianti, visualizzare i propri impianti **attivi** o **dismessi** e per ogni impianto accedere alle misurazioni - in ogni parametro - effettuate dai sensori. Potrà poi visualizzare lo stato di tutti gli interventi e per gli impianti **attivi** potrà richiedere un intervento di riparazione. Sarà inoltre in grado di recensire l'azienda e parlare con un supervisore tramite una live-chat.
+3. Un supervisore potrà visualizzare tutti gli interventi (l'installazione, la manutenzione, la riparazione e la dismissione) su ogni impianto; per gli interventi richiesti potrà assegnare un certo tecnico in una data. All'acquisto di un impianto il sistema ne richiede un intervento di installazione; annualmente il sistema richiede interventi di manutenzione per gli impianti attivi; dopo cinque anni dall'acquisto di un impianto il sistema ne richiede un intervento di dismissione.
+4. Un tecnico potrà visualizzare gli interventi a lui assegnati - sia **in corso** che **conclusi**, e per ognuno i dati del cliente e dell'impianto (indirizzo, area coperta, sensori, misurazioni). Per ogni intervento assegnato **in corso** potrà inoltre rimuovere ed aggiungere dei sensori basandosi su codice a barre e posizione; potrà poi aggiungere ulteriori informazioni relative all'intervento e segnarlo come concluso. Fa eccezione l'intervento di dismissione, in cui nè si rimuovo nè si aggiungono sensori.
+Le informazioni degli interventi assegnati **conclusi** restano visibili al tecnico.
+5. Gli amministratori - che sono anche supervisori - potranno visualizzare le statistiche aggregate delle vendite e degli interventi, oltre che scaricare dei report creati automaticamente. Potranno inoltre registrare i dipendenti e nominare dei supervisori.
+
+## Requisiti Funzionali
+
+## Requisiti Non Funzionali
+
+## Design Front-end
+
+## Design Back-end
