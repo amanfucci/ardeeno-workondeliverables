@@ -9,9 +9,9 @@ subtitle: |
 
   D1-Documento di Progetto
 
-  v0.1
+  v0.2
 author: [alessandro.manfucci@studenti.unitn.it, enrico.cescato@studenti.unitn.it ,m.sottocornola-1@studenti.unitn.it]
-date: "26-09-2022"
+date: "30-09-2022"
 lang: it
 format:
   pdf:
@@ -53,7 +53,115 @@ Le informazioni degli interventi assegnati **conclusi** restano visibili al tecn
 
 ## Requisiti Funzionali
 
+### Utente Anonimo
+
+#### RF1 Vetrina {.unnumbered}
+Il sistema deve mostrare una lista dei tipi di impianti in vendita, che comprende per ogni tipo di impianto: prezzo, nome, area consigliata ed immagine esemplificativa.
+
+#### RF2 Recensioni {.unnumbered}
+Il sistema deve mostrare una lista delle recensioni fatte dai clienti, che comprende per ogni recensione: nome cliente, valutazione e descrizione
+
+#### RF3 Registrazione Cliente {.unnumbered}
+Il sistema deve registrare (nome, cognome, email, telefono, indirizzo, password) l'autente anonimo come cliente.
+
+#### RF3.1 Autenticazione {.unnumbered}
+Il sistema deve autenticare l'utente anonimo inserendo email e password. Da tali dati verrà distinto come cliente o dipendente.
+
+#### RF4 Recupero password {.unnumbered}
+Il sistema deve far recuperare la password a un utente anonimo inserendo la propria email.
+
+### Utente Autenticato
+
+#### RF5 Conferma Email {.unnumbered}
+Il sistema deve permettere di confermare l'email immessa durante la registrazione
+
+#### RF6 Modifica Dati {.unnumbered}
+Il sistema deve far modificare i dati immessi durante la registrazione
+
+### Cliente
+
+#### RF7 Acquisto {.unnumbered}
+Il sistema deve far selezionare uno tra gli impianti mostrati da [RF1](#rf1-vetrina) e una volta selezionato ne deve permettere l'acquisto. Ad acquisto effettuato il sistema deve richiedere un intervento di installazione.
+
+#### RF8 Lista Impianti {.unnumbered}
+Il sistema deve mostrare al cliente la lista di tutti gli impianti acquistati - attivi e dismessi, che comprende per ogni impianto: impianto(id, nome, tipo, indirizzo, stato).
+
+#### RF9 Misurazioni Impianto Mappa {.unnumbered}
+Il sistema deve far scegliere un impianto da [RF8](#rf8-lista-impianti) e deve far visualizzare su una mappa le misurazioni più recenti
+
+#### RF10 Misurazioni Impianto Tabulare {.unnumbered}
+Il sistema tramite [RF9](#rf9-misurazioni-impianto-mappa) deve far visualizzare tutte le misurazioni in una tabella
+
+#### RF11 Misurazioni Impianto Grafico {.unnumbered}
+Il sistema tramite [RF9](#rf9-misurazioni-impianto-mappa) deve far visualizzare per alcuni parametri compresi nella misurazione un grafico aggregato in media. 
+
+#### RF12 Richiesta Intervento di Riparazione {.unnumbered}
+Il sistema tramite [RF9](#rf9-misurazioni-impianto-mappa) - se l'impianto scelto è attivo - deve consentire al cliente di inviare una richiesta di riparazione, indicando una breve motivazione
+
+#### RF13 Recensione {.unnumbered}
+Il sistema deve permettere ad un cliente cha abbia effettuato almeno un acquisto di inviare una recensione e modificarla
+
+#### RF14 Live-Chat {.unnumbered}
+Il sistema deve consentire al cliente di parlare con un supervisore in una chat testuale
+
+### Supervisore
+
+#### RF15 Lista Interventi {.unnumbered}
+Il sistema deve mostrare una lista di tutti (ogni tipo e ogni stato) gli interventi, che comprende per ogni intervento: impianto(id, nome, tipo, indirizzo), intervento(tipo, stato, data), cliente(cognome).
+La data sarà presente solo per quegli interventi assegnati.
+
+#### RF16 Intervento {.unnumbered}
+Il sistema deve far scegliere un intervento tramite [RF15](#rf15-lista-interventi) e deve mostrare: impianto(id, nome, tipo, indirizzo), intervento(tipo, stato), cliente(nome, cognome, telefono), tecnico(nome, cognome, telefono).
+
+#### RF17 Assegnazione Intervento {.unnumbered}
+Sulla schermata mostrata da [RF16](#rf16-intervento), se l'intervento è **richiesto**, il sistema deve permettere di scegliere una data (giorno/mese/anno), mostrare i tecnici(nome, cognome) liberi in quella data, selezionare uno tra questi e confermare l'assegnazione.
+
+### Tecnico
+#### RF18 Lista Interventi Assegnati {.unnumbered}
+Il sistema deve mostrare una lista di tutti gli interventi assegnati, che comprende per ogni intervento: impianto(id, nome, tipo, indirizzo), intervento(tipo, stato, data), cliente(nome, cognome, telefono).
+
+#### RF19 Intervento Assegnato {.unnumbered}
+Il sistema deve far scegliere un intervento tramite [RF18](#rf18-lista-interventi-assegnati) e deve mostrare: impianto(), cliente(), intervento(tipo, stato, data). Se si tratta di un intervento in corso il sistema deve permettere di aggiungere delle **informazioni conclusive** e concluderlo.
+
+#### RF20 Aggiunta/Rimozione sensori {.unnumbered}
+Il sistema, tramite [RF19](#rf19-intervento-assegnato), se l'intervento in corso è di tipo installazione/manutenzione/riparazione, deve permettere di rimuovere sensori (fornendo l'id) ed aggiungere sensori (fornendo id e coordinate).
+
+### Amministratore
+
+#### RF21 Registrazione Dipendenti {.unnumbered}
+Il sistema deve permettere all'amministratore di registrare nel sistema i dipendenti, inserendo oltre ai dati descritti in [RF3](#rf3-autenticazione-.unnumbered) anche CF e ruolo (tecnico, supervisore, amministratore)
+
+#### RF22 Lista Dipendenti {.unnumbered}
+Il sistema deve mostrare una lista di tutti i dipendeti, che comprende per ogni dipendente: nome, cognome, CF, email, telefono, ruolo.
+
+#### RF23 Modifica Dipendenti {.unnumbered}
+Il sistema deve far selezionare un dipendente da [RF22](#rf22-lista-dipendenti) e deve permettere di modificare i dati più rilevanti
+
+#### RF24 Statistiche Vendite {.unnumbered}
+
+#### RF25 Statistiche Malfunzionamenti {.unnumbered}
+
 ## Requisiti Non Funzionali
+
+#### RNF1 Privacy {.unnumbered}
+La WebApp deve rispettare il regolamento europeo 2016/679 noto come GDPR (General Data Protection Regulation)
+
+#### RNF2 Sicurezza {.unnumbered}
+La WebApp deve utilizzare connessioni https
+
+#### RNF3 Facilità d'uso {.unnumbered}
+I dipendenti devono imparare ad usare le funzioni [RF18](), [RF19](), [RF20]() con un addestramento specifico di non più di 15 minuti.
+Un utente anonimo deve essere in grado di registrarsi e portare a termine un acquisto senza alcuno addestramento, imparando in autonomia in meno di 5 minuti.
+
+#### RNF4 Prestazioni {.unnumbered}
+Le funzioni [RF18](), [RF19]() devono essere eseguite in al più 5 secondi; la funzione [RF20]() deve essere eseguita dal sistema in al più 3 secondi. La misurazione avviene da quando ogni form è stato compilato ed inviato a quando la conferma è visualizzata.
+
+#### RNF5 Portabilità {.unnumbered}
+Le funzioni [RF18](), [RF19](), [RF20]() devono funzionare:
+- sui seguenti browser:
+- sui seguenti sistemi operativi:
+
+#### RNF6 Scalabilità {.unnumbered}
 
 ## Design Front-end
 
