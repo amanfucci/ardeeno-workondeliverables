@@ -158,11 +158,27 @@ Le funzioni [RF18](), [RF19]() devono essere eseguite in al più 5 secondi; la f
 
 #### RNF5 Portabilità {.unnumbered}
 Le funzioni [RF18](), [RF19](), [RF20]() devono funzionare:
+
 - sui seguenti browser:
 - sui seguenti sistemi operativi:
 
 #### RNF6 Scalabilità {.unnumbered}
 
-## Design Front-end
+## Design FrontEnd
+\pagebreak
+## Design BackEnd
+Il sistema da sviluppare interagisce con più sistemi esterni attraverso delle API. Queste interazioni saranno gestite da una parte del sistema da realizzare detta BackEnd. I sistemi esterni sono:
 
-## Design Back-end
+- **PayPal**: Sistema tramite cui il cliente che utilizza ArdeenoWebApp invia le richieste di pagamento per acquistare un impianto in vendita. PayPal invierà una conferma di avvenuto pagamento, e solo dopo questa conferma ArdeenoWebApp considererà l'acquisto come avvenuto.
+
+- **Gmail**: Sistema tramite cui si inviano i link per confermare l'indirizzo email di un account (ciò avviene alla registrazione e ad ogni cambio dell' email) o per cambiare la password di un account.
+
+- **TrustPilot**: Sistema tramite cui ArdeenoWebApp permetterà agli utenti anonimi di visualizzare tutte le recensioni e ai clienti di inserire nuove recensioni.
+
+- **OpenStreetMap**: Sistema che fornirà le mappe utilizzate da ArdeenoWebApp nella [presentazione dell'azienda](), nella [visualizzazione delle misurazioni]() e nella [aggiunta/rimozione dei sensori]().
+
+- **GPS**: Sistema che fornirà le coordinate della posizione attuale utilizzate da ArdeenoWebApp per [l'aggiunta dei sensori]()
+
+- **Ardeeno DataLayer**: Sistema che contiene la base di dati e il sottosistema di polling che inserisce nella base di dati tutte le misurazioni degli impianti. 
+
+![Sistemi Esterni a cui si collegherà il backend](./BackEnd%20Diagram.png)     
