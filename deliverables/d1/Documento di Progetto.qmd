@@ -35,74 +35,77 @@ format:
 \pagebreak
 
 ## Abstract {.unnumbered}
-Questo documento descrive ad alto livello - ed in maniera non tecnica - quello che sarà il sistema da realizzare.
-Si definiscono gli obiettivi e poi - con linguaggio naturale - i requisiti funzionali e non funzionali. Vedremo poi un mock-up della WebApp e faremo delle prime considerazioni su come il sistema interagisce con il BackEnd già esistente.
+Questo documento descrive ad alto livello - ed in maniera non tecnica - il sistema web da realizzare. Vengono definiti gli obiettivi e - in linguaggio naturale - i requisiti funzionali e non funzionali. Infine, viene mostrato un mock-up dell'applicazione e vengono fatte le prime considerazioni su come il sistema dovrà interagire con il BackEnd già esistente.
 
 
 ## Obiettivi del progetto
-Il progetto ha come obiettivo lo sviluppo di una WebApp che gestisca la vendita di impianti Internet of Things, la loro installazione, manutenzione, riparazione e dismissione; e che permetta ai clienti di visualizzare le misurazioni dei propri impianti e richiedere eventuali riparazioni.
+Il progetto ha come obiettivo lo sviluppo di una WebApp che gestisca la vendita di impianti *Internet of Things*, la loro installazione, manutenzione, riparazione e dismissione. Inoltre, l'applicazione permetterà al cliente di visualizzare le misurazioni del proprio impianto e richiedere eventuali interventi di riparazione.
 
 Nel dettaglio:
 
-1. Un utente anonimo potrà visualizzare le informazioni generali relative all'azienda, come le recensioni dei clienti, i possibili tipi di impianti ed il loro costo. L'utente potrà poi registrarsi e autenticarsi. Un utente autenticato potrà visualizzare e modificare i propri dati. 
-2. Un cliente potrà accquistare degli impianti, visualizzare i propri impianti **attivi** o **dismessi** e per ogni impianto accedere alle misurazioni - in ogni parametro - effettuate dai sensori. Potrà poi visualizzare lo stato di tutti gli interventi e per gli impianti **attivi** potrà richiedere un intervento di riparazione. Sarà inoltre in grado di recensire l'azienda e parlare con un supervisore tramite una live-chat.
-3. Un supervisore potrà visualizzare tutti gli interventi (l'installazione, la manutenzione, la riparazione e la dismissione) su ogni impianto; per gli interventi richiesti potrà assegnare un certo tecnico in una data. All'acquisto di un impianto il sistema ne richiede un intervento di installazione; annualmente il sistema richiede interventi di manutenzione per gli impianti attivi; dopo cinque anni dall'acquisto di un impianto il sistema ne richiede un intervento di dismissione.
-4. Un tecnico potrà visualizzare gli interventi a lui assegnati - sia **in corso** che **conclusi**, e per ognuno i dati del cliente e dell'impianto (indirizzo, area coperta, sensori, misurazioni). Per ogni intervento assegnato **in corso** potrà inoltre rimuovere ed aggiungere dei sensori basandosi su codice a barre e posizione; potrà poi aggiungere ulteriori informazioni relative all'intervento e segnarlo come concluso. Fa eccezione l'intervento di dismissione, in cui nè si rimuovo nè si aggiungono sensori.
-Le informazioni degli interventi assegnati **conclusi** restano visibili al tecnico.
-5. Gli amministratori - che sono anche supervisori - potranno visualizzare le statistiche aggregate delle vendite e degli interventi, oltre che scaricare dei report creati automaticamente. Potranno inoltre registrare i dipendenti e nominare dei supervisori.
+1. Un utente anonimo potrà visualizzare le informazioni generali relative all'azienda, le recensioni dei clienti, i tipi di impianti disponibili ed il loro costo. L'utente potrà inoltre registrarsi o autenticarsi. Un utente autenticato - cliente o dipendente dell'azienda - potrà visualizzare e modificare i propri dati personali.
 
-## Requisiti Funzionali
+2. Un cliente potrà compiere tutte le attività di visualizzazione consentite ad un utente anonimo; inoltre, potrà acquistare gli impianti resi disponibili dall'azienda, visualizzare quelli già in suo possesso - attivi o dismessi - e accedere alle misurazioni effettuate dai sensori. Avrà la possibilità di visualizzare lo stato di tutti gli interventi effettuati sui propri impianti e richiedere un intervento di riparazione per quelli ancora attivi. In aggiunta, potrà recensire l'azienda e comunicare con un supervisore tramite una live-chat.
 
-### Utente Anonimo
+3. Il sistema web dovrà permettere di gestire tutti gli interventi di cui l'impianto necessita:
+    - istallazione, all'acquisto dell'impianto;
+    - manutenzione, annuale e solo per gli impianti attivi;
+    - riparazione, su rischiesta del cliente;
+    - dismissione, dopo cinque anni dall'acquisto dell'impianto.
 
-#### RF1 Vetrina {.unnumbered}
-Il sistema deve mostrare una lista dei tipi di impianti in vendita, che comprende per ogni tipo di impianto: prezzo, nome, area consigliata ed immagine esemplificativa.
+    Un supervisore potrà quindi visualizzare lo stato di tutti gli interventi effettuati e le relative informazioni, assegnare un tecnico e decidere la data dell'intervento. 
 
-#### RF2 Recensioni {.unnumbered}
-Il sistema deve mostrare una lista delle recensioni fatte dai clienti, che comprende per ogni recensione: nome cliente, valutazione e descrizione
+4. Un tecnico potrà visualizzare gli interventi a lui assegnati - in corso o conclusi - con i relativi dati del cliente e dell'impianto (indirizzo, area coperta, sensori, misurazioni). Per ogni intervento assegnato in corso (la dismissione dell'impianto fa eccezione), avrà inoltre la possibilità di rimuovere o/ed aggiungere dei sensori, distinguibili tramite codice a barre e posizione. In aggiunta, potrà inserire informazioni relative all'intervento effettuato e segnarlo come concluso.
 
-#### RF3 Registrazione Cliente {.unnumbered}
-Il sistema deve registrare (nome, cognome, email, telefono, indirizzo, password) l'autente anonimo come cliente.
+5. Un amministratore potrà compiere tutte le azioni permesse ad un supervisore; in aggiunta, potrà visualizzare le statistiche aggregate delle vendite e degli interventi effettuati, e scaricare dei report, generati in maniera automatica. Inoltre, potrà registrare nuovi dipendenti, eliminarne altri dal sistema e nominare dei supervisori.
 
-#### RF3.1 Autenticazione {.unnumbered}
-Il sistema deve autenticare l'utente anonimo inserendo email e password. Da tali dati verrà distinto come cliente o dipendente.
+## Requisiti funzionali
+Questo capitolo presenta i requisiti funzionali del sistema, raggruppati per ruolo. Si noti che un utente autenticato può essere cliente o dipendente (inteso come tecnico, supervisore o amministratore) dell'azienda e può compiere tutte le attività di visualizzazione permesse ad un utente anonimo. Inoltre, le azioni consentite ad un supervisore possono essere eseguite anche da un amministratore.
 
-#### RF4 Recupero password {.unnumbered}
-Il sistema deve far recuperare la password a un utente anonimo inserendo la propria email.
+### Utente anonimo
+
+#### RF1 Presentazione {.unnumbered}
+La WebApp deve presentare l'azienda, specificando l'ambito in cui opera e fornendo le informazioni generali sui servizi che mette a disposizione del cliente. Inoltre, l'applicazione deve permettere ad un utente di conoscere la storia dell'azienda, ripercorrendo le tappe fondamentali della sua crescita.
+
+#### RF2 Vetrina {.unnumbered}
+L'applicazione deve mostrare i tipi di impianto in vendita; ad ognuno di questi deve essere associato un nome, un prezzo, un immagine esemplificativa e la dimensione dell'area consigliata per quel specifico tipo di impianto.
+
+#### RF3 Visualizzazione delle recensioni {.unnumbered}
+Il sistema deve mostrare le recensioni rilasciate dai clienti; ogni recensione deve comprendere il nome dell'autore e la valutazione *a stelle* e testuale (facoltativa) dell'azienda. L'appilicazione deve permettere inoltre di visualizzare il *TrustScore* dell'azienda.
+
+#### RF4 Registrazione {.unnumbered}
+Il sistema deve consentire ad un utente anonimo di registrarsi, inserendo nome, cognome, indirizzo, e-mail, contatto telefonico e password (richiesta due volte al fine di evitare errori); in aggiunta, l'applicazione deve permettere di verificare la validità dell'e-mail inserita.
+
+#### RF5 Recupero della password {.unnumbered}
+La WebApp deve permettere ad un utente registrato, ma non autenticato, di recuperare la password, tramite la propria e-mail.
 
 ### Utente Autenticato
 
-#### RF5 Conferma Email {.unnumbered}
-Il sistema deve permettere di confermare l'email immessa durante la registrazione
-
-#### RF6 Modifica Dati {.unnumbered}
-Il sistema deve far modificare i dati immessi durante la registrazione
+#### RF6 Modifica dei dati personali {.unnumbered}
+Il sistema deve consentire la modifica dei dati immessi in fase di registrazione.
 
 ### Cliente
 
 #### RF7 Acquisto {.unnumbered}
-Il sistema deve far selezionare uno tra gli impianti mostrati da [RF1](#rf1-vetrina) e una volta selezionato ne deve permettere l'acquisto. Ad acquisto effettuato il sistema deve richiedere un intervento di installazione.
+Il sistema deve permettere di selezionare gli impianti mostrati da [RF2](#rf2-vetrina) e proseguire con il loro acquisto, specificando l'indirizzo dell'area occorrente del servizio. Se il pagamento va a buon fine, l'applicazione deve richiedere un intervento di installazione.
 
-#### RF8 Lista Impianti {.unnumbered}
-Il sistema deve mostrare al cliente la lista di tutti gli impianti acquistati - attivi e dismessi, che comprende per ogni impianto: impianto(id, nome, tipo, indirizzo, stato).
+#### RF8 Impianti acquistati {.unnumbered}
+La WebApp deve consentire ad un cliente di visualizzare e selezionare tutti gli impianti acquistati, attivi e dismessi. Ogni impianto deve poter essere identificato tramite specifico id, nome, indirizzo e stato.
 
-#### RF9 Misurazioni Impianto Mappa {.unnumbered}
-Il sistema deve far scegliere un impianto da [RF8](#rf8-lista-impianti) e deve far visualizzare su una mappa le misurazioni più recenti
+#### RF9 Misurazioni fornite dagli impianti {.unnumbered}
+Il sistema, tramite [RF8](#rf8-impianti-acquistati), deve permettere di visualizzare su una mappa la dislocazione dei sensori di un specifico impianto e le relative misurazioni. Inoltre, tali misurazioni devono poter essere mostrate sotto forma tabulare e di grafico aggregato in media.
 
-#### RF10 Misurazioni Impianto Tabulare {.unnumbered}
-Il sistema tramite [RF9](#rf9-misurazioni-impianto-mappa) deve far visualizzare tutte le misurazioni in una tabella
+#### RF10 Interventi sugli impianti {.unnumbered}
+La WebApp, attraverso [RF8](#rf8-impianti-acquistati), deve permettere di visualizzare le informazioni relative agli inteventi effettuati su un specifico impianto; in particolare, si devono poter individuare data, tecnico assegnato, tipo di intervento e stato (in corso o concluso).
 
-#### RF11 Misurazioni Impianto Grafico {.unnumbered}
-Il sistema tramite [RF9](#rf9-misurazioni-impianto-mappa) deve far visualizzare per alcuni parametri compresi nella misurazione un grafico aggregato in media. 
+#### RF11 Richiesta di intervento di riparazione {.unnumbered}
+L'applicazione - se l'impianto selezionato è attivo - deve consentire ad un cliente di richiedere tramite [RF8](#rf8-impianti-acquistati) un intervento di riparazione, indicando il motivo della segnalazione.
 
-#### RF12 Richiesta Intervento di Riparazione {.unnumbered}
-Il sistema tramite [RF9](#rf9-misurazioni-impianto-mappa) - se l'impianto scelto è attivo - deve consentire al cliente di inviare una richiesta di riparazione, indicando una breve motivazione
+#### RF12 Recensioni {.unnumbered}
+Il sistema deve permettere ad un cliente cha abbia effettuato almeno un acquisto di recensire l'azienda secondo le specifiche introdotte da [RF3](#rf3-visualizzazione-delle-recensioni).
 
-#### RF13 Recensione {.unnumbered}
-Il sistema deve permettere ad un cliente cha abbia effettuato almeno un acquisto di inviare una recensione e modificarla
-
-#### RF14 Live-Chat {.unnumbered}
-Il sistema deve consentire al cliente di parlare con un supervisore in una chat testuale
+#### RF13 Live-chat {.unnumbered}
+L'applicazione deve consentire ad un cliente di comunicare con un supervisore tramite una chat.
 
 ### Supervisore
 
