@@ -154,48 +154,75 @@ Il sistema deve consentire ad un tecnico di registrare un sensore attraverso un 
 #### RF21 Visualizzazione lista interventi assegnati {.unnumbered}
 Il sistema deve far visualizzare una lista di tutti gli interventi assegnati, dove per ogni intervento si mostra: nome tipo dell'impianto, id dell'impianto, superficie dell'impianto, indirizzo di installazione, tipo di intervento, stato dell'intervento, data richiesta intervento, nome, cognome e contatto telefonico del cliente. La lista deve avere ordine cronologico da data richiesta più recente a meno recente. Il sistema deve permettere di selezionare un intervento dalla lista.
 
-#### RF19 Intervento Assegnato {.unnumbered}
-Il sistema deve far scegliere un intervento tramite [RF18](#rf18-lista-interventi-assegnati) e deve mostrare: impianto(), cliente(), intervento(tipo, stato, data). Se si tratta di un intervento in corso il sistema deve permettere di aggiungere delle **informazioni conclusive** e concluderlo.
+#### RF22 Visualizzazzione e modifica intervento Assegnato {.unnumbered}
+Il sistema - attraverso la selezione effettuata in [RF21](#rf21-visualizzazione-lista-interventi-assegnati) - deve far visualizzare tutti i dati già mostrati in [RF21](#rf21-visualizzazione-lista-interventi-assegnati) ed inoltre: XXX. Se si tratta di un intervento assegnato in corso il sistema deve permettere di concluderlo inviando un form nel quale sono presenti i campi: informazioni conclusive.
 
-#### RF20 Aggiunta/Rimozione sensori {.unnumbered}
-Il sistema, tramite [RF19](#rf19-intervento-assegnato), se l'intervento in corso è di tipo installazione/manutenzione/riparazione, deve permettere di rimuovere sensori (fornendo l'id) ed aggiungere sensori (fornendo id e coordinate).
+#### RF23 Aggiunta/rimozione sensori da impianto {.unnumbered}
+Il sistema - tramite la pagina mostrata da [RF22](#rf22-visualizzazzione-e-modifica-intervento-assegnato) -, se l'intervento è di tipo installazione/manutenzione /riparazione, deve permettere di aggiungere un sensore compilando un form con campi: id sensore, coordinate(latitudine, longitudine). Deve poi permettere di rimuovere un sensore compilando un form con campi: id sensore. L'id sensore deve essere compilabile sia con scrittura da tastiera che - alla pressione di un bottone - inquadrando un codice QR ISO/IEC 18004:2006. Le coordinate(latitudine, longitudine) devono essere compilabili sia con scrittura da tastiera che - alla pressione di un bottone - con utilizzo del GPS del dispositivo con cui si sta accedendo al sistema.
 
 ### Amministratore
 
-#### RF21 Registrazione Dipendenti {.unnumbered}
-Il sistema deve permettere all'amministratore di registrare nel sistema i dipendenti, inserendo oltre ai dati descritti in [RF3](#rf3-autenticazione-.unnumbered) anche CF e ruolo (tecnico, supervisore, amministratore)
+#### RF24 Registrazione dipendenti {.unnumbered}
+Il sistema deve permettere all'amministratore di registrare nel sistema i dipendenti tramite un form nel quale sono presenti i campi: nome, cognome, email, telefono, indirizzo, CF, password, ruolo (selezionato da una lista contenente tecnico, supervisore, amministratore). Alla registrazione di un nuovo dipendente deve essere inviata una email di cambio password [RF5](#rf7-recupero-della-password).
 
-#### RF22 Lista Dipendenti {.unnumbered}
-Il sistema deve mostrare una lista di tutti i dipendeti, che comprende per ogni dipendente: nome, cognome, CF, email, telefono, ruolo.
+#### RF25 Visualizzazione lista dipendenti {.unnumbered}
+Il sistema deve far visualizzare una lista di tutti i dipendeti, dove per ogni dipendente si mostra: nome, cognome, email, telefono, indirizzo, CF, password, ruolo. Il sistema deve permettere di selezionare un dipendente dalla lista.
 
-#### RF23 Modifica Dipendenti {.unnumbered}
-Il sistema deve far selezionare un dipendente da [RF22](#rf22-lista-dipendenti) e deve permettere di modificare i dati più rilevanti
+#### RF26 Modifica dati dipendente {.unnumbered}
+Il sistema - attraverso la selezione di un dipendente effettuata in [RF25](#rf25-visualizzazione-lista-dipendenti) - deve permettere all'amministratore di accedere alla stessa funzione [RF6](#rf6.1-modifica-dei-dati-personali) cui a accesso il dipendente.
 
-#### RF24 Statistiche Vendite {.unnumbered}
-
-#### RF25 Statistiche Malfunzionamenti {.unnumbered}
+#### RF27 Visualizzazione grafico vendite {.unnumbered}
+Il sistema deve far visualizzare un grafico dove si mostra in funzione del tempo - con granularità al mese - il numero totale di acquisti avvenuti. Sull'asse del tempo si avrà per esempio: gen2022, feb2022, mar2022; sull'asse degli acquisti avvenuti si avrà nell'istante gen2022 il numero di acquisti conclusi nel gennaio 2022.
 
 ## Requisiti Non Funzionali
 
 #### RNF1 Privacy {.unnumbered}
-La WebApp deve rispettare il regolamento europeo 2016/679 noto come GDPR (General Data Protection Regulation)
+Il sistema deve rispettare il regolamento europeo 2016/679 noto come GDPR (General Data Protection Regulation).
 
 #### RNF2 Sicurezza {.unnumbered}
-La WebApp deve utilizzare connessioni https
+Il sistema deve utilizzare connessioni https. La password non deve essere salvata in chiaro, e dunque non può essere visualizzata in [RF8](#rf8-visualizzazione-dei-dati-personali) e non può essere inviata direttamente in [RF6](#rf7-recupero-della-password): dunque il recupero password effettua un cambio della password. Non deve essere possibile dato un indirizzo email comprendere se quell'indirizzo email è registrato, e dunque in [RF7](#rf7-recupero-della-password), supponendo che l'utente inserisca un indirizzo email non registrato, il sistema non deve avvertire l'utente che l'indirizzo email non è registrato. 
 
 #### RNF3 Facilità d'uso {.unnumbered}
-I dipendenti devono imparare ad usare le funzioni [RF18](), [RF19](), [RF20]() con un addestramento specifico di non più di 15 minuti.
-Un utente anonimo deve essere in grado di registrarsi e portare a termine un acquisto senza alcuno addestramento, imparando in autonomia in meno di 5 minuti.
+I tecnici devono imparare ad usare le funzioni [RF20](#rf20-registrazione-sensore), [RF21](#rf21-visualizzazione-lista-interventi-assegnati), [RF22](#rf22-visualizzazzione-e-modifica-intervento-assegnato), [RF23](#rf23-aggiuntarimozione-sensori-da-impianto) con un addestramento specifico inferiore a 15 minuti. I supervisori devono imparare ad usare le funzioni [RF17](#rf17-visualizzazione-lista-interventi), [RF18](#rf18-visualizzazione-intervento), [RF19](#rf19-assegnazione-intervento) con un addestramento specifico inferiore a 15 minuti.
+L'id sensore in [RF20](#rf20-registrazione-sensore), [RF23](#rf23-aggiuntarimozione-sensori-da-impianto) deve essere compilabile sia con scrittura da tastiera che inquadrando un codice QR ISO/IEC 18004:2006 con la fotocamera del dispositivo con cui si utilizza il sistema.
+Un utente anonimo deve essere in grado di registrarsi e portare a termine un acquisto ([RF2](#rf2-visualizzazione-vetrina), [RF4](#rf4-registrazione-cliente),[RF10](#rf10-acquisto-impianto)) senza alcun addestramento, imparando in autonomia in meno di 5 minuti.
 
 #### RNF4 Prestazioni {.unnumbered}
-Le funzioni [RF18](), [RF19]() devono essere eseguite in al più 5 secondi; la funzione [RF20]() deve essere eseguita dal sistema in al più 3 secondi. La misurazione avviene da quando ogni form è stato compilato ed inviato a quando la conferma è visualizzata.
+Le funzioni dei tecnici [RF20](#rf20-registrazione-sensore), [RF21](#rf21-visualizzazione-lista-interventi-assegnati), [RF22](#rf22-visualizzazzione-e-modifica-intervento-assegnato), [RF23](#rf23-aggiuntarimozione-sensori-da-impianto) devono essere eseguite in al più 5 secondi; la funzione del cliente [RF12](#rf12-visualizzazione-misurazioni-su-heatmap) deve essere eseguita dal sistema in al più 3 secondi; la funzione di acquisto [RF10](#rf10-acquisto-impianto) deve essere eseguita dal sistema in al più 3 minuti.
+Per i RF con form la misurazione avviene da quando il form è inviato a quando si ha la conferma di ricezione; per i RF di visualizzazione la misurazione avviene dall'immisione dell'URL al caricamento completo della pagina. La misurazione è effettuata sulla rete intranet di Ardeeno, con il sistema installato nei server locali di Ardeeno ed il dispositivo da cui si accede al sistema connesso alla stessa rete locale.
 
 #### RNF5 Portabilità {.unnumbered}
-Le funzioni [RF18](), [RF19](), [RF20]() devono funzionare:
+Ogni funzione deve essere funzionante:
+
 - sui seguenti browser:
+  - Chrome +
+  - Chrome Mobile +
+  - Safari +
+  - Safari Mobile +
+
 - sui seguenti sistemi operativi:
+  - Windows +
+  - MacOS +
+  - Android +
+  - IOS +
+
+Le funzioni [RF.Tecnico](#tecnico), [RF.Supervisore](#supervisore), [RF.Amministratore](#amministratore) devono in aggiunta essere funzionanti:
+
+- sui seguenti browser:
+  - Firefox +
+  - Firefox Mobile +
+
+- sui seguenti sistemi operativi:
+  - Ubuntu 20.04+
 
 #### RNF6 Scalabilità {.unnumbered}
+Il sistema deve mantenere le prestazione descritte in [RNF4](#rnf4-prestazioni) anche con:
+
+1. 100 tecnici che contemporaneamente usano [RF.Tecnico](#tecnico)
+2. 10000 utenti anonimi che contemporaneamente usano [RF2](#rf2-visualizzazione-vetrina)
+3. 1000 clienti che contemporaneamente usano [RF10](#rf10-acquisto-impianto), [RF12](#rf12-visualizzazione-misurazioni-su-heatmap)
+4. 1000 impianti nel sistema e per ogni impianto $100*24*30*12*5=4320000$ misurazioni con 10 parametri misurati
+5. 1, 2, 3, 4 tutte contemporaneamente
 
 ## Design Front-end
 
