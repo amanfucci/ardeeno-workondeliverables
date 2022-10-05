@@ -205,7 +205,11 @@ Le funzioni [RF.Tecnico](#tecnico), [RF.Supervisore](#supervisore), [RF.Amminist
   - Firefox +
   - Firefox Mobile +
 
+  - Firefox +
+  - Firefox Mobile +
+
 - sui seguenti sistemi operativi:
+  - Ubuntu 20.04+
   - Ubuntu 20.04+
 
 #### RNF6 Scalabilità {.unnumbered}
