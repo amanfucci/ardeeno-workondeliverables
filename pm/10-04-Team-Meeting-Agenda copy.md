@@ -2,7 +2,7 @@
 
 **Project Name:** Ardeeno WebApp
 
-**Meeting Date:** 03/10/2022 08:30
+**Meeting Date:** 10/10/2022 08:30
 
 **Invited:** Alessandro Manfucci, Enrico Cescato, Matteo Sottocornola
 
@@ -12,16 +12,15 @@
 
 |**Agenda Item**|**Time**|
 |---|---|
-|Review Project plan|5'|
-|Review and discuss open problem, change, action items||
-|Discuss any new problems, changes and/or concerns||
-|Upcoming meetings||
-|Upcoming absences||
-|Q&A||
+|Review final version of D1|40'|
+|Discuss any new problems|20'|
+|Discuss tasks assignment for D2|20'|
+|Upcoming meetings|5'|
+|Q&A|5'|
 
 ## Changes/Problems
 
 |**Changes/Problems**|**What to do**|
 |---|---|
 
-**Next Meeting:** 10/10/2022 08:30
+**Next Meeting:** 10/17/2022 08:30
