@@ -49,8 +49,8 @@ gantt
 |------------------------|------------------------|------------|------------|
 |Definizione Obiettivi   |A,E,M|27/09|Active|
 |Definizione Requisiti   |A,E|10/10||
-|Mock-Up FrontEnd        |E|10/10||
-|Schema BackEnd          |M|10/10||
+|Mock-Up FrontEnd        |M|10/10||
+|Schema BackEnd          |A|10/10||
 |Spec ReqF               |||||
 |Spec ReqNF              |||||
 |Sequence Diagrams       |||||
