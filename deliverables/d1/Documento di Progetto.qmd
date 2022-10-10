@@ -223,65 +223,48 @@ Il sistema deve mantenere le prestazione descritte in [RNF4](#rnf4-prestazioni) 
 
 \pagebreak
 ## Design Front-end
-Nel seguente capitolo verrano riportati cinque esempi di schermate della nostra applicazione su mobile. Queste hanno lo scopo d'illustrare l’apparenza approssimativa che avrà la app finale per l’utente e di chiarire possibili dubbi su come saranno implementati certi requisiti funzionali. In particolare i requisiti funzionali qui riferiti/illustrati sono:
+Nel seguente capitolo si riportano alcuni mock-up della WebApp. Tali schermate hanno lo scopo di illustrare alcune funzioni del sistema e dare un'idea generale del prodotto finale che verrà realizzato.
+In particolare vedremo mock-up per:
 
-[RF1](#rf1-visualizzazione-presentazione-.unnumbered):Visualizzazione presentazione.
+- [RF1 Visualizzazione presentazione](#rf1-visualizzazione-presentazione)
+- [RF5 Autenticazione](#rf5-autenticazione)
+- [RF11 Visualizzazione impianti acquistati](#rf11-visualizzazione-impianti-acquistati)
+- [RF12 Visualizzazione misurazioni su heatmap](#rf12-visualizzazione-misurazioni-su-heatmap)
+- [RF21 Visualizzazione lista interventi assegnati](#rf21-visualizzazione-lista-interventi-assegnati)
 
-[RF4](#rf4-registrazione-cliente-.unnumbered): registrazione cliente
+#### RF1 Visualizzazione Presentazione {.unnumbered}
+![Visualizzazione Presentazione](./.media/mockups/presentazione.png){width=6cm}
 
-[RF5](#rf5-autenticazione.unnumbered):authenticazione
-
-[RF7](#rf7-recupero-della-password-.unnumbered): recupero password
-
-[RF11](#rf11-visualizzazione-impianti-acquistati-.unnumbered):Visualizzazione impianti acquistati
-
-[RF17](#rf17-visualizzazione-lista-interventi-.unnumbered):Visualizzazione lista interventi
-
-[RF18](#rf18-visualizzazione-intervento-.unnumbered):Visualizzazione intervento
-
-#### Schermata di ingresso {.unnumbered}
-
-![](./.media/Mockup1.png){width=8cm}
-
-Fig 4.1 Schermata d'ingresso alla app con slideshow sullo sfondo. Aiuta ad adempiere RF1 fornendo una prima impressione della azienda. Naturalmente se si procede senza identificarsi si può entrare come Guest e vedere altro contenuto che serve ad adempiere RF1; questa slideshow e solo per fare una prima impressione. Premendo su Get Started si e mandati a Fig4.2
-
-#### Login{.unnumbered}
-
-![](./.media/Mockup2.png){width=8cm}
-
-Fig 4.2: Schermata a cui si accede dopo essere passati da Fig: 4.1. Permette il Login con email e password come richiesto da [RF5](#rf5-autenticazione.unnumbered), cosi come l’accesso a una schermata di recupero password [RF7](#rf7-recupero-della-password-.unnumbered). E permette inoltre l’accesso senza identificarsi a una versione ridotta della app disponibile ai clienti. I tecnici/amministratori possono anche loro identificarsi qui. Il sistema una volta riconosciuti li manderà alla versione della app propria al loro ruolo nell’azienda.
-
-Premendo su Create an account si e mandati alla Fig4.3
-
-#### Registrazione{.unnumbered}
-
-![](./.media/Mockup3.png){width=8cm}
-
-Fig 4.3 : Permette la registrazione di un cliente usando nome, email , indirizzo, numero telefonico e inserendo una password due volte. Premendo su Sign up si e mandati su una pagina che richiedera l’inserimento di un codice, mandato alla mail inserita, per poterne verificare la validita. Una volta completata la registrazione si e automaticamente rimandati a Fig 4.2 per fare il Log in.
-Il tutto come richiesto da [RF4](#rf4-registrazione-cliente-.unnumbered).
-
-#### Visualizzazione sensori acquistati{.unnumbered}
-
-![](./.media/Mockup4.png){width=8cm}
-
-Fig 4.4 : Questa figura illustra le esigenze disposte da [RF11](#rf11-visualizzazione-impianti-acquistati-.unnumbered) Visualizzazione Impianti acquistati.
-
-Una volta effettuato il Login un cliente può facilmente attraverso la tendina in alto a sinistra selezionare la visualizzazione dei sensori. Questo lo porterà alla seguente pagina, dove potrà visualizzare tutti i suoi sensori acquistati alla compagnia. Attraverso il bottone in alto a destra, il cliente può filtrare i suoi risultati in base al loro id, nome, indirizzo, data d'installazione e stato attuale (attivo/dismesso(dal cliente), rotto). Cliccando su il bottone “dati e statistiche” di un sensore si potrà visualizzare lo storico degli interventi su quello specifico impianto (installazione/riparazione/disinstallazione) come richiesto da [RF14](#rf14-visualizzazione-interventi-di-un-impianto-.unnumbered). Si potra inoltre accedere alle sue misurazioni come dettagliato da [RF12](#rf12-visualizzazione-misurazioni-su-heatmap-.unnumbered) e [RF13](#rf13-visualizzazione-misurazioni-su-tabella-.unnumbered) e ,volendo ,assegnare un nome a scelta dell’utente al sensore.
-
-Se si vuole organizzare una riparazione o disinstallazione di un sensore basterà premere il bottone in basso a destra e riempire il formulario con le informazioni necessarie.
-
-#### Lista interventi assegnati{.unnumbered}
-
-![](./.media/Mockup5.png){width=8cm}
-
-Fig 4.5: Pagina soltanto accessibile dopo avere effettuato un login con l’account di un tecnico. Questa pagina cerca di soddisfare il [RF21](#rf21-visualizzazione-lista-interventi-assegnati-.unnumbered) Lista interventi assegnati.
-
-Atraverso questa pagina il tecnico può visualizzare tutti gli interventi che gli sono stati assegnati da un supervisore; Sia quelli presenti che quelli compiuti. E inoltre capace di visualizzare i dati sull’impianto, il cliente e l’intervento stesso (riparazione/installazione/rimozione già compiuto/in processo) e può filtrare i risultati in base a tutti questi dati usando il bottone in alto a destra.
-
-Se il Tecnico ne seleziona uno ([RF22](#rf22-visualizzazzione-e-modifica-intervento-assegnato-.unnumbered)) come nella figura con il terzo intervento sulla lista. Potrà visualizzare qualche informazioni in più come il messaggio del cliente e potrà accedere ai rilevamenti fatti dal sensore e ai dati rilevanti a vecchi interventi premendo “accesso dati sensori”. Una volta finito un intervento il Tecnico deve riselezionare l’intervento e premere il bottone “Modifica dati intervento” per inserire i dati sul intervento e segnalarne la conclusione.
+Pagina d'ingresso della WebApp. Si osservi la presenza di un menù laterale, il quale contiene le varie funzioni del sistema, ed un tasto login per procedere all'autenticazione.
 
 \pagebreak
+#### RF5 Autenticazione {.unnumbered}
+![Autenticazione](./.media/mockups/login.png){width=6cm}
 
+Un'utente anonimo - registrato nel sistema - può autenticarsi inserendo email e password. Se la combinazione (email, password) non è presente nel sistema, verrà mostrata in rosso la scritta **Password Errata** [RNF1](#rnf1-privacy). Se l'email non è confermata verrà mostrata in rosso la scritta "Email non confermata", assieme al link "Invia di nuovo il link".
+Si osservi la presenza del bottone **Recupera Password** e **Registrati**.
+
+\pagebreak
+#### RF11 Visualizzazione impianti acquistati {.unnumbered}
+![Visualizzazione impianti acquistati](./.media/mockups/impianti-dashboard.png){width=12cm}
+
+Nella figura a sinistra si ha la pagina mostrata ad un cliente che si è appena autenticato. In azzurro si hanno gli impianti attivi, in arancione quelli dismessi. Si possono filtrare solo gli impianti Attivi o Dismessi tramite gli appositi bottoni. Il filtro selezionato presenta uno sfondo scuro.
+Tra gli impianti in lista se ne può selezionare uno. Alla selezione si è portati su una pagina che raccoglie tutti le funzioni disponibili, rappresentata dalla figura a destra. Qui vi sono tutti che requisiti funzionali che si collegano ad [RF11](#rf11-visualizzazione-impianti-acquistati).  
+
+\pagebreak
+#### RF12 Visualizzazione misurazioni su heatmap {.unnumbered}
+![Heatmap](./.media/mockups/heatmap.png){width=6cm}
+
+La heatmap riporta in forma grafica (scala di colori dal giallo al rosso) su una mappa geografica le più recenti misurazioni. Il parametro preso in considerazione può essere selezionato dalla lista di tutti i parametri misurati. Si possono scorrere tutte le misurazioni tramite le due frecce.
+
+\pagebreak
+#### RF21 Visualizzazione lista interventi assegnati {.unnumbered}
+![Lista interventi](./.media/mockups/interventi.png){width=6cm}
+
+Questa pagina è accessibile soltanto da un tecnico; si visualizzano tutti gli interventi assegnati. In arancione quelli assegnati in corso mentre in grigio quelli assegnati conclusi. Gli interventi sono ordinati per ordine cronologico da più a meno recente; possono inoltre essere filtrati per stato (in corso, concluso) o per tipo (installazione, manutenzione, riparazione, dismissione).
+Selezionandone uno con un click si apre un pop-up dal basso, il quale presenta ulteriori informazioni e links per accedere alle misurazioni dell'impianto o aggiungere/rimuovere sensori.
+
+\pagebreak
 ## Design BackEnd
 Il sistema da sviluppare interagisce con più sistemi esterni attraverso delle API. Queste interazioni saranno gestite da una parte del sistema da realizzare detta BackEnd. I sistemi esterni sono:
 
