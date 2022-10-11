@@ -10,7 +10,7 @@ subtitle: |
 
   v1.0
 author: [alessandro.manfucci@studenti.unitn.it, enrico.cescato@studenti.unitn.it ,m.sottocornola-1@studenti.unitn.it]
-date: "05-10-2022"
+date: "10-10-2022"
 lang: it
 format:
   pdf:
