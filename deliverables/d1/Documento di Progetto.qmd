@@ -95,7 +95,7 @@ Il sistema deve permettere ad un utente anonimo di autenticarsi tramite un form,
 #### RF6 Conferma email {.unnumbered}
 Il sistema deve inviare all'email inserita in [RF4](#rf4-registrazione-cliente) un link per confermare tale email; la conferma dell'email avviene all'apertura del link. Quest'ultimo ha una scadenza di 24 ore e viene inviato nuovamente dalla pagina di autenticazione [RF5](#rf5-autenticazione), a seguito di un tentativo di accesso con email non verificata. Se l'email non è confermata, l'autenticazione non è permessa.
 
-#### RF7 Recupero della password {.unnumbered}
+#### RF7 Recupero password {.unnumbered}
 Il sistema -- tramite la pagina mostrata da [RF5](#rf5-autenticazione) -- deve permettere a un utente anonimo di inserire l'email di autenticazione per cui cambiare la password associata. A tale email arriverà il link ad una pagina in cui inserire tramite form la nuova password: all'invio del form verrà cambiata la password.
 
 ### Utente autenticato
@@ -109,7 +109,7 @@ Il sistema deve consentire attraverso un form -- raggiungibile da [RF8](#rf8-vis
 ### Cliente
 
 #### RF10 Acquisto impianto {.unnumbered}
-Il sistema -- attraverso la selezione effettuta in [RF2](#rf2-visualizzazione-vetrina) -- deve permettere di effettuare l'acquisto dell'impianto selezionato, specificando indirizzo di installazione e superficie (in $m^2$) attraverso un form. All'invio del form verrà richiesto il pagamento tramite PayPal. L'acquisto è considerato concluso quando il pagamento con PayPal è concluso. Ad acquisto concluso il sistema inserisce una richiesta di installazione per l'impianto acquistato.
+Il sistema -- attraverso la selezione effettuata in [RF2](#rf2-visualizzazione-vetrina) -- deve permettere di effettuare l'acquisto dell'impianto selezionato, specificando indirizzo di installazione e superficie (in $m^2$) attraverso un form. All'invio del form verrà richiesto il pagamento tramite PayPal. L'acquisto è considerato concluso quando il pagamento con PayPal è concluso. Ad acquisto concluso il sistema inserisce una richiesta di installazione per l'impianto acquistato.
 
 #### RF11 Visualizzazione impianti acquistati {.unnumbered}
 Il sistema deve consentire ad un cliente di visualizzare una lista di tutti gli impianti acquistati (attivi e dismessi), dove per ognuno si mostra: id, superficie (in $m^2$), indirizzo e stato (attivo o dismesso). Tra gli impianti visualizzati, il sistema deve permettere di selezionarne uno.
@@ -136,13 +136,13 @@ Il sistema, ad acquisto concluso, -- in aggiunta a quanto specificato in [RF10](
 ### Supervisore
 
 #### RF17 Visualizzazione interventi - supervisore {.unnumbered}
-Il sistema deve consentire ad un supervisore di visualizzare la lista di tutti gli interventi, dove per ognuno si mostra: nome del tipo e id dell'impianto, data richiesta intervento, tipo e stato dell'intervento; se l'intervento è assegnato concluso, viene visualizzata anche la data della conclusione. La lista deve elencare gli interventi in ordine cronologico: da intervento più recente a meno recente. Tra gli interventi visualizzati, il sistema deve permettere di selezionarne uno.
+Il sistema deve consentire ad un supervisore di visualizzare la lista di tutti gli interventi, dove per ognuno si mostra: nome del tipo e id dell'impianto, data richiesta, tipo e stato dell'intervento; se l'intervento è assegnato concluso, viene visualizzata anche la data della conclusione. La lista deve elencare gli interventi in ordine cronologico: da intervento più recente a meno recente. Tra gli interventi visualizzati, il sistema deve permettere di selezionarne uno.
 
 #### RF18 Visualizzazione singolo intervento {.unnumbered}
 Il sistema -- attraverso la selezione effettuata in [RF17](#rf17-visualizzazione-interventi---supervisore) -- deve mostrare tutti i dati dell'intervento selezionato già visualizzati in [RF17](#rf17-visualizzazione-interventi---supervisore) e inoltre: nome, cognome e contatto telefonico del cliente, indirizzo e superficie (in $m^2$) dell'impianto. Se l'intervento è assegnato in corso vengono visualizzati anche: nome, cognome e contatto telefonico del tecnico assegnato; se invece l'intervento è assegnato concluso, vengono visualizzati anche: data della conclusione e resoconto dell'intervento.
 
 #### RF19 Assegnazione intervento {.unnumbered}
-Se l'intervento selezionato è in stato richiesto, il sistema -- tramite la pagina mostrata da [RF18](#rf18-visualizzazione-singolo-intervento) --  deve permettere ad un supervisore di assegnare all'intervento un tenico in una data, attraverso un form; in tale form, sono presenti i campi: data (gg/mm/aaaa) e lista dei tecnici (nome e cognome) liberi in quella data. Il sistema mostra la lista dei tecnici solo in seguito all'inserimento di una data valida (giorno corrente o successivi).
+Se l'intervento selezionato è in stato richiesto, il sistema -- tramite la pagina mostrata da [RF18](#rf18-visualizzazione-singolo-intervento) --  deve permettere ad un supervisore di assegnare all'intervento un tecnico in una data, attraverso un form; in tale form, sono presenti i campi: data (gg/mm/aaaa) e lista dei tecnici (nome e cognome) liberi in quella data. Il sistema mostra la lista dei tecnici solo in seguito all'inserimento di una data valida (giorno corrente o successivi).
 
 ### Tecnico
 
@@ -150,29 +150,29 @@ Se l'intervento selezionato è in stato richiesto, il sistema -- tramite la pagi
 #### RF20 Visualizzazione interventi - tecnico {.unnumbered}
 Il sistema deve mostrare una lista di tutti gli interventi assegnati, dove per ogni intervento si mostra: nome del tipo, id, superficie e indirizzo dell'impianto; tipo, stato e data della richiesta dell'intervento; nome, cognome e contatto telefonico del cliente. Se l'intervento è assegnato concluso, si mostra la data della conclusione. La lista deve elencare gli interventi in ordine cronologico, da più recente a meno recente. Tra gli interventi elencati, il sistema deve permettere di selezionarne uno.
 
-#### RF21 Visualizzazzione e modifica singolo intervento {.unnumbered}
+#### RF21 Visualizzazione e modifica singolo intervento {.unnumbered}
 Il sistema -- attraverso la selezione effettuata in [RF20](#rf20-visualizzazione-interventi---tecnico) -- deve mostrare tutti i dati dell'intervento selezionato già visualizzati in [RF20](#rf20-visualizzazione-interventi---tecnico) e inoltre per gli interventi conclusi il resoconto dell'intervento. Per gli interventi in corso, il sistema deve permettere di concluderlo inviando un form nel quale è presente il campo resoconto.
 
 #### RF22 Aggiunta/rimozione sensori da impianto {.unnumbered}
-Il sistema - tramite la pagina mostrata da [RF21](#rf21-visualizzazzione-e-modifica-singolo-intervento) -, se l'intervento è di tipo installazione/manutenzione /riparazione, deve permettere di aggiungere un sensore compilando un form con campi: id sensore, coordinate(latitudine, longitudine). Deve poi permettere di rimuovere un sensore compilando un form con campi: id sensore. L'id sensore deve essere compilabile sia con scrittura da tastiera che - alla pressione di un bottone - inquadrando un codice QR ISO/IEC 18004:2006. Le coordinate(latitudine, longitudine) devono essere compilabili sia con scrittura da tastiera che - alla pressione di un bottone - con utilizzo del GPS del dispositivo con cui si sta accedendo al sistema.
+Il sistema -- tramite la pagina mostrata da [RF21](#rf21-visualizzazzione-e-modifica-singolo-intervento) --, se l'intervento è di tipo installazione/manutenzione /riparazione, deve permettere di aggiungere un sensore compilando un form con campi: id sensore, coordinate(latitudine, longitudine). Deve poi permettere di rimuovere un sensore compilando un form con campi: id sensore. L'id sensore deve essere compilabile sia con scrittura da tastiera che - alla pressione di un bottone - inquadrando un codice QR ISO/IEC 18004:2006. Le coordinate(latitudine, longitudine) devono essere compilabili sia con scrittura da tastiera che - alla pressione di un bottone - con utilizzo del GPS del dispositivo con cui si sta accedendo al sistema.
 
 
 ### Amministratore
 
 #### RF23 Registrazione dipendenti {.unnumbered}
-Il sistema deve permettere all'amministratore di registrare nel sistema i dipendenti tramite un form, nel quale sono presenti i campi: nome, cognome, email, telefono, indirizzo, CF, ruolo (selezionato da una lista contenente tecnico, supervisore, amministratore). Alla registrazione viene inviata un'email contenente la password generata automaticamente dal sistema, ed un'altra email per sollecitare il cambio della password ([RF7](#rf7-recupero-della-password)).
+Il sistema deve permettere ad un amministratore di registrare nel sistema i dipendenti tramite un form, nel quale sono presenti i campi: nome, cognome, email, telefono, indirizzo, CF, ruolo (selezionato da una lista contenente tecnico, supervisore, amministratore). Alla registrazione viene inviata un'email contenente la password generata automaticamente dal sistema, ed un'altra email per sollecitare il cambio della password ([RF7](#rf7-recupero-della-password)).
 
 #### RF24 Visualizzazione lista dipendenti {.unnumbered}
 Il sistema deve far visualizzare una lista di tutti i dipendenti, dove per ognuno si mostra: nome, cognome, email, telefono, indirizzo, CF, password, ruolo. Il sistema deve permettere di selezionare un dipendente dalla lista.
 
 #### RF26 Modifica dati dipendente {.unnumbered}
-Il sistema -- attraverso la selezione di un dipendente effettuata in [RF24](#rf24-visualizzazione-lista-dipendenti) -- deve permettere all'amministratore di accedere alla stessa funzione [RF9](#rf9-modifica-dati-personali) cui a accesso il dipendente.
+Il sistema -- attraverso la selezione di un dipendente effettuata in [RF24](#rf24-visualizzazione-lista-dipendenti) -- deve permettere all'amministratore di accedere alla stessa funzione [RF9](#rf9-modifica-dati-personali) cui ad accesso il dipendente.
 
 #### RF27 Visualizzazione grafico vendite{.unnumbered}
 Il sistema deve far visualizzare un grafico dove si mostra in funzione del tempo -- con granularità mensile -- il numero di acquisti effettuati dai clienti.
 
 #### RF28 Visualizzazione grafico interventi {.unnumbered}
-Il sistema deve far visualizzare un grafico dove si mostra in funzione del tempo -- con granularità mensile -- il numero di interventi richiesti sugli impianti.
+Il sistema deve far visualizzare un grafico dove si mostra in funzione del tempo -- con granularità mensile -- il numero di interventi effettuati sugli impianti.
 
 ## Requisiti Non Funzionali
 
@@ -197,7 +197,7 @@ Il sistema deve rispettare il regolamento europeo 2016/679 noto come GDPR (Gener
 - La funzione del cliente [RF12](#rf12-visualizzazione-misurazioni-su-heatmap) deve essere eseguita dal sistema in al più 3 secondi
 - Le funzioni dei tecnici [RF.Tecnico](#tecnico) devono essere eseguite in al più 5 secondi
 
-Per i RF con form la misurazione avviene da quando il form è inviato a quando si ha la conferma di ricezione; per i RF di visualizzazione la misurazione avviene dall'immisione dell'URL al caricamento completo della pagina. La misurazione è effettuata sulla rete intranet di Ardeeno, con il sistema installato nei server locali di Ardeeno ed il dispositivo da cui si accede al sistema connesso alla stessa rete locale.
+Per i RF con form la misurazione avviene da quando il form è inviato a quando si ha la conferma di ricezione; per i RF di visualizzazione la misurazione avviene dall'immissione dell'URL al caricamento completo della pagina. La misurazione è effettuata sulla rete intranet di Ardeeno, con il sistema installato nei server locali di Ardeeno ed il dispositivo da cui si accede al sistema connesso alla stessa rete locale.
 
 #### RNF5 Portabilità {.unnumbered}
 Ogni funzione deve essere funzionante:
@@ -233,7 +233,7 @@ Il sistema deve mantenere le prestazione descritte in [RNF4](#rnf4-prestazioni) 
 5. 1, 2, 3, 4 tutte contemporaneamente
 
 \pagebreak
-## Design Front-end
+## Design FrontEnd
 Nel seguente capitolo si riportano alcuni mock-up della WebApp. Tali schermate hanno lo scopo di illustrare alcune funzioni del sistema e dare un'idea generale del prodotto finale che verrà realizzato.
 In particolare vedremo mock-up per:
 
@@ -281,7 +281,7 @@ Il sistema da sviluppare interagisce con più sistemi esterni attraverso delle A
 
 - **PayPal**: Sistema tramite cui il cliente che utilizza Ardeeno WebApp invia le richieste di pagamento per acquistare un impianto in vendita. PayPal invierà una conferma di avvenuto pagamento, e solo dopo questa conferma Ardeeno WebApp considererà l'acquisto come avvenuto. Questo sistema è usato da [RF10](#rf10-acquisto-impianto).
 
-- **Gmail**: Sistema tramite cui si inviano messagi email contenenti link per confermare l'indirizzo email di un utente, per cambiare la password di un utente o per sollecitare una recensione dopo avvenuto acquisto. Questo sistema è usato da [RF6](#rf6-conferma-email), [RF7](#rf7-recupero-della-password), [RF9](#rf9-modifica-dei-dati-personali), [RF26](#rf26-modifica-dati-dipendente), [RF10](#rf10-acquisto-impianto).
+- **Gmail**: Sistema tramite cui si inviano messaggi email contenenti link per confermare l'indirizzo email di un utente, per cambiare la password di un utente o per sollecitare una recensione dopo avvenuto acquisto. Questo sistema è usato da [RF6](#rf6-conferma-email), [RF7](#rf7-recupero-della-password), [RF9](#rf9-modifica-dei-dati-personali), [RF26](#rf26-modifica-dati-dipendente), [RF10](#rf10-acquisto-impianto).
 
 - **TrustPilot**: Sistema tramite cui Ardeeno WebApp reperirà le recensioni fatte dagli utenti e che permetterà agli utenti di inserire una nuova recensione tramite un link. Questo sistema è usato da [RF16](#rf16-richiesta-recensione)
 
@@ -289,6 +289,6 @@ Il sistema da sviluppare interagisce con più sistemi esterni attraverso delle A
 
 - **GPS**: Sistema che fornirà le coordinate della posizione attuale utilizzate da Ardeeno WebApp in [Aggiunta/Rimozione sensori da impianto](#rf22-aggiuntarimozione-sensori-da-impianto).
 
-- **Ardeeno DataLayer**: Sistema che contiene la base di dati (gestita da cloud.mogodb.com) e il sottosistema di polling che inserisce nella base di dati tutte le misurazioni degli impianti. Ardeeno WebApp si interfaccia con questo sistema in tutti i [RF](#requisiti-funzionali) esclusi: [RF1](#rf1-visualizzazione-presentazione), [RF16](#rf16-richiesta-recensione).
+- **Ardeeno DataLayer**: Sistema che contiene la base di dati (gestita da cloud.mongodb.com) e il sottosistema di polling che inserisce nella base di dati tutte le misurazioni degli impianti. Ardeeno WebApp si interfaccia con questo sistema in tutti i [RF](#requisiti-funzionali) esclusi: [RF1](#rf1-visualizzazione-presentazione), [RF16](#rf16-richiesta-recensione).
 
 ![Sistemi esterni a cui si collegherà il backend](./.media/backend.png)     
