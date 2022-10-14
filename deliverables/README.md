@@ -15,7 +15,8 @@ Since the majority of our documents will be written in Markdown, It will also be
 ### Debian
 ```bash
 sudo apt update
-sudo apt install texlive-latex-base
+sudo apt install texlive-latex-full
+sudo apt install texlive-xetex
 sudo apt install pandoc
 wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.1.251/quarto-1.1.251-linux-amd64.deb
 sudo dpkg -i quarto-1.1.251-linux-amd64.deb

@@ -33,9 +33,9 @@ format:
 
 \pagebreak
 
-## Abstract {.unnumbered}
+# Abstract {.unnumbered}
 
-## Requisiti funzionali
+# Requisiti funzionali
 Questo capitolo presenta i requisiti funzionali del sistema, raggruppati per ruolo.  
 Un utente autenticato può essere cliente o dipendente dell'azienda e può accedere a tutte le funzioni permesse ad un utente anonimo. I dipendenti si suddividono in tecnici, supervisori e amministratori. Un amministratore può accedere a tutte le funzioni di un supervisore.
 
@@ -50,131 +50,210 @@ deve far visualizzare tutti i dati già mostrati in []() ed inoltre
 - raggiungibile da []() -
 -->
 
-### Utente anonimo
+## Utente anonimo
 
-#### RF1 Visualizzazione presentazione {.unnumbered}
+### RF1 Visualizzazione presentazione {.unnumbered}
 Il sistema deve mostrare una pagina di presentazione, che comprende una breve descrizione dell'azienda, una mappa che indica la posizione della sede, ed i contatti (email, telefono).
 
-#### RF2 Visualizzazione vetrina {.unnumbered}
+### RF2 Visualizzazione vetrina {.unnumbered}
 Il sistema deve mostrare una lista dei tipi di impianto in vendita, dove per ognuno si mostra: nome del tipo, prezzo, immagine esemplificativa, superficie consigliata per il tipo di impianto (in $m^2$) e lista dei parametri misurati. Tra gli impianti visualizzati, il sistema deve permettere di selezionarne uno.
 
-#### RF3 Visualizzazione recensioni {.unnumbered}
+### RF3 Visualizzazione recensioni {.unnumbered}
 Il sistema deve mostrare una lista delle dieci più recenti recensioni con almeno tre stelle. Per ogni recensione si mostra: nome dell'autore, valutazione in stelle (da una a cinque), titolo e descrizione. Inoltre, il sistema deve far visualizzare il *TrustScore* dell'azienda, fornito dal servizio TrustPilot.
 
-#### RF4 Registrazione cliente {.unnumbered}
+### RF4 Registrazione cliente {.unnumbered}
 Il sistema deve consentire ad un utente anonimo di registrarsi come cliente, compilando un form con campi: nome, cognome, email, indirizzo, telefono e password (richiesta due volte al fine di evitare errori).
 
-#### RF5 Autenticazione {.unnumbered}
+### RF5 Autenticazione {.unnumbered}
 Il sistema deve permettere ad un utente anonimo di autenticarsi tramite un form, inserendo email e password.
 
-#### RF6 Conferma email {.unnumbered}
+### RF6 Conferma email {.unnumbered}
 Il sistema deve inviare all'email inserita in [RF4](#rf4-registrazione-cliente) un link per confermare tale email; la conferma dell'email avviene all'apertura del link. Quest'ultimo ha una scadenza di 24 ore e viene inviato nuovamente dalla pagina di autenticazione [RF5](#rf5-autenticazione), a seguito di un tentativo di accesso con email non verificata. Se l'email non è confermata, l'autenticazione non è permessa.
 
-#### RF7 Recupero della password {.unnumbered}
+### RF7 Recupero della password {.unnumbered}
 Il sistema -- tramite la pagina mostrata da [RF5](#rf5-autenticazione) -- deve permettere a un utente anonimo di inserire l'email di autenticazione per cui cambiare la password associata. A tale email arriverà il link ad una pagina in cui inserire tramite form la nuova password: all'invio del form verrà cambiata la password.
 
-### Utente autenticato
+## Utente autenticato
 
-#### RF8 Visualizzazione dati personali {.unnumbered}
+### RF8 Visualizzazione dati personali {.unnumbered}
 Il sistema deve consentire la visualizzazione dei dati immessi in fase di registrazione ([RF4](#rf4-registrazione-cliente) o [RF24](#rf24-registrazione-dipendenti)) sotto forma di lista. Per ([RNF2 Sicurezza](#rnf2-sicurezza)), la password non viene visualizzata.
 
-#### RF9 Modifica dati personali {.unnumbered}
+### RF9 Modifica dati personali {.unnumbered}
 Il sistema deve consentire attraverso un form -- raggiungibile da [RF8](#rf8-visualizzazione-dati-personali) o [RF25](#rf25-modifica-dati-dipendente) -- la modifica dei dati immessi in fase di registrazione ([RF4](#rf4-registrazione-cliente) o [RF23](#rf23-registrazione-dipendenti)). In tale form, ogni campo è inizialmente vuoto ed è possibile assegnargli un valore; una volta che il form è inviato, verranno modificati solo i campi non vuoti. La password viene richiesta due volte.
 
-### Cliente
+## Cliente
 
-#### RF10 Acquisto impianto {.unnumbered}
+![RF10, RF16](.media/cliente1.drawio.png)
+
+### RF10 Acquisto impianto {.unnumbered}  
+**Summary**  
+Il Cliente acquista l'impianto selezionato in [RF2](#rf2-visualizzazione-vetrina) attraverso un form
+
+**Description**
+
+1. Il cliente inserisce l'indirizzo di installazione [Exception 1]
+
+2. Il cliente inserisce la superficie in $m^2$ [Exception 2]
+
+3. Il cliente invia il form premendo sul bottone "Acquista" [Exception 1][Exception 2][Exception 3]
+
+4. Il cliente effettua il pagamento tramite PayPal [Exception 4]
+
+**Exceptions**
+
+1. L'indirizzo non è valido, il bordo del campo del form diventa rosso
+
+2. La superficie non è valida (non è un intero positivo), il bordo del campo del form diventa rosso
+
+3. I campi indirizzo o superficie sono vuoti o non validi, appare in rosso la scritta "Compila correttamente il form"
+
+4. PayPal riporta che il pagamento non è andato a buon fine, appare in rosso la scritta "Acquisto annullato - pagamento non andato a buon fine"
+
+### RF16 Richiesta Recensione {.unnumbered}  
+
+**Summary**  
+Il Cliente, a seguito di un acquisto andato a buon fine ([RF10](#rf10-acquisto-impianto)) riceve una email al cui link inserire una recensione
+
+**Description**
+
+1. Il cliente riceve un'email da sales.ardeeno@gmail.com con oggetto "Acquisto concluso"
+
+2. Il cliente visualizza il messaggio dell'email e clicca sul link "Dacci una valutazione!"
+
+2. Il cliente inserisce una valutazione tramite il sistema TrustPilot
+
+![RF11, RF12, RF13](.media/cliente2.drawio.png)
+
+### RF11 Visualizzazione IMpianti Acquistati {.unnumbered}  
+
+**Summary**  
+Il Cliente visualizza la lista di tutti gli impianti - sia attivi che dismessi - che ha acquistato.
+
+**Description**
+
+**Exceptions**
+
+**Extensions**  
+
+![RF14, RF15](.media/cliente3.drawio.png)
+
+
+
+### RF10 Acquisto impianto {.unnumbered}
 Il sistema -- attraverso la selezione effettuta in [RF2](#rf2-visualizzazione-vetrina) -- deve permettere di effettuare l'acquisto dell'impianto selezionato, specificando indirizzo di installazione e superficie (in $m^2$) attraverso un form. All'invio del form verrà richiesto il pagamento tramite PayPal. L'acquisto è considerato concluso quando il pagamento con PayPal è concluso. Ad acquisto concluso il sistema inserisce una richiesta di installazione per l'impianto acquistato.
 
-#### RF11 Visualizzazione impianti acquistati {.unnumbered}
+### RF11 Visualizzazione impianti acquistati {.unnumbered}
 Il sistema deve consentire ad un cliente di visualizzare una lista di tutti gli impianti acquistati (attivi e dismessi), dove per ognuno si mostra: id, superficie (in $m^2$), indirizzo e stato (attivo o dismesso). Tra gli impianti visualizzati, il sistema deve permettere di selezionarne uno.
 
-#### RF12 Visualizzazione misurazioni su heatmap {.unnumbered}
+### RF12 Visualizzazione misurazioni su heatmap {.unnumbered}
 Il sistema -- attraverso la selezione effettuta in [RF11](#rf11-visualizzazione-impianti-acquistati) -- deve mostrare le misurazioni dell'impianto selezionato sotto forma di heatmap. Il parametro considerato dalla heatmap può essere scelto tramite una lista. Inizialmente sono mostrare le misurazioni più recenti; con due bottoni è possibile scorrere tra tutte le misurazioni. Con tutte le misurazioni si intendono quelle misurazioni presenti nella base di dati all’atto di caricamento della pagina. La mappa utilizzata è fornita da OpenStreetMap.
 
-#### RF13 Visualizzazione misurazioni su tabella {.unnumbered}
+### RF13 Visualizzazione misurazioni su tabella {.unnumbered}
 Il sistema deve mostrare in una tabella -- raggiungibile dalla schermata [RF11](#rf11-visualizzazione-impianti-acquistati) -- tutte le misurazioni effettuate dai sensori dell'impianto selezionato. Tali misurazioni devono essere elencate in ordine cronologico, dalla più recente alla meno recente. La tabella deve contenere come colonne: *timestamp* della misurazione, id del sensore e in seguito una colonna per ogni parametro misurato.  
 Per esempio, se si considera un impianto dove i parametri misurati sono temperatura, umidità, $CO_2$ e tVOC, la tabella deve avere la seguente struttura:
 
 |ID|Timestamp|Temperatura [°C]|Umidità [%]|$CO_2$ [ppm]|tVOC [ppb]|
 |---|---|---|---|---|---|
 
-#### RF14 Visualizzazione interventi - cliente {.unnumbered}
+### RF14 Visualizzazione interventi - cliente {.unnumbered}
 Il sistema deve far visualizzare una lista -- raggiungibile dalla schermata [RF11](#rf11-visualizzazione-impianti-acquistati) -- di tutti gli interventi dell'impianto selezionato, dove per ogni intervento si mostra: data della richiesta, tipo di intervento e stato. Se l'intervento è assegnato in corso, allora vengono visualizzati anche nome e cognome del tecnico assegnato; se invece l'intervento è assegnato concluso, in aggiunta vengono mostrati: data della conclusione e resoconto dell'intervento. La lista deve elencare gli interventi in ordine cronologico, dall'intervento più recente a quello meno recente.
 
-#### RF15 Richiesta intervento di riparazione {.unnumbered}
+### RF15 Richiesta intervento di riparazione {.unnumbered}
 Il sistema, se l'impianto selezionato in [RF11](#rf11-visualizzazione-impianti-acquistati) è attivo, deve consentire ad un cliente di richiedere un intervento di riparazione attraverso un form -- raggiungibile da [RF14](#rf14-visualizzazione-interventi-di-un-impianto) -- nel quale si dovrà inserire la motivazione della richiesta di intervento.
 
-#### RF16 Richiesta recensione {.unnumbered}
+### RF16 Richiesta recensione {.unnumbered}
 Il sistema, ad acquisto concluso, -- in aggiunta a quanto specificato in [RF10](#rf10-acquisto-impianto) -- deve inviare al cliente un'email contenente il link per inserire una nuova recensione su TrustPilot
 
-### Supervisore
+## Supervisore
 
-#### RF17 Visualizzazione interventi - supervisore {.unnumbered}
+### RF17 Visualizzazione interventi - supervisore {.unnumbered}
 Il sistema deve consentire ad un supervisore di visualizzare la lista di tutti gli interventi, dove per ognuno si mostra: nome del tipo e id dell'impianto, data richiesta intervento, tipo e stato dell'intervento; se l'intervento è assegnato concluso, viene visualizzata anche la data della conclusione. La lista deve elencare gli interventi in ordine cronologico: da intervento più recente a meno recente. Tra gli interventi visualizzati, il sistema deve permettere di selezionarne uno.
 
-#### RF18 Visualizzazione singolo intervento {.unnumbered}
+### RF18 Visualizzazione singolo intervento {.unnumbered}
 Il sistema -- attraverso la selezione effettuata in [RF17](#rf17-visualizzazione-interventi---supervisore) -- deve mostrare tutti i dati dell'intervento selezionato già visualizzati in [RF17](#rf17-visualizzazione-interventi---supervisore) e inoltre: nome, cognome e contatto telefonico del cliente, indirizzo e superficie (in $m^2$) dell'impianto. Se l'intervento è assegnato in corso vengono visualizzati anche: nome, cognome e contatto telefonico del tecnico assegnato; se invece l'intervento è assegnato concluso, vengono visualizzati anche: data della conclusione e resoconto dell'intervento.
 
-#### RF19 Assegnazione intervento {.unnumbered}
+### RF19 Assegnazione intervento {.unnumbered}
 Se l'intervento selezionato è in stato richiesto, il sistema -- tramite la pagina mostrata da [RF18](#rf18-visualizzazione-singolo-intervento) --  deve permettere ad un supervisore di assegnare all'intervento un tenico in una data, attraverso un form; in tale form, sono presenti i campi: data (gg/mm/aaaa) e lista dei tecnici (nome e cognome) liberi in quella data. Il sistema mostra la lista dei tecnici solo in seguito all'inserimento di una data valida (giorno corrente o successivi).
 
-### Tecnico
+## Tecnico
 
 
-#### RF20 Visualizzazione interventi - tecnico {.unnumbered}
+### RF20 Visualizzazione interventi - tecnico {.unnumbered}
 Il sistema deve mostrare una lista di tutti gli interventi assegnati, dove per ogni intervento si mostra: nome del tipo, id, superficie e indirizzo dell'impianto; tipo, stato e data della richiesta dell'intervento; nome, cognome e contatto telefonico del cliente. Se l'intervento è assegnato concluso, si mostra la data della conclusione. La lista deve elencare gli interventi in ordine cronologico, da più recente a meno recente. Tra gli interventi elencati, il sistema deve permettere di selezionarne uno.
 
-#### RF21 Visualizzazzione e modifica singolo intervento {.unnumbered}
+### RF21 Visualizzazzione e modifica singolo intervento {.unnumbered}
 Il sistema -- attraverso la selezione effettuata in [RF20](#rf20-visualizzazione-interventi---tecnico) -- deve mostrare tutti i dati dell'intervento selezionato già visualizzati in [RF20](#rf20-visualizzazione-interventi---tecnico) e inoltre per gli interventi conclusi il resoconto dell'intervento. Per gli interventi in corso, il sistema deve permettere di concluderlo inviando un form nel quale è presente il campo resoconto.
 
-#### RF22 Aggiunta/rimozione sensori da impianto {.unnumbered}
+### RF22 Aggiunta/rimozione sensori da impianto {.unnumbered}
 Il sistema - tramite la pagina mostrata da [RF21](#rf21-visualizzazzione-e-modifica-singolo-intervento) -, se l'intervento è di tipo installazione/manutenzione /riparazione, deve permettere di aggiungere un sensore compilando un form con campi: id sensore, coordinate(latitudine, longitudine). Deve poi permettere di rimuovere un sensore compilando un form con campi: id sensore. L'id sensore deve essere compilabile sia con scrittura da tastiera che - alla pressione di un bottone - inquadrando un codice QR ISO/IEC 18004:2006. Le coordinate(latitudine, longitudine) devono essere compilabili sia con scrittura da tastiera che - alla pressione di un bottone - con utilizzo del GPS del dispositivo con cui si sta accedendo al sistema.
 
 
-### Amministratore
+## Amministratore
 
-#### RF23 Registrazione dipendenti {.unnumbered}
+### RF23 Registrazione dipendenti {.unnumbered}
 Il sistema deve permettere all'amministratore di registrare nel sistema i dipendenti tramite un form, nel quale sono presenti i campi: nome, cognome, email, telefono, indirizzo, CF, ruolo (selezionato da una lista contenente tecnico, supervisore, amministratore). Alla registrazione viene inviata un'email contenente la password generata automaticamente dal sistema, ed un'altra email per sollecitare il cambio della password ([RF7](#rf7-recupero-della-password)).
 
-#### RF24 Visualizzazione lista dipendenti {.unnumbered}
+### RF24 Visualizzazione lista dipendenti {.unnumbered}
 Il sistema deve far visualizzare una lista di tutti i dipendenti, dove per ognuno si mostra: nome, cognome, email, telefono, indirizzo, CF, password, ruolo. Il sistema deve permettere di selezionare un dipendente dalla lista.
 
-#### RF26 Modifica dati dipendente {.unnumbered}
+### RF26 Modifica dati dipendente {.unnumbered}
 Il sistema -- attraverso la selezione di un dipendente effettuata in [RF24](#rf24-visualizzazione-lista-dipendenti) -- deve permettere all'amministratore di accedere alla stessa funzione [RF9](#rf9-modifica-dati-personali) cui a accesso il dipendente.
 
-#### RF27 Visualizzazione grafico vendite{.unnumbered}
+### RF27 Visualizzazione grafico vendite{.unnumbered}
 Il sistema deve far visualizzare un grafico dove si mostra in funzione del tempo -- con granularità mensile -- il numero di acquisti effettuati dai clienti.
 
-#### RF28 Visualizzazione grafico interventi {.unnumbered}
+### RF28 Visualizzazione grafico interventi {.unnumbered}
 Il sistema deve far visualizzare un grafico dove si mostra in funzione del tempo -- con granularità mensile -- il numero di interventi richiesti sugli impianti.
 
-## Requisiti Non Funzionali
+# Requisiti Non Funzionali
 
-#### RNF1 Privacy {.unnumbered}
+### RNF1 Privacy {.unnumbered}
+
+|Proprietà|Descrizione|Misura|
+|---|---|---|
+
 Il sistema deve rispettare il regolamento europeo 2016/679 noto come GDPR (General Data Protection Regulation).
 
-#### RNF2 Sicurezza {.unnumbered}
+### RNF2 Sicurezza {.unnumbered}
+|Proprietà|Descrizione|Misura|
+|---|---|---|
+
 - Il sistema deve utilizzare connessioni https.
 - La password non deve essere salvata in chiaro, e dunque non può essere visualizzata in [RF8](#rf8-visualizzazione-dei-dati-personali) e non può essere inviata direttamente in [RF7](#rf7-recupero-della-password): dunque il recupero password effettua un cambio della password.
 - Non deve essere possibile dato un indirizzo email comprendere se quell'indirizzo email è registrato, e dunque in [RF7](#rf7-recupero-della-password), supponendo che l'utente inserisca un indirizzo email non registrato, il sistema non deve avvertire l'utente che l'indirizzo email non è registrato. 
 - Un utente autenticato deve poter uscire dal proprio account
 
-#### RNF3 Facilità d'uso {.unnumbered}
+### RNF3 Facilità d'uso {.unnumbered}
+|Proprietà|Descrizione|Misura|
+|---|---|---|
+||||
+
 - Un utente anonimo deve essere in grado di registrarsi e portare a termine un acquisto ([RF2](#rf2-visualizzazione-vetrina), [RF4](#rf4-registrazione-cliente),[RF10](#rf10-acquisto-impianto)) senza alcun addestramento, imparando in autonomia in meno di 5 minuti.
 - I supervisori devono imparare ad usare le funzioni [RF17](#rf17-visualizzazione-interventi---supervisore), [RF18](#rf18-visualizzazione-singolo-intervento), [RF19](#rf19-assegnazione-intervento) con un addestramento specifico inferiore a 15 minuti.
 - I tecnici devono imparare ad usare le funzioni [RF20](#rf20-visualizzazione-interventi---tecnico), [RF21](#rf21-visualizzazzione-e-modifica-singolo-intervento), [RF22](#rf22-aggiuntarimozione-sensori-da-impianto) con un addestramento specifico inferiore a 15 minuti.
 - L'id sensore in [RF22](#rf22-aggiuntarimozione-sensori-da-impianto) deve essere compilabile sia con scrittura da tastiera che inquadrando un codice QR ISO/IEC 18004:2006 con la fotocamera del dispositivo con cui si utilizza il sistema.
 
 
-#### RNF4 Prestazioni {.unnumbered}
-- La funzione di acquisto [RF10](#rf10-acquisto-impianto) deve essere eseguita dal sistema in al più 3 minuti.
+### RNF4 Prestazioni {.unnumbered}
+|Proprietà|Descrizione|Misura|
+|---|---|---|
+|Prestazioni nell'acquisto|La funzione di acquisto [RF10](#rf10-acquisto-impianto) deve essere eseguita dal sistema in al più 3 minuti| La misurazione avviene da quando il form è inviato a quando è completamente caricata la pagina di conferma|
+|Prestazioni nella heatmap|||
+|Prestazioni per i Tecnici|||
+
 - La funzione del cliente [RF12](#rf12-visualizzazione-misurazioni-su-heatmap) deve essere eseguita dal sistema in al più 3 secondi
 - Le funzioni dei tecnici [RF.Tecnico](#tecnico) devono essere eseguite in al più 5 secondi
 
 Per i RF con form la misurazione avviene da quando il form è inviato a quando si ha la conferma di ricezione; per i RF di visualizzazione la misurazione avviene dall'immisione dell'URL al caricamento completo della pagina. La misurazione è effettuata sulla rete intranet di Ardeeno, con il sistema installato nei server locali di Ardeeno ed il dispositivo da cui si accede al sistema connesso alla stessa rete locale.
 
-#### RNF5 Portabilità {.unnumbered}
+### RNF5 Portabilità {.unnumbered}
+|Proprietà|Descrizione|Misura|
+|---|---|---|
+|Compatibilità SO per ogni RF| Ogni funzione deve essere funzionante sui seguenti sistemi operativi:||
+|Compatibilità Browser per ogni RF|Ogni funzione deve essere funzionante sui seguenti browser:||
+|Compatibilità SO per specifici RF|Le funzioni [RF.Tecnico](#tecnico), [RF.Supervisore](#supervisore), [RF.Amministratore](#amministratore) devono in aggiunta essere funzionanti sui seguenti sistemi operativi:||
+|Compatibilità Browser per specifici RF|Le funzioni [RF.Tecnico](#tecnico), [RF.Supervisore](#supervisore), [RF.Amministratore](#amministratore) devono in aggiunta essere funzionanti sui seguenti browser:||
+
 Ogni funzione deve essere funzionante:
 
 - sui seguenti browser:
@@ -198,7 +277,10 @@ Le funzioni [RF.Tecnico](#tecnico), [RF.Supervisore](#supervisore), [RF.Amminist
 - sui seguenti sistemi operativi:
   - Ubuntu 20.04+
 
-#### RNF6 Scalabilità {.unnumbered}
+### RNF6 Scalabilità {.unnumbered}
+|Proprietà|Descrizione|Misura|
+|---|---|---|
+
 Il sistema deve mantenere le prestazione descritte in [RNF4](#rnf4-prestazioni) anche con:
 
 1. 100 tecnici che contemporaneamente usano [RF.Tecnico](#tecnico)
@@ -206,3 +288,15 @@ Il sistema deve mantenere le prestazione descritte in [RNF4](#rnf4-prestazioni) 
 3. 1000 clienti che contemporaneamente usano [RF10](#rf10-acquisto-impianto), [RF12](#rf12-visualizzazione-misurazioni-su-heatmap)
 4. 1000 impianti nel sistema e per ogni impianto $100*24*30*12*5=4320000$ misurazioni con 10 parametri misurati
 5. 1, 2, 3, 4 tutte contemporaneamente
+
+# Analisi del Contesto
+
+## Utenti e sistemi esterni
+
+## Diagramma di contesto
+
+# Analisi dei Componenti
+
+## Definizione dei componenti
+
+## Diagramma dei componenti
