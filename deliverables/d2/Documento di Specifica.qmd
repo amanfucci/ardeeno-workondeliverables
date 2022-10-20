@@ -34,176 +34,201 @@ format:
 \pagebreak
 
 # Abstract {.unnumbered}
+Questo documento descrive in maniera più dettagliata -- ma sempre non tecnica -- i requisiti del sistema da realizzare. Per i requisiti funzionali si utilizza il linguaggio di modellazione UML, mentre per i requisiti non funzionali si utilizzano particolari tabelle.
+
+# Terminologia {.unnumbered}
+
+- **misurazione**: tupla contenente un valore per ogni parametro misurato. 
+
+- **ciclo di polling**: periodo di tempo in cui la stazione di polling -- compresa nell'impianto -- richiede ad ogni sensore le loro misurazioni.
+
+- **intervallo di polling**: periodo di tempo che occorre tra l'inizio di due cicli di polling. Il ciclo di polling ha durata estremamente breve rispetto all'intervallo di polling. I sensori calcolano ogni valore di una misurazione aggregando in media i dati raccolti durante l'intervallo di polling. Ogni modello di impianto specifica i parametri misurati e l'intervallo di polling.
+
+- **snapshot**: insieme delle misurazioni raccolte in un certo ciclo di polling. Ogni misurazione di uno snapshot ha lo stesso timestamp.
 
 # Requisiti funzionali
-Questo capitolo presenta i requisiti funzionali del sistema, raggruppati per ruolo.  
-Un utente autenticato può essere cliente o dipendente dell'azienda e può accedere a tutte le funzioni permesse ad un utente anonimo. I dipendenti si suddividono in tecnici, supervisori e amministratori. Un amministratore può accedere a tutte le funzioni di un supervisore.
-
-<!--
-Il sistema deve consentire [ad XXX] di XXX attraverso un form [- raggiungibile da []() -] nel quale sono presenti i campi:
-Il sistema - tramite la pagina mostrata da []() - deve permettere
-Il sistema - attraverso la selezione effettuata in []() - deve (permettere|far visualizzare)
-Il sistema - - deve far visualizzare una lista di XXX dove per ogni XXX si mostra: YYY, ZZZ; ed eventualmente KKK. Il sistema deve permettere di selezionare un XXX dalla lista. La lista deve avere ordine cronologico da data richiesta più recente a meno recente.
-deve far visualizzare tutti i dati già mostrati in []() ed inoltre
-- tramite la pagina mostrata da []() - 
-- attraverso la selezione effettuata in []() -
-- raggiungibile da []() -
--->
+Questo capitolo presenta i requisiti funzionali del sistema, raggruppati per ruolo. Vengono utilizzati i diagrammi UML Use Case (descrivendo nel dettaglio ogni singolo Use Case) e, per i requisiti funzionali più complessi, anche i Sequence Diagrams, gli Activity Diagrams e gli State Diagrams.
 
 ## Utente anonimo
 
-### RF1 Visualizzazione presentazione {.unnumbered}
-Il sistema deve mostrare una pagina di presentazione, che comprende una breve descrizione dell'azienda, una mappa che indica la posizione della sede, ed i contatti (email, telefono).
-
-### RF2 Visualizzazione vetrina {.unnumbered}
-Il sistema deve mostrare una lista dei tipi di impianto in vendita, dove per ognuno si mostra: nome del tipo, prezzo, immagine esemplificativa, superficie consigliata per il tipo di impianto (in $m^2$) e lista dei parametri misurati. Tra gli impianti visualizzati, il sistema deve permettere di selezionarne uno.
-
-### RF3 Visualizzazione recensioni {.unnumbered}
-Il sistema deve mostrare una lista delle dieci più recenti recensioni con almeno tre stelle. Per ogni recensione si mostra: nome dell'autore, valutazione in stelle (da una a cinque), titolo e descrizione. Inoltre, il sistema deve far visualizzare il *TrustScore* dell'azienda, fornito dal servizio TrustPilot.
-
-### RF4 Registrazione cliente {.unnumbered}
-Il sistema deve consentire ad un utente anonimo di registrarsi come cliente, compilando un form con campi: nome, cognome, email, indirizzo, telefono e password (richiesta due volte al fine di evitare errori).
-
-### RF5 Autenticazione {.unnumbered}
-Il sistema deve permettere ad un utente anonimo di autenticarsi tramite un form, inserendo email e password.
-
-### RF6 Conferma email {.unnumbered}
-Il sistema deve inviare all'email inserita in [RF4](#rf4-registrazione-cliente) un link per confermare tale email; la conferma dell'email avviene all'apertura del link. Quest'ultimo ha una scadenza di 24 ore e viene inviato nuovamente dalla pagina di autenticazione [RF5](#rf5-autenticazione), a seguito di un tentativo di accesso con email non verificata. Se l'email non è confermata, l'autenticazione non è permessa.
-
-### RF7 Recupero della password {.unnumbered}
-Il sistema -- tramite la pagina mostrata da [RF5](#rf5-autenticazione) -- deve permettere a un utente anonimo di inserire l'email di autenticazione per cui cambiare la password associata. A tale email arriverà il link ad una pagina in cui inserire tramite form la nuova password: all'invio del form verrà cambiata la password.
-
 ## Utente autenticato
-
-### RF8 Visualizzazione dati personali {.unnumbered}
-Il sistema deve consentire la visualizzazione dei dati immessi in fase di registrazione ([RF4](#rf4-registrazione-cliente) o [RF24](#rf24-registrazione-dipendenti)) sotto forma di lista. Per ([RNF2 Sicurezza](#rnf2-sicurezza)), la password non viene visualizzata.
-
-### RF9 Modifica dati personali {.unnumbered}
-Il sistema deve consentire attraverso un form -- raggiungibile da [RF8](#rf8-visualizzazione-dati-personali) o [RF25](#rf25-modifica-dati-dipendente) -- la modifica dei dati immessi in fase di registrazione ([RF4](#rf4-registrazione-cliente) o [RF23](#rf23-registrazione-dipendenti)). In tale form, ogni campo è inizialmente vuoto ed è possibile assegnargli un valore; una volta che il form è inviato, verranno modificati solo i campi non vuoti. La password viene richiesta due volte.
 
 ## Cliente
 
 ![RF10, RF16](.media/cliente1.drawio.png)
 
-### RF10 Acquisto impianto {.unnumbered}  
-**Summary**  
-Il Cliente acquista l'impianto selezionato in [RF2](#rf2-visualizzazione-vetrina) attraverso un form
+### UseCase Acquisto impianto {.unnumbered}  
+***Summary***  
+Questo use case descrive come il cliente effettua l'acquisto dell'impianto precedentemente selezionato.
 
-**Description**
+***Description***
 
-1. Il cliente inserisce l'indirizzo di installazione [Exception 1]
+1. Il cliente inserisce l'indirizzo di installazione. [Exception 1]
 
-2. Il cliente inserisce la superficie in $m^2$ [Exception 2]
+2. Il cliente inserisce la superficie in $m^2$. [Exception 2]
 
-3. Il cliente invia il form premendo sul bottone "Acquista" [Exception 1][Exception 2][Exception 3]
+3. Il cliente invia il form premendo sul bottone "Acquista", al cui lato è presente il costo del tipo di impianto. [Exception 1][Exception 2][Exception 3]
 
-4. Il cliente effettua il pagamento tramite PayPal [Exception 4]
+4. Il cliente effettua il pagamento tramite PayPal. [Exception 4]
 
-**Exceptions**
+5. L'acquisto è concluso, nella pagina di acquisto appare in verde la scritta "Acquisto concluso!.
 
-1. L'indirizzo non è valido, il bordo del campo del form diventa rosso
+6. L'acquisto è concluso, il sistema inserisce un intervento di installazione per il nuovo impianto ed invia una richiesta di recensione per email.
 
-2. La superficie non è valida (non è un intero positivo), il bordo del campo del form diventa rosso
+***Exceptions***
 
-3. I campi indirizzo o superficie sono vuoti o non validi, appare in rosso la scritta "Compila correttamente il form"
+1. L'indirizzo non è valido, il bordo del campo del form diventa rosso.
 
-4. PayPal riporta che il pagamento non è andato a buon fine, appare in rosso la scritta "Acquisto annullato - pagamento non andato a buon fine"
+2. La superficie non è valida (non è un intero positivo), il bordo del campo del form diventa rosso.
 
-### RF16 Richiesta Recensione {.unnumbered}  
+3. I campi indirizzo o superficie sono vuoti o non validi, appare in rosso la scritta "Compila correttamente il form".
 
-**Summary**  
-Il Cliente, a seguito di un acquisto andato a buon fine ([RF10](#rf10-acquisto-impianto)) riceve una email al cui link inserire una recensione
+4. PayPal riporta che il pagamento non è andato a buon fine, appare in rosso la scritta "Acquisto annullato - Pagamento non andato a buon fine".
 
-**Description**
+***Sequence Diagram***
 
-1. Il cliente riceve un'email da sales.ardeeno@gmail.com con oggetto "Acquisto concluso"
+![Sequence Diagram](.media/cliente1seq.drawio.png){width=7cm}
 
-2. Il cliente visualizza il messaggio dell'email e clicca sul link "Dacci una valutazione!"
+### UseCase Pagamento {.unnumbered}  
+***Summary***  
+Questo use case descrive come avviene il pagamento dell'impianto tramite PayPal.
 
-2. Il cliente inserisce una valutazione tramite il sistema TrustPilot
+***Description***
+
+1. Il cliente si collega al sistema PayPal.
+
+2. Il cliente effettua il pagamento tramite PayPal. [Exception 1]
+
+3. Il cliente ritorna al sistema Ardeeno WebApp.
+
+***Exceptions***
+
+1. PayPal riporta che il pagamento non è andato a buon fine.
+
+### UseCase Richiesta Recensione {.unnumbered}  
+
+***Summary***  
+Questo use case descrive come avviene la richiesta e l'inserimento di una recensione su TrustPilot da parte del cliente.
+
+***Description***
+
+1. Il cliente riceve un'email da *sales.ardeeno@gmail.com* con oggetto "Acquisto concluso".
+
+2. Il cliente visualizza il messaggio dell'email e clicca sul link con testo "Recensisci il modello di impianto!"
+
+3. Il cliente si collega al sistema TrustPilot ed inserisce una recensione.
+
+4. TrustPilot riporta che la recensione è stata correttamente inserita.
 
 ![RF11, RF12, RF13](.media/cliente2.drawio.png)
 
-### RF11 Visualizzazione IMpianti Acquistati {.unnumbered}  
+### UseCase Visualizzazione Impianti Acquistati {.unnumbered}  
 
-**Summary**  
-Il Cliente visualizza la lista di tutti gli impianti - sia attivi che dismessi - che ha acquistato.
+***Summary***
+Questo use case descrive la visualizzazione da parte di un cliente degli impianti acquistati.
 
-**Description**
+***Description***
 
-**Exceptions**
+1. Il cliente visualizza la lista di tutti gli impianti acquistati; è attivo il filtro Tutti. [Exception 1] [Extension 1]
 
-**Extensions**  
+2. Il cliente seleziona il filtro Tutti, Attivi o Dismessi. [Exception 1]
+
+3. Il cliente seleziona il menu degli ulteriori filtri e seleziona uno specifico filtro. [Exception 1]
+
+***Exceptions***
+
+1. Nessun impianto soddisfa tale filtro; la lista è vuota ed appare la scritta "Nessun impianto".
+
+***Extensions***
+
+1. Il cliente seleziona uno specifico impianto e visualizza la Dashboard dell'impianto.
+
+### UseCase Dashboard {.unnumbered}
+
+***Summary***
+Questo use case descrive come il cliente interagisce con la Dashboard dell'impianto selezionato.
+
+***Description***
+
+1. Il cliente visualizza le informazioni del singolo impianto (id, indirizzo, modello, stato, data acquisto, superficie) e le funzioni disponibili (Heatmap, visualizzazione su tabella, visualizzazione interventi).
+
+2. Il cliente seleziona una funzione. 
+
+### UseCase Visualizzazione misurazioni su tabella {.unnumbered}  
+
+***Summary***
+Questo use case descrive come un cliente visualizza le misurazioni di uno specifico impianto su tabella.
+
+***Description***
+
+1. Il cliente visualizza una tabella contenente tutte le misurazioni ordinate per data da più recente a meno recente
+
+2. Il cliente clicca un bottone per aggiornare la tabella con le più recenti misurazioni [Exception 1]
+
+***Exceptions***
+
+1. Se l'impianto è dismesso non è presente tale bottone
+
+### UseCase Visualizzazione misurazioni su heatmap {.unnumbered}  
+
+***Summary***
+Questo use case descrive come un cliente visualizza le misurazioni di uno specifico impianto su heatmap.
+
+***Description***
+
+1. La heatmap mostra lo snapshot più recente dell'impianto considerando un parametro arbitrario. Per ogni misurazione nello snapshot, il valore del parametro considerato è posizionato sulla mappa alle coordinate del dato sensore. Il valore del parametro considerato è rappresentato con una scala di colori dal giallo (valore minimo assoluto) al rosso (valore massimo assoluto).
+
+2. Il cliente seleziona il parametro considerato da una lista contenente tutti i parametri misurati dall'impianto selezionato
+
+3. Il cliente clicca su un bottone per visualizzare lo snapshot precedente (meno recente) [Exception 1]
+
+4. Il cliente clicca su un bottone per visualizzare lo snapshot successivo (più recente) [Exception 2]
+
+***Exceptions***
+
+1. Lo snapshot attuale è il meno recente in assoluto, viene visualizzata con pop-up la scritta "Nessuno snapshot precedente"
+
+2. Lo snapshot attuale è il più recente in assoluto, viene visualizzata con pop-up la scritta "Nessuno snapshot successivo"
 
 ![RF14, RF15](.media/cliente3.drawio.png)
 
+### UseCase Visualizzazione interventi {.unnumbered}  
 
+***Summary***
+Questo use case descrive come un cliente visualizza gli interventi effettuati su uno specifico impianto su heatmap
 
-### RF10 Acquisto impianto {.unnumbered}
-Il sistema -- attraverso la selezione effettuta in [RF2](#rf2-visualizzazione-vetrina) -- deve permettere di effettuare l'acquisto dell'impianto selezionato, specificando indirizzo di installazione e superficie (in $m^2$) attraverso un form. All'invio del form verrà richiesto il pagamento tramite PayPal. L'acquisto è considerato concluso quando il pagamento con PayPal è concluso. Ad acquisto concluso il sistema inserisce una richiesta di installazione per l'impianto acquistato.
+***Description***
+1. Il cliente visualizza la lista di tutti gli interventi effettuati sull'impianto selezionato; è attivo il filtro Tutti. [Exception 1]
 
-### RF11 Visualizzazione impianti acquistati {.unnumbered}
-Il sistema deve consentire ad un cliente di visualizzare una lista di tutti gli impianti acquistati (attivi e dismessi), dove per ognuno si mostra: id, superficie (in $m^2$), indirizzo e stato (attivo o dismesso). Tra gli impianti visualizzati, il sistema deve permettere di selezionarne uno.
+2. Il cliente seleziona il filtro Tutti, Richiesti, In Corso, Conclusi. [Exception 1]
 
-### RF12 Visualizzazione misurazioni su heatmap {.unnumbered}
-Il sistema -- attraverso la selezione effettuta in [RF11](#rf11-visualizzazione-impianti-acquistati) -- deve mostrare le misurazioni dell'impianto selezionato sotto forma di heatmap. Il parametro considerato dalla heatmap può essere scelto tramite una lista. Inizialmente sono mostrare le misurazioni più recenti; con due bottoni è possibile scorrere tra tutte le misurazioni. Con tutte le misurazioni si intendono quelle misurazioni presenti nella base di dati all’atto di caricamento della pagina. La mappa utilizzata è fornita da OpenStreetMap.
+3. Il cliente seleziona il menu degli ulteriori filtri e seleziona uno specifico filtro. [Exception 1]
 
-### RF13 Visualizzazione misurazioni su tabella {.unnumbered}
-Il sistema deve mostrare in una tabella -- raggiungibile dalla schermata [RF11](#rf11-visualizzazione-impianti-acquistati) -- tutte le misurazioni effettuate dai sensori dell'impianto selezionato. Tali misurazioni devono essere elencate in ordine cronologico, dalla più recente alla meno recente. La tabella deve contenere come colonne: *timestamp* della misurazione, id del sensore e in seguito una colonna per ogni parametro misurato.  
-Per esempio, se si considera un impianto dove i parametri misurati sono temperatura, umidità, $CO_2$ e tVOC, la tabella deve avere la seguente struttura:
+***Exceptions***
 
-|ID|Timestamp|Temperatura [°C]|Umidità [%]|$CO_2$ [ppm]|tVOC [ppb]|
-|---|---|---|---|---|---|
+1. Nessun intervento soddisfa tale filtro; la lista è vuota ed appare la scritta "Nessun intervento"
 
-### RF14 Visualizzazione interventi - cliente {.unnumbered}
-Il sistema deve far visualizzare una lista -- raggiungibile dalla schermata [RF11](#rf11-visualizzazione-impianti-acquistati) -- di tutti gli interventi dell'impianto selezionato, dove per ogni intervento si mostra: data della richiesta, tipo di intervento e stato. Se l'intervento è assegnato in corso, allora vengono visualizzati anche nome e cognome del tecnico assegnato; se invece l'intervento è assegnato concluso, in aggiunta vengono mostrati: data della conclusione e resoconto dell'intervento. La lista deve elencare gli interventi in ordine cronologico, dall'intervento più recente a quello meno recente.
+### UseCase Richiesta intervento di riparazione {.unnumbered}
 
-### RF15 Richiesta intervento di riparazione {.unnumbered}
-Il sistema, se l'impianto selezionato in [RF11](#rf11-visualizzazione-impianti-acquistati) è attivo, deve consentire ad un cliente di richiedere un intervento di riparazione attraverso un form -- raggiungibile da [RF14](#rf14-visualizzazione-interventi-di-un-impianto) -- nel quale si dovrà inserire la motivazione della richiesta di intervento.
+***Summary***
+Questo use case descrive come un cliente richiede un intervento di riparazione per l'impianto selezionato.
 
-### RF16 Richiesta recensione {.unnumbered}
-Il sistema, ad acquisto concluso, -- in aggiunta a quanto specificato in [RF10](#rf10-acquisto-impianto) -- deve inviare al cliente un'email contenente il link per inserire una nuova recensione su TrustPilot
+***Description***
+1. Il cliente clicca sul bottone "Richiedi riparazione" [Exception 1]
+
+2. Il cliente inserisce la motivazione della riparazione
+
+3. Il cliente invia la richiesta di riparazione
+
+***Exceptions***
+
+1. L'impianto è dismesso ed il bottone non è presente.
 
 ## Supervisore
 
-### RF17 Visualizzazione interventi - supervisore {.unnumbered}
-Il sistema deve consentire ad un supervisore di visualizzare la lista di tutti gli interventi, dove per ognuno si mostra: nome del tipo e id dell'impianto, data richiesta intervento, tipo e stato dell'intervento; se l'intervento è assegnato concluso, viene visualizzata anche la data della conclusione. La lista deve elencare gli interventi in ordine cronologico: da intervento più recente a meno recente. Tra gli interventi visualizzati, il sistema deve permettere di selezionarne uno.
-
-### RF18 Visualizzazione singolo intervento {.unnumbered}
-Il sistema -- attraverso la selezione effettuata in [RF17](#rf17-visualizzazione-interventi---supervisore) -- deve mostrare tutti i dati dell'intervento selezionato già visualizzati in [RF17](#rf17-visualizzazione-interventi---supervisore) e inoltre: nome, cognome e contatto telefonico del cliente, indirizzo e superficie (in $m^2$) dell'impianto. Se l'intervento è assegnato in corso vengono visualizzati anche: nome, cognome e contatto telefonico del tecnico assegnato; se invece l'intervento è assegnato concluso, vengono visualizzati anche: data della conclusione e resoconto dell'intervento.
-
-### RF19 Assegnazione intervento {.unnumbered}
-Se l'intervento selezionato è in stato richiesto, il sistema -- tramite la pagina mostrata da [RF18](#rf18-visualizzazione-singolo-intervento) --  deve permettere ad un supervisore di assegnare all'intervento un tenico in una data, attraverso un form; in tale form, sono presenti i campi: data (gg/mm/aaaa) e lista dei tecnici (nome e cognome) liberi in quella data. Il sistema mostra la lista dei tecnici solo in seguito all'inserimento di una data valida (giorno corrente o successivi).
-
 ## Tecnico
 
-
-### RF20 Visualizzazione interventi - tecnico {.unnumbered}
-Il sistema deve mostrare una lista di tutti gli interventi assegnati, dove per ogni intervento si mostra: nome del tipo, id, superficie e indirizzo dell'impianto; tipo, stato e data della richiesta dell'intervento; nome, cognome e contatto telefonico del cliente. Se l'intervento è assegnato concluso, si mostra la data della conclusione. La lista deve elencare gli interventi in ordine cronologico, da più recente a meno recente. Tra gli interventi elencati, il sistema deve permettere di selezionarne uno.
-
-### RF21 Visualizzazzione e modifica singolo intervento {.unnumbered}
-Il sistema -- attraverso la selezione effettuata in [RF20](#rf20-visualizzazione-interventi---tecnico) -- deve mostrare tutti i dati dell'intervento selezionato già visualizzati in [RF20](#rf20-visualizzazione-interventi---tecnico) e inoltre per gli interventi conclusi il resoconto dell'intervento. Per gli interventi in corso, il sistema deve permettere di concluderlo inviando un form nel quale è presente il campo resoconto.
-
-### RF22 Aggiunta/rimozione sensori da impianto {.unnumbered}
-Il sistema - tramite la pagina mostrata da [RF21](#rf21-visualizzazzione-e-modifica-singolo-intervento) -, se l'intervento è di tipo installazione/manutenzione /riparazione, deve permettere di aggiungere un sensore compilando un form con campi: id sensore, coordinate(latitudine, longitudine). Deve poi permettere di rimuovere un sensore compilando un form con campi: id sensore. L'id sensore deve essere compilabile sia con scrittura da tastiera che - alla pressione di un bottone - inquadrando un codice QR ISO/IEC 18004:2006. Le coordinate(latitudine, longitudine) devono essere compilabili sia con scrittura da tastiera che - alla pressione di un bottone - con utilizzo del GPS del dispositivo con cui si sta accedendo al sistema.
-
-
 ## Amministratore
-
-### RF23 Registrazione dipendenti {.unnumbered}
-Il sistema deve permettere all'amministratore di registrare nel sistema i dipendenti tramite un form, nel quale sono presenti i campi: nome, cognome, email, telefono, indirizzo, CF, ruolo (selezionato da una lista contenente tecnico, supervisore, amministratore). Alla registrazione viene inviata un'email contenente la password generata automaticamente dal sistema, ed un'altra email per sollecitare il cambio della password ([RF7](#rf7-recupero-della-password)).
-
-### RF24 Visualizzazione lista dipendenti {.unnumbered}
-Il sistema deve far visualizzare una lista di tutti i dipendenti, dove per ognuno si mostra: nome, cognome, email, telefono, indirizzo, CF, password, ruolo. Il sistema deve permettere di selezionare un dipendente dalla lista.
-
-### RF26 Modifica dati dipendente {.unnumbered}
-Il sistema -- attraverso la selezione di un dipendente effettuata in [RF24](#rf24-visualizzazione-lista-dipendenti) -- deve permettere all'amministratore di accedere alla stessa funzione [RF9](#rf9-modifica-dati-personali) cui a accesso il dipendente.
-
-### RF27 Visualizzazione grafico vendite{.unnumbered}
-Il sistema deve far visualizzare un grafico dove si mostra in funzione del tempo -- con granularità mensile -- il numero di acquisti effettuati dai clienti.
-
-### RF28 Visualizzazione grafico interventi {.unnumbered}
-Il sistema deve far visualizzare un grafico dove si mostra in funzione del tempo -- con granularità mensile -- il numero di interventi richiesti sugli impianti.
 
 # Requisiti Non Funzionali
 
@@ -244,7 +269,7 @@ Il sistema deve rispettare il regolamento europeo 2016/679 noto come GDPR (Gener
 - La funzione del cliente [RF12](#rf12-visualizzazione-misurazioni-su-heatmap) deve essere eseguita dal sistema in al più 3 secondi
 - Le funzioni dei tecnici [RF.Tecnico](#tecnico) devono essere eseguite in al più 5 secondi
 
-Per i RF con form la misurazione avviene da quando il form è inviato a quando si ha la conferma di ricezione; per i RF di visualizzazione la misurazione avviene dall'immisione dell'URL al caricamento completo della pagina. La misurazione è effettuata sulla rete intranet di Ardeeno, con il sistema installato nei server locali di Ardeeno ed il dispositivo da cui si accede al sistema connesso alla stessa rete locale.
+Per i RF con form la misurazione avviene da quando il form è inviato a quando si ha la conferma di ricezione; per i RF di visualizzazione la misurazione avviene dall'immissione dell'URL al caricamento completo della pagina. La misurazione è effettuata sulla rete intranet di Ardeeno, con il sistema installato nei server locali di Ardeeno ed il dispositivo da cui si accede al sistema connesso alla stessa rete locale.
 
 ### RNF5 Portabilità {.unnumbered}
 |Proprietà|Descrizione|Misura|
