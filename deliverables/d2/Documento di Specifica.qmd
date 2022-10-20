@@ -32,7 +32,6 @@ format:
 ---
 
 \pagebreak
-
 # Abstract {.unnumbered}
 Questo documento descrive in maniera più dettagliata -- ma sempre non tecnica -- i requisiti del sistema da realizzare. Per i requisiti funzionali si utilizza il linguaggio di modellazione UML, mentre per i requisiti non funzionali si utilizzano particolari tabelle.
 
@@ -58,7 +57,8 @@ Questo capitolo presenta i requisiti funzionali del sistema, raggruppati per ruo
 ![RF10, RF16](.media/cliente1.drawio.png)
 
 ### UseCase Acquisto impianto {.unnumbered}  
-***Summary***  
+***Summary***
+
 Questo use case descrive come il cliente effettua l'acquisto dell'impianto precedentemente selezionato.
 
 ***Description***
@@ -90,7 +90,8 @@ Questo use case descrive come il cliente effettua l'acquisto dell'impianto prece
 ![Sequence Diagram](.media/cliente1seq.drawio.png){width=7cm}
 
 ### UseCase Pagamento {.unnumbered}  
-***Summary***  
+***Summary***
+
 Questo use case descrive come avviene il pagamento dell'impianto tramite PayPal.
 
 ***Description***
@@ -107,7 +108,8 @@ Questo use case descrive come avviene il pagamento dell'impianto tramite PayPal.
 
 ### UseCase Richiesta Recensione {.unnumbered}  
 
-***Summary***  
+***Summary***
+
 Questo use case descrive come avviene la richiesta e l'inserimento di una recensione su TrustPilot da parte del cliente.
 
 ***Description***
@@ -125,6 +127,7 @@ Questo use case descrive come avviene la richiesta e l'inserimento di una recens
 ### UseCase Visualizzazione Impianti Acquistati {.unnumbered}  
 
 ***Summary***
+
 Questo use case descrive la visualizzazione da parte di un cliente degli impianti acquistati.
 
 ***Description***
@@ -146,6 +149,7 @@ Questo use case descrive la visualizzazione da parte di un cliente degli impiant
 ### UseCase Dashboard {.unnumbered}
 
 ***Summary***
+
 Questo use case descrive come il cliente interagisce con la Dashboard dell'impianto selezionato.
 
 ***Description***
@@ -157,6 +161,7 @@ Questo use case descrive come il cliente interagisce con la Dashboard dell'impia
 ### UseCase Visualizzazione misurazioni su tabella {.unnumbered}  
 
 ***Summary***
+
 Questo use case descrive come un cliente visualizza le misurazioni di uno specifico impianto su tabella.
 
 ***Description***
@@ -172,6 +177,7 @@ Questo use case descrive come un cliente visualizza le misurazioni di uno specif
 ### UseCase Visualizzazione misurazioni su heatmap {.unnumbered}  
 
 ***Summary***
+
 Questo use case descrive come un cliente visualizza le misurazioni di uno specifico impianto su heatmap.
 
 ***Description***
@@ -190,14 +196,16 @@ Questo use case descrive come un cliente visualizza le misurazioni di uno specif
 
 2. Lo snapshot attuale è il più recente in assoluto, viene visualizzata con pop-up la scritta "Nessuno snapshot successivo"
 
-![RF14, RF15](.media/cliente3.drawio.png)
+![RF14, RF15](.media/cliente3.drawio.png){width=10cm}
 
 ### UseCase Visualizzazione interventi {.unnumbered}  
 
 ***Summary***
+
 Questo use case descrive come un cliente visualizza gli interventi effettuati su uno specifico impianto su heatmap
 
 ***Description***
+
 1. Il cliente visualizza la lista di tutti gli interventi effettuati sull'impianto selezionato; è attivo il filtro Tutti. [Exception 1]
 
 2. Il cliente seleziona il filtro Tutti, Richiesti, In Corso, Conclusi. [Exception 1]
@@ -211,9 +219,11 @@ Questo use case descrive come un cliente visualizza gli interventi effettuati su
 ### UseCase Richiesta intervento di riparazione {.unnumbered}
 
 ***Summary***
+
 Questo use case descrive come un cliente richiede un intervento di riparazione per l'impianto selezionato.
 
 ***Description***
+
 1. Il cliente clicca sul bottone "Richiedi riparazione" [Exception 1]
 
 2. Il cliente inserisce la motivazione della riparazione
@@ -230,89 +240,56 @@ Questo use case descrive come un cliente richiede un intervento di riparazione p
 
 ## Amministratore
 
+\pagebreak
 # Requisiti Non Funzionali
 
 ### RNF1 Privacy {.unnumbered}
 
 |Proprietà|Descrizione|Misura|
 |---|---|---|
-
-Il sistema deve rispettare il regolamento europeo 2016/679 noto come GDPR (General Data Protection Regulation).
+|GDPR|Il sistema deve rispettare il regolamento europeo 2016/679 noto come GDPR (General Data Protection Regulation).|Conforme|
 
 ### RNF2 Sicurezza {.unnumbered}
 |Proprietà|Descrizione|Misura|
 |---|---|---|
-
-- Il sistema deve utilizzare connessioni https.
-- La password non deve essere salvata in chiaro, e dunque non può essere visualizzata in [RF8](#rf8-visualizzazione-dei-dati-personali) e non può essere inviata direttamente in [RF7](#rf7-recupero-della-password): dunque il recupero password effettua un cambio della password.
-- Non deve essere possibile dato un indirizzo email comprendere se quell'indirizzo email è registrato, e dunque in [RF7](#rf7-recupero-della-password), supponendo che l'utente inserisca un indirizzo email non registrato, il sistema non deve avvertire l'utente che l'indirizzo email non è registrato. 
-- Un utente autenticato deve poter uscire dal proprio account
+|Trasmissione sicura|La trasmissione dei dati in ogni funzione deve avvenire in maniera sicura|Il sistema utilizza il protocollo HTTPS|
+|Password sicura|La password deve essere lunga almeno 8 caratteri e deve contenere almeno: una lettera maiuscola, una lettera minuscola, un numero|Nel [RF4](#), [RF7](#) il sistema non permette di inserire una password non sicura; nel [RF23](#) la password generata è sicura|
+|Password non in chiaro|La password non deve essere salvata in chiaro|Nel [RF4](#), [RF7](#), [RF23](#) sul database viene salvato un salted hash della password (funzione bcrypt)|
+|Logout|Un utente autenticato deve poter uscire dal proprio account|Funzione di logout [RF5.1](#) presente|
+|Dipendenti dimessi|Un dipendente segnato come dimesso non deve poter autenticarsi nel sistema|Nella funzione [RF5](#) l'autenticazione non è concessa agli account di dipendenti dimessi|
 
 ### RNF3 Facilità d'uso {.unnumbered}
 |Proprietà|Descrizione|Misura|
 |---|---|---|
-||||
-
-- Un utente anonimo deve essere in grado di registrarsi e portare a termine un acquisto ([RF2](#rf2-visualizzazione-vetrina), [RF4](#rf4-registrazione-cliente),[RF10](#rf10-acquisto-impianto)) senza alcun addestramento, imparando in autonomia in meno di 5 minuti.
-- I supervisori devono imparare ad usare le funzioni [RF17](#rf17-visualizzazione-interventi---supervisore), [RF18](#rf18-visualizzazione-singolo-intervento), [RF19](#rf19-assegnazione-intervento) con un addestramento specifico inferiore a 15 minuti.
-- I tecnici devono imparare ad usare le funzioni [RF20](#rf20-visualizzazione-interventi---tecnico), [RF21](#rf21-visualizzazzione-e-modifica-singolo-intervento), [RF22](#rf22-aggiuntarimozione-sensori-da-impianto) con un addestramento specifico inferiore a 15 minuti.
-- L'id sensore in [RF22](#rf22-aggiuntarimozione-sensori-da-impianto) deve essere compilabile sia con scrittura da tastiera che inquadrando un codice QR ISO/IEC 18004:2006 con la fotocamera del dispositivo con cui si utilizza il sistema.
-
+|Facilità d'uso utente anonimo|Un utente anonimo deve essere in grado di registrarsi e portare a termine un acquisto ([RF2](#rf2-visualizzazione-vetrina), [RF4](#rf4-registrazione-cliente), [RF10](#rf10-acquisto-impianto)) senza alcun addestramento, imparando in autonomia in meno di 5 minuti|Date dieci persone (conoscenti l'italiano) in fascia d'età 18~60, scelte in maniera arbitraria (esclusi i dipendenti di Ardeeno e dell'Università di Trento), almeno otto devono riuscire a portare a termine la registrazione e l'acquisto di un impianto in massimo 10 minuti. Agli utenti sarà fornito un dispositivo compatibile con Ardeeno WebApp (di cui 4 smartphones Android, 4 pc Windows, 2 tablet Adroid), l'URL della WebApp (ardeeno.it), un account PayPal (email e password) e un account email; sarà quindi detto di "Registrarsi e concludere un acquisto" e verrà fatta partire la misurazione. La misurazione si conclude quando, successivamente al pagamento, appare la schermata "Acquisto Concluso".   
+|
+|Facilità d'uso supervisori|||
+|Facilità d'uso tecnici|||
+|Codice QR|||
 
 ### RNF4 Prestazioni {.unnumbered}
 |Proprietà|Descrizione|Misura|
 |---|---|---|
-|Prestazioni nell'acquisto|La funzione di acquisto [RF10](#rf10-acquisto-impianto) deve essere eseguita dal sistema in al più 3 minuti| La misurazione avviene da quando il form è inviato a quando è completamente caricata la pagina di conferma|
-|Prestazioni nella heatmap|||
-|Prestazioni per i Tecnici|||
-
-- La funzione del cliente [RF12](#rf12-visualizzazione-misurazioni-su-heatmap) deve essere eseguita dal sistema in al più 3 secondi
-- Le funzioni dei tecnici [RF.Tecnico](#tecnico) devono essere eseguite in al più 5 secondi
-
-Per i RF con form la misurazione avviene da quando il form è inviato a quando si ha la conferma di ricezione; per i RF di visualizzazione la misurazione avviene dall'immissione dell'URL al caricamento completo della pagina. La misurazione è effettuata sulla rete intranet di Ardeeno, con il sistema installato nei server locali di Ardeeno ed il dispositivo da cui si accede al sistema connesso alla stessa rete locale.
+|Prestazioni acquisto|La funzione di acquisto [RF10](#rf10-acquisto-impianto) deve essere eseguita dal sistema in al più 3 minuti| La misurazione avviene da quando il form è inviato a quando è completamente caricata la pagina di conferma|
+|Prestazioni heatmap|||
+|Prestazioni Tecnici|||
 
 ### RNF5 Portabilità {.unnumbered}
 |Proprietà|Descrizione|Misura|
 |---|---|---|
-|Compatibilità SO per ogni RF| Ogni funzione deve essere funzionante sui seguenti sistemi operativi:||
+|Compatibilità S.O. per ogni RF| Ogni funzione deve essere funzionante sui seguenti sistemi operativi:||
 |Compatibilità Browser per ogni RF|Ogni funzione deve essere funzionante sui seguenti browser:||
-|Compatibilità SO per specifici RF|Le funzioni [RF.Tecnico](#tecnico), [RF.Supervisore](#supervisore), [RF.Amministratore](#amministratore) devono in aggiunta essere funzionanti sui seguenti sistemi operativi:||
+|Compatibilità S.O. per specifici RF|Le funzioni [RF.Tecnico](#tecnico), [RF.Supervisore](#supervisore), [RF.Amministratore](#amministratore) devono in aggiunta essere funzionanti sui seguenti sistemi operativi:||
 |Compatibilità Browser per specifici RF|Le funzioni [RF.Tecnico](#tecnico), [RF.Supervisore](#supervisore), [RF.Amministratore](#amministratore) devono in aggiunta essere funzionanti sui seguenti browser:||
-
-Ogni funzione deve essere funzionante:
-
-- sui seguenti browser:
-  - Chrome 18+
-  - Chrome Mobile 18+
-  - Safari 5.1+
-  - Safari Mobile 5.0+
-
-- sui seguenti sistemi operativi:
-  - Windows 7+
-  - MacOS 10.6+
-  - Android 5.0+
-  - iOS 5.0+
-
-Le funzioni [RF.Tecnico](#tecnico), [RF.Supervisore](#supervisore), [RF.Amministratore](#amministratore) devono in aggiunta essere funzionanti:
-
-- sui seguenti browser:
-  - Firefox 7+
-  - Firefox Mobile 7+
-
-- sui seguenti sistemi operativi:
-  - Ubuntu 20.04+
 
 ### RNF6 Scalabilità {.unnumbered}
 |Proprietà|Descrizione|Misura|
 |---|---|---|
-
-Il sistema deve mantenere le prestazione descritte in [RNF4](#rnf4-prestazioni) anche con:
-
-1. 100 tecnici che contemporaneamente usano [RF.Tecnico](#tecnico)
-2. 10000 utenti anonimi che contemporaneamente usano [RF2](#rf2-visualizzazione-vetrina)
-3. 1000 clienti che contemporaneamente usano [RF10](#rf10-acquisto-impianto), [RF12](#rf12-visualizzazione-misurazioni-su-heatmap)
-4. 1000 impianti nel sistema e per ogni impianto $100*24*30*12*5=4320000$ misurazioni con 10 parametri misurati
-5. 1, 2, 3, 4 tutte contemporaneamente
+|Scalabilità tecnici  |Il sistema deve mantenere le prestazione descritte in [RNF4](#rnf4-prestazioni) anche con 100 tecnici che contemporaneamente usano una qualsiasi delle funzioni [RF.Tecnico](#)||
+|Scalabilità vetrina  |Il sistema deve mantenere le prestazione descritte in [RNF4](#rnf4-prestazioni) anche con 10000 utenti anonimi che contemporaneamente usano [RF2](#rf)||
+|Scalabilità acquisti |Il sistema deve mantenere le prestazione descritte in [RNF4](#rnf4-prestazioni) anche con 1000 clienti che contemporaneamente usano [RF10](#)||
+|Scalabilità heatmap  |Il sistema deve mantenere le prestazione descritte in [RNF4](#rnf4-prestazioni) anche con 1000 clienti che contemporaneamente usano [RF12](#)||
+|Scalabilità impianti |Il sistema deve mantenere le prestazione descritte in [RNF4](#rnf4-prestazioni) anche con||
 
 # Analisi del Contesto
 

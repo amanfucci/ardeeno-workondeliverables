@@ -114,6 +114,9 @@ Il sistema -- tramite la pagina mostrata da [RF5](#rf5-autenticazione) -- deve p
 
 ## Utente autenticato
 
+### RF5.1 Logout {.unnumbered}
+Il sistema deve permettere ad un utente autenticato di effettuare il logout.
+
 ### RF8 Visualizzazione dati personali {.unnumbered}
 Il sistema deve consentire la visualizzazione dei dati immessi in fase di registrazione ([RF4](#rf4-registrazione-cliente) o [RF24](#rf24-registrazione-dipendenti)) sotto forma di lista. Per [RNF2 Sicurezza](#rnf2-sicurezza), la password non viene visualizzata.
 
@@ -230,14 +233,14 @@ Il sistema deve far visualizzare un grafico dove si mostra in funzione del tempo
 Il sistema deve rispettare il regolamento europeo 2016/679 noto come GDPR (General Data Protection Regulation).
 
 ### RNF2 Sicurezza {.unnumbered}
-- Il sistema deve utilizzare connessioni https.
+- La trasmissione dei dati in ogni funzione deve avvenire in maniera sicura.
+- La password deve essere sicura.
 - La password non deve essere salvata in chiaro, e dunque non può essere visualizzata in [RF8](#rf8-visualizzazione-dei-dati-personali) e non può essere inviata direttamente in [RF7](#rf7-recupero-della-password): dunque il recupero password effettua un cambio della password.
-- Non deve essere possibile dato un indirizzo email comprendere se quell'indirizzo email è registrato, e dunque in [RF7](#rf7-recupero-della-password), supponendo che l'utente inserisca un indirizzo email non registrato, il sistema non deve avvertire l'utente che l'indirizzo email non è registrato. 
 - Un utente autenticato deve poter uscire dal proprio account.
 - Un dipendente segnato come dimesso non deve poter autenticarsi nel sistema.
 
 ### RNF3 Facilità d'uso {.unnumbered}
-- Un utente anonimo deve essere in grado di registrarsi e portare a termine un acquisto ([RF2](#rf2-visualizzazione-vetrina), [RF4](#rf4-registrazione-cliente),[RF10](#rf10-acquisto-impianto)) senza alcun addestramento, imparando in autonomia in meno di 5 minuti.
+- Un utente anonimo deve essere in grado di registrarsi e portare a termine un acquisto ([RF2](#rf2-visualizzazione-vetrina), [RF4](#rf4-registrazione-cliente),[RF10](#rf10-acquisto-impianto)) senza alcun addestramento, imparando in autonomia in al più 10 minuti.
 - I supervisori devono imparare ad usare le funzioni [RF17](#rf17-visualizzazione-interventi-supervisore), [RF18](#rf18-visualizzazione-singolo-intervento), [RF19](#rf19-assegnazione-intervento) con un addestramento specifico inferiore a 15 minuti.
 - I tecnici devono imparare ad usare le funzioni [RF20](#rf20-visualizzazione-interventi-tecnico), [RF21](#rf21-visualizzazzione-e-modifica-singolo-intervento), [RF22](#rf22-aggiuntarimozione-sensori-da-impianto) con un addestramento specifico inferiore a 15 minuti.
 - L'id sensore in [RF22](#rf22-aggiuntarimozione-sensori-da-impianto) deve essere compilabile sia con scrittura da tastiera che inquadrando un codice QR ISO/IEC 18004:2006 con la fotocamera del dispositivo con cui si utilizza il sistema.
