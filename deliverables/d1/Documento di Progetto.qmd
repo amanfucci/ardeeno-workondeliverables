@@ -38,7 +38,7 @@ Questo documento descrive ad alto livello -- e in maniera non tecnica -- il sist
 
 # Obiettivi del progetto
 Il progetto ha come obiettivo lo sviluppo di una WebApp che gestisca la vendita di impianti *Internet of Things* (IoT), la loro installazione, manutenzione, riparazione e dismissione. Inoltre, l'applicazione permetterà ai clienti di visualizzare le misurazioni dei propri impianti e richiedere eventuali interventi di riparazione.
-Gli impianti IoT considerati sono costituti da un insieme omogeneo di sensori distribuiti geograficamente, le cui misurazioni sono raccolte in maniera periodica. I parametri misurati variano a seconda del modello di impianto.
+Gli impianti IoT considerati sono costituti da un insieme omogeneo di sensori distribuiti geograficamente, le cui misurazioni sono raccolte ad intervalli regolari da una stazione di polling compresa nell'impianto. I parametri misurati variano a seconda del modello di impianto.
 
 Nel dettaglio:
 
