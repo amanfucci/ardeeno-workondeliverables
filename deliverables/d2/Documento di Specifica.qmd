@@ -42,7 +42,7 @@ Questo documento descrive in maniera più dettagliata -- ma sempre non tecnica -
 
 - **ciclo di polling**: periodo di tempo in cui la stazione di polling -- compresa nell'impianto -- richiede ad ogni sensore le loro misurazioni.
 
-- **intervallo di polling**: periodo di tempo che occorre tra l'inizio di due cicli di polling. Il ciclo di polling ha durata es3mamente breve rispetto all'intervallo di polling. I sensori calcolano ogni valore di una misurazione aggregando in media i dati raccolti durante l'intervallo di polling. Ogni modello di impianto specifica i parametri misurati e l'intervallo di polling.
+- **intervallo di polling**: periodo di tempo che occorre tra l'inizio di due cicli di polling. Il ciclo di polling ha durata estremamente breve rispetto all'intervallo di polling. I sensori calcolano ogni valore di una misurazione aggregando in media i dati raccolti durante l'intervallo di polling. Ogni modello di impianto specifica i parametri misurati e l'intervallo di polling.
 
 - **snapshot**: insieme delle misurazioni raccolte in un certo ciclo di polling. Ogni misurazione di uno snapshot ha lo stesso timestamp.
 
@@ -247,12 +247,12 @@ Questo use case descrive come un cliente richiede un intervento di riparazione p
 ### RNF1 Privacy {-}
 
 |Proprietà|Descrizione|Misura|
-|---|---|---|
-|GDPR|Il sistema deve rispettare il regolamento europeo 2016/679 noto come GDPR (General Data Protection Regulation).|Conforme|
+|---|------|------|
+|GDPR|Il sistema deve rispettare il regolamento europeo 2016/679 noto come GDPR (General Data Protection Regulation).|Conforme: Privacy Policy, richiesta del consenso per l'utilizzo di Cookies, possibilità di cancellare i propri dati (account e impianti), possibilità di esportare i propri dati (account e impianti) |
 
 ### RNF2 Sicurezza {-}
 |Proprietà|Descrizione|Misura|
-|---|---|---|
+|---|------|------|
 |Trasmissione sicura|La trasmissione dei dati in ogni funzione deve avvenire in maniera sicura|Il sistema utilizza il protocollo HTTPS|
 ||||
 |Password sicura|La password deve essere lunga almeno 8 caratteri e deve contenere almeno: una lettera maiuscola, una lettera minuscola, un numero|Nel [RF4](#), [RF7](#) il sistema non permette di inserire una password non sicura; nel [RF23](#) il sistema genera una password sicura|
@@ -265,14 +265,11 @@ Questo use case descrive come un cliente richiede un intervento di riparazione p
 
 ### RNF3 Portabilità {-}
 |Proprietà|Descrizione|Misura|
-|---|---|---|
-|Compatibilità S.O. per ogni RF| Ogni funzione deve essere funzionante sui seguenti sistemi operativi:||
+|---|------|------|
+|Compatibilità per ogni RF| Ogni funzione deve essere funzionante sui seguenti sistemi operativi: Windows 7+, MacOS 10.6+, Android 5.0+, iOS 5.0+. Ogni funzione deve essere funzionante sui seguenti browser: Chrome 18+, Chrome Mobile 18+, Safari 5.1+, Safari Mobile 5.0+|Utilizzo di librerie compatibili, testing manuale di ogni funzione per le seguenti coppie (S.O., Browser): (Windows 7, Chrome 18), (MacOS 10.6, Chrome 18), (Android 5.0, Chrome Mobile 18), (iOS 5.0, Chrome Mobile 18), (MacOS 10.6, Safari 5.1), (iOS 5.0, Safari Mobile 5.0)|
 ||||
-|Compatibilità Browser per ogni RF|Ogni funzione deve essere funzionante sui seguenti browser:||
-||||
-|Compatibilità S.O. per specifici RF|Le funzioni [RF.Tecnico](#tecnico), [RF.Supervisore](#supervisore), [RF.Amministratore](#amministratore) devono in aggiunta essere funzionanti sui seguenti sistemi operativi:||
-||||
-|Compatibilità Browser per specifici RF|Le funzioni [RF.Tecnico](#tecnico), [RF.Supervisore](#supervisore), [RF.Amministratore](#amministratore) devono in aggiunta essere funzionanti sui seguenti browser:||
+|Compatibilità per specifici RF|Le funzioni [RF.Tecnico](#tecnico), [RF.Supervisore](#supervisore), [RF.Amministratore](#amministratore) devono in aggiunta essere funzionanti sui seguenti sistemi operativi: Ubuntu 20.04+. Le specifiche funzioni devono in aggiunta essere funzionanti sui seguenti browser: Firefox 7+, Firefox Mobile 7+|Utilizzo di librerie compatibili, testing manuale delle specifiche funzioni per le seguenti coppie (S.O., Browser): (Ubuntu 20.04, Firefox 7), (Android 5.0, Firefox Mobile 7)|
+
 
 ### RNF4 Prestazioni {-}
 <!--
@@ -280,7 +277,7 @@ Un software proprietario effettua in sequenza 10 test di prestazione sulla rete 
 -->
 
 |Proprietà|Descrizione|Misura|
-|---|---|---------|
+|---|----|-----------|
 |Prestazioni acquisto|La funzione di acquisto [RF10](#a) deve essere eseguita dal sistema in al più 10 secondi|Un software proprietario effettua in sequenza 10 test di prestazione sulla rete intranet di Ardeeno con browser compatibile Chrome su Windows; per ogni test la misurazione parte da quando il form è inviato a quando appare la scritta "Acquisto concluso" (si utilizza una procedura di pagamento fittizia ed istantanea); il sistema soddisfa il RNF se almeno 7 test hanno durata di al più 10 secondi|
 ||||
 |Prestazioni heatmap|La funzione del cliente [RF12](#a) deve essere eseguita dal sistema in al più 3 secondi|Un software proprietario effettua in sequenza 10 test di prestazione sulla rete intranet di Ardeeno con browser compatibile Chrome su Windows; per ogni test la misurazione parte da quando si richiede al sistema la heatmap dell'impianto a quando la pagina è completamente caricata dal browser (si utilizza un account cliente con un solo impianto modello AQ50A -- 50 sensori, 5 parametri misurati -- con 100 snapshot); il sistema soddisfa il RNF se almeno 7 test hanno durata di al più 5 secondi|
@@ -313,8 +310,8 @@ Un software proprietario effettua in contemporanea <x> test di prestazione come 
 -->
 
 |Proprietà|Descrizione|Misura|
-|---|---|---|
-|Scalabilità acquisto|Il sistema deve mantenere le prestazione descritte in [RNF4.Acquisto](#rnf4-prestazioni) anche con 1000 clienti che contemporaneamente usano [RF10](#a)|Un software proprietario effettua in contemporanea 1000 test di prestazione come da [RNF4.Acquisto](#rnf4-prestazioni) (dove nel sistema sono presenti 1000 clienti con ognuno un impianto modello ME100A -- 100 sensori, 10 parametri misurati -- con $12*24*30*12*5=518400$ snapshot); il sistema soddisfa il RNF se almeno 700 test hanno durata di al più 3 secondi|
+|---|----|-----------|
+|Scalabilità acquisto|Il sistema deve mantenere le prestazione descritte in [RNF4.Acquisto](#rnf4-prestazioni) anche con 1000 clienti che contemporaneamente usano [RF10](#a)|Un software proprietario effettua in contemporanea 1000 test di prestazione come da [RNF4.Acquisto](#rnf4-prestazioni) (dove nel sistema sono presenti 1000 clienti con ognuno un impianto modello ME100A -- 100 sensori, 10 parametri misurati -- con $12*24*30*12*5=518400$ snapshot); il sistema soddisfa il RNF se almeno 700 test hanno durata di al più 10 secondi|
 ||||
 |Scalabilità heatmap|Il sistema deve mantenere le prestazione descritte in [RNF4.Heatmap](#rnf4-prestazioni) anche con 1000 clienti che contemporaneamente usano [RF12](#a)|Un software proprietario effettua in contemporanea 1000 test di prestazione come da [RNF4.Heatmap](#rnf4-prestazioni) (dove nel sistema sono presenti 1000 clienti con ognuno un impianto modello ME100A -- 100 sensori, 10 parametri misurati -- con $12*24*30*12*5=518400$ snapshot); il sistema soddisfa il RNF se almeno 700 test hanno durata di al più 5 secondi|
 ||||
@@ -323,6 +320,19 @@ Un software proprietario effettua in contemporanea <x> test di prestazione come 
 # Analisi del Contesto
 
 ## Utenti e sistemi esterni
+
+### Utente Anonimo {-}
+### Utente Autenticato {-}
+### Cliente {-}
+### Tecnico {-}
+### Supervisore {-}
+### Amministratore {-}
+### PayPal {-}
+### Gmail {-}
+### TrustPilot {-}
+### OpenStreetMap {-}
+### GPS{-}
+### Ardeeno DataLayer{-}
 
 ## Diagramma di contesto
 

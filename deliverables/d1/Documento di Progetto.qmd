@@ -243,26 +243,30 @@ Il sistema deve rispettare il regolamento europeo 2016/679 noto come GDPR (Gener
 ### RNF3 Portabilità {-}
 Ogni funzione deve essere funzionante:
 
-- sui seguenti browser:
-  - Chrome 18+
-  - Chrome Mobile 18+
-  - Safari 5.1+
-  - Safari Mobile 5.0+
-
 - sui seguenti sistemi operativi:
   - Windows 7+
   - MacOS 10.6+
   - Android 5.0+
   - iOS 5.0+
 
+- sui seguenti browser:
+  - Chrome 18+
+  - Chrome Mobile 18+
+  - Safari 5.1+
+  - Safari Mobile 5.0+
+
+
+
 Le funzioni [RF.Tecnico](#tecnico), [RF.Supervisore](#supervisore), [RF.Amministratore](#amministratore) devono in aggiunta essere funzionanti:
+
+- sui seguenti sistemi operativi:
+  - Ubuntu 20.04+
 
 - sui seguenti browser:
   - Firefox 7+
   - Firefox Mobile 7+
 
-- sui seguenti sistemi operativi:
-  - Ubuntu 20.04+
+
 
 ### RNF4 Prestazioni {-}
 - La funzione di acquisto [RF10](#rf10-acquisto-impianto) deve essere eseguita dal sistema in al più 10 secondi.
