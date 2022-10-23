@@ -43,17 +43,17 @@ gantt
 
 | **Task**               | **Assigned To(A,E,M)** | **Due To** | **Status** |
 |------------------------|------------------------|------------|------------|
-|Definizione Obiettivi   |A,E,M|27/09|Active|
-|Definizione Requisiti   |A,E|10/10||
-|Mock-Up FrontEnd        |M|10/10||
-|Schema BackEnd          |A|10/10||
-|Spec ReqF               |A,E,M||||
-|Spec ReqNF              |A||||
-|Diagramma di Contesto   |||||
-|Diagramma dei Componenti|||||
-|Class Diagrams          |||||
-|OCL                     |||||
-|BPMN                    |||||
-|FrontEnd                |||||
-|BackEnd                 |||||
-|Deployment              |||||
+|Definizione Obiettivi   |A,E,M|27/09|Done|
+|Definizione Requisiti   |A,E|10/10|Done|
+|Mock-Up FrontEnd        |A,M|10/10|Done|
+|Schema BackEnd          |A|10/10|Done|
+|Spec ReqF               |A,E,M|24/10|Active|
+|Spec ReqNF              |A|24/10|Done|
+|Diagramma di Contesto   |A,E,M|30/10|Active|
+|Diagramma dei Componenti||30/10|Active|
+|Class Diagrams          ||||
+|OCL                     ||||
+|BPMN                    ||||
+|FrontEnd                ||||
+|BackEnd                 ||||
+|Deployment              ||||
