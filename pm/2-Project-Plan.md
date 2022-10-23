@@ -15,21 +15,17 @@ gantt
     Documento di Progetto :milestone, am, 10-10, 0d
     
     section Specifica dei Requisiti
-    Spec ReqF (UCD) :s0, after am, 5d
-    Spec ReqNF :s1, after am, 5d
-    Sequence/Activity Diagrams :s2, after s0, 19-10
-    Documento di Specifica :milestone, sm, 19-10, 0d
+    Spec ReqF (UCD) :s0, after am, 15d
+    Spec ReqNF :s1, 16-10, 7d
+    Diagramma di Contesto :s2, 16-10, 7d
+    Diagramma dei Componenti :s3, after s2, 6d
+    Documento di Specifica :milestone, sm, 30-10, 0d
 
     section Progettazione Design
-    Diagramma di Contesto :pd0, after sm, 4d
-    Diagramma dei Componenti :pd1, after pd0, 6d
-    BPMN :pd2, after pd1, 07-11
-    Documento di Progettazione Design :milestone, pdm, 07-11, 0d
-
-    section Progettazione Architetturale
-    Class Diagrams :pa0, after pdm, 10-11
-    Specifiche in OCL :pa1, after pa0, 13-11
-    Documento di Architettura :milestone, pam, 13-11, 0d
+    Class Diagrams :pa0, after sm, 7d
+    OCL :pa1, after sm, 7d
+    BPMN :pa2, after pa1, 7d
+    Documento di Design :milestone, pam, 13-11, 0d
 
     section Sviluppo e Deployment
     FrontEnd :d0, after pam, 21-11
@@ -37,7 +33,7 @@ gantt
     Deployment :d2, after d1, 22-11
     Documento di Sviluppo :milestone, dm, 22-11, 0d
 
-    section Introspezione
+    section Report
     Closing meeting :i0, 21-11, 22-11
     Report Finale :milestone, fm, 22-11, 0d
 
@@ -51,14 +47,13 @@ gantt
 |Definizione Requisiti   |A,E|10/10||
 |Mock-Up FrontEnd        |M|10/10||
 |Schema BackEnd          |A|10/10||
-|Spec ReqF               |||||
-|Spec ReqNF              |||||
-|Sequence Diagrams       |||||
+|Spec ReqF               |A,E,M||||
+|Spec ReqNF              |A||||
 |Diagramma di Contesto   |||||
 |Diagramma dei Componenti|||||
-|BPMN                    |||||
 |Class Diagrams          |||||
-|Specifiche in OCL       |||||
+|OCL                     |||||
+|BPMN                    |||||
 |FrontEnd                |||||
 |BackEnd                 |||||
 |Deployment              |||||
