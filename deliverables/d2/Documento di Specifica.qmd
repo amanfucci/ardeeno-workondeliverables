@@ -55,7 +55,7 @@ Questo capitolo presenta i requisiti funzionali del sistema, raggruppati per ruo
 
 ## Cliente
 
-![RF10, RF16](.media/cliente1.drawio.png){width=10cm}
+![RF10, RF16](.media/cliente1.drawio.png){width=10cm fig-pos=H}
 
 ### UseCase Acquisto impianto {-}  
 ***Summary***
@@ -88,7 +88,7 @@ Questo use case descrive come il cliente effettua l'acquisto dell'impianto prece
 
 ***Sequence Diagram***
 
-![Sequence Diagram](.media/cliente1seq.drawio.png){width=7cm}
+![Sequence Diagram](.media/cliente1seq.drawio.png){width=7cm fig-pos=H}
 
 ### UseCase Pagamento {-}  
 ***Summary***
@@ -123,7 +123,7 @@ Questo use case descrive come avviene la richiesta e l'inserimento di una recens
 
 4. TrustPilot riporta che la recensione è stata correttamente inserita.
 
-![RF11, RF12, RF13](.media/cliente2.drawio.png){width=12cm}
+![RF11, RF12, RF13](.media/cliente2.drawio.png){width=12cm fig-pos=H}
 
 ### UseCase Visualizzazione Impianti Acquistati {-}  
 
@@ -197,7 +197,7 @@ Questo use case descrive come un cliente visualizza le misurazioni di uno specif
 
 2. Lo snapshot attuale è il più recente in assoluto, viene visualizzata con pop-up la scritta "Nessuno snapshot successivo"
 
-![RF14, RF15](.media/cliente3.drawio.png){width=10cm}
+![RF14, RF15](.media/cliente3.drawio.png){width=10cm fig-pos=H}
 
 ### UseCase Visualizzazione interventi {-}  
 
@@ -235,9 +235,9 @@ Questo use case descrive come un cliente richiede un intervento di riparazione p
 
 1. L'impianto è dismesso ed il bottone non è presente.
 
-## Supervisore
-
 ## Tecnico
+
+## Supervisore
 
 ## Amministratore
 
@@ -363,7 +363,7 @@ Il DB del DataLayer è gestito da cloud.mongodb.com .
 
 ## Diagramma di contesto
 
-![Diagramma di contesto](./.media/contesto.png)
+![Diagramma di contesto](./.media/contesto.png){fig-pos=H}
 
 # Analisi dei Componenti
 

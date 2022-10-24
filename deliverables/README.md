@@ -43,9 +43,23 @@ quarto render my-pretty-file.qmd
 ### Quick Cheatsheet
 [MarkDown](https://www.markdownguide.org/basic-syntax)  
 [Quarto](https://quarto.org/docs/authoring/figures.html)
+#### Unnumbered Sections
+```rmd
+{-}
+{.unnumbered}
+```
 #### Wrapped Figures
 ```latex
 \begin{wrapfigure}{r}{2cm}
 \includegraphics{./my-image.jpeg}
 \end{wrapfigure}
+```
+#### Figures' Attributes
+```rmd
+fig-pos=(!, H, h, t, b, p)
+fig-env=(figure, mdframed, wrapfigure, ...)
+width=(%, cm, ...)
+height=(%, cm, ...)
+scale=(%)
+fig-cap-location=(top, bottom, margin)
 ```
