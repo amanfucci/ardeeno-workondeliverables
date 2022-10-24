@@ -33,7 +33,7 @@ format:
 
 \pagebreak
 
-**Abstract**
+# Abstract {.unlisted .unnumbered}
 
 Questo documento descrive ad alto livello -- e in maniera non tecnica -- il sistema da realizzare. Vengono definiti gli obiettivi e -- in linguaggio naturale -- i requisiti funzionali e non funzionali. Infine, viene mostrato un *mock-up* dell'applicazione e vengono fatte le prime considerazioni su come il BackEnd del sistema dovrà interagire con i sistemi esterni.
 
@@ -226,7 +226,7 @@ Il sistema -- attraverso la selezione di un dipendente effettuata in [RF24](#rf2
 Il sistema deve far visualizzare un grafico dove si mostra in funzione del tempo -- con granularità mensile -- il numero di acquisti effettuati dai clienti.
 
 ### RF27 Visualizzazione grafico interventi {-}
-Il sistema deve far visualizzare un grafico dove si mostra in funzione del tempo -- con granularità mensile -- il numero di interventi effettuati sugli impianti.
+Il sistema deve far visualizzare un grafico dove si mostra in funzione del tempo -- con granularità mensile -- il numero di interventi richiesti.
 
 # Requisiti Non Funzionali
 
