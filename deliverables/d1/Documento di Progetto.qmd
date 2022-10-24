@@ -353,6 +353,6 @@ Il sistema da sviluppare interagisce con più sistemi esterni attraverso delle A
 
 - **GPS**: Sistema che fornirà le coordinate della posizione attuale utilizzate da Ardeeno WebApp in [Aggiunta/Rimozione sensori da impianto](#rf22-aggiuntarimozione-sensori-da-impianto).
 
-- **Ardeeno DataLayer**: Sistema che contiene la base di dati (gestita da cloud.mongodb.com) e il sottosistema di polling che inserisce nella base di dati tutte le misurazioni degli impianti. Ardeeno WebApp si interfaccia con questo sistema in tutti i [RF](#requisiti-funzionali) esclusi: [RF1](#rf1-visualizzazione-presentazione), [RF16](#rf16-richiesta-recensione).
+- **Ardeeno DataLayer**: Sistema che contiene la base di dati (gestita da cloud.mongodb.com) e il sottosistema di polling che inserisce nella base di dati tutte le misurazioni degli impianti. Ardeeno WebApp si interfaccia con questo sistema in tutti i [RF](#requisiti-funzionali) esclusi: [RF1](#rf1-visualizzazione-presentazione), [RF5.1](#rf5.1-logout), [RF16](#rf16-richiesta-recensione).
 
 ![Sistemi esterni a cui si collegherà il backend](./.media/backend.png)     
