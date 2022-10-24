@@ -237,9 +237,276 @@ Questo use case descrive come un cliente richiede un intervento di riparazione p
 
 ## Supervisore
 
+![RF17, RF18, RF19](.media/supervisore1.png){width=12cm}
+
+### UseCase Visualizza lista interventi {-}  
+
+***Summary***
+
+Questo use case descrive come un supervisore può visuallizzare tutti gli interventi.
+
+***Description***
+
+1. Il supervisore visualizza una lista di tutti gli interventi in ordine cronologico. [Exception 1]
+
+2. Il supervisore può inoltre selezionare il filtro Tipo o stato intervento. Cio mostrerà solo i risultati soddisfacenti i filtri in ordine cronologico.
+
+3. Il supervisore seleziona il menu degli ulteriori filtri e ne seleziona uno. [Exception 1]
+<!-- dubbio n1: si può aggiungere 4. Il supervisore seleziona un singolo intervento premendoci sopra ?  o i include/extends non possono essere messi nella descrizione? -->
+***Exceptions***
+
+1. Nessun intervento soddisfa tale filtro; la lista è vuota e appare la scritta "Nessun intervento"
+
+### UseCase Visualizzazione singolo intervento {-}  
+
+***Summary***
+
+Questo use case descrive come un supervisore può visualizzare nel dettaglio un singolo intervento.
+
+***Description***
+
+dubbio dubbio grosso
+<!--
+dubbio numero 2: da un lato non ce niente da dire su questo use case. dal altro se lo togliamo dal diagrama non si vede piu da nessuna parte la possibilita di selezionare il singolo impianto richiesto da RF18-->
+
+***Exceptions***
+
+dubbio dubbio grosso
+
+### UseCase Assegnazione tecnico {-}
+
+***Summary***
+
+Questo use case descrive come un supervisore può assegnare un tecnico al intervento che sta visualizzando.
+
+***Description***
+
+1. Il supervisore preme il bottone 'assegna tecnico' [exception 1]
+<!-- dubbio numero 3: quando il supervisore preme il bottone e presumibilmente portato in un altra pagina dove compila questi dati. Questo lo scriviamo o lasciamo per inteso? -->
+2. Il supervisore seleziona il campo data, e mostrato un elenco di tutte le date in cui rimangono tanti tecnici liberi in verde, pochi in giallo, nessuno in rosso e i giorni feriali in grigio. Può selezionare un giorno verde o giallo.
+
+3. Il supervisore e mostrato una lista dei tecnici liberi in quel giorno e ne seleziona uno.
+
+4. Il supervisore può aggiungere opzionalmente un commento.
+
+5. Il supervisore preme il tasto 'assegna' [exception 2]
+
+***Exceptions***
+
+1. L'intervento visualizzato a già un tecnico assegnato. il tasto 'assegna tecnico' e allora assente.
+
+2. Se più di 15 minuti sono erogati dalla selezione della data il supervisore e chiesto di ricominciare da capo.
+
+
 ## Tecnico
 
+![RF20, RF21, RF22](.media/tecnico1.png){width=12cm}
+
+### UseCase Visualizza lista interventi {-}  
+
+***Summary***
+
+Questo use case descrive come un tecnico può visuallizzare tutti gli interventi che gli sono stati assegnati.
+
+***Description***
+
+1. Il tecnico visualizza una lista di tutti gli interventi in ordine cronologico. [Exception 1]
+
+2. Il tecnico può inoltre selezionare il filtro Tipo o stato intervento. Ciò mostrerà solo i risultati soddisfacenti i filtri in ordine cronologico.
+
+3. Il tecnico seleziona il menu degli ulteriori filtri e ne seleziona uno. [Exception 1]
+<!-- repeat di dubbio numero 1. -->
+
+
+***Exceptions***
+
+1. Nessun intervento soddisfa tale filtro; la lista è vuota e appare la scritta "Nessun intervento"
+
+
+### UseCase Visualizzazione singolo intervento {-}  
+
+***Summary***
+
+Questo use case descrive come un tecnico può visualizzare e concludere interventi singoli.
+
+***Description***
+
+1. Il tecnico preme sul tasto 'concludi intervento' [exception 1]
+<!-- repeat di dubbio numero 3 -->
+2. Il tecnico compila un form compreso da un campo data e un campo resoconto.
+
+3. Il tecnico preme su 'conferma' per concludere l'intervento. [exception 2]
+
+***Exceptions***
+
+1. Se l'intervento visualizzato e già concluso il tasto e assente.
+
+2. se il campo data non soddisfa il formato dd/mm/yyyy o se il campo resoconto e vuoto un errore e generato.
+
+
+### UseCase Aggiunta/Rimozione sensori {-}  
+
+***Summary***
+
+Questo use case descrive come un tecnico può aggiungere/rimuovere sensori associati al intervento in corso selezionato.
+
+
+***Description***
+
+1. Il tecnico preme il tasto 'aggiungi sensore' o il tasto 'rimuovi sensore' [Exception 1].
+<!-- repeat di dubbio numero 3 -->
+2. Il tecnico inserisce nei loro campi il ID del sensore e le sue coordinate GPS. <!--dubbio n4: ma leggendo il RF mi sta venendo un dubbio, questo e collegato al OpenStreetMap o e solo il tecnico che inserisce la posizione e ci fidiamo? -->
+3. Il tecnico preme il tasto conferma [Exception 2].
+
+***Exceptions***
+
+1. Se l'intervento selezionato e già concluso i due tasti non sono visibili.
+
+2. Se l'ID non corrisponde al formatto corretto dell'azienda o se le coordinate inserite sono troppo distanti dal impianto selezionato un errore e generato.
+
+\pagebreak <!-- messo perche se no l'imagine succesiva mi andava in posizioni strane -->
+
 ## Amministratore
+
+![RF23, RF24, RF25, RF26, RF27, RF28](.media/amministratore1.png){width=12cm}
+
+
+### UseCase form registrazione dipendenti {-}  
+
+***Summary*** 
+Questo use case descrive la maniera in cui l'Amministratore può registrare dipendenti.
+
+***Description***
+
+1. L'amministratore compila un form contenente i seguenti campi: nome,cognome,email,telefono,indirizzo e CF <!-- cose CF? che mi piacerebbe non abbreviarlo qui -->
+
+2. L'amministratore seleziona a traverso un menu a tendina se il dipendente e un tecnico supervisore o amministratore.
+
+3. L'amministratore preme sul tasto 'registra dipendente'. [Exception 1] [Exception 2] [Exception 3].
+
+
+***Exceptions***
+
+1. Se un utente con lo stesso nome e cognome e già presente nel database un errore e dato.
+
+2. Se il formatto e lunghezza del numero di telefono o il formatto del email sono sbagliati un errore e dato. 
+
+3. Se uno dei campi e vuoto un errore e dato.
+
+
+### Comunicazione di registrazione {-}  
+
+***Summary*** <!-- ma dovevo forse collegare il datalayer anche con questo? -->
+Questo use case descrive la maniera in cui il sistema manda mail a un dipendente appena registrato. Il servizio e fatto tramite Gmail.
+
+***Description***
+
+1. Una mail contenente password auto generata viene inviata tramite uno degli account Gmail automatizzati della azienda al email del nuovo dipendente inserita dal amministratore. [Exception 1]
+
+2. Una mail ricordando al nuovo dipendente di cambiare la sua password e inviata. [Exception 1]
+
+
+***Exceptions***
+
+1. Se l'email risulta invalida una email e inviata al l'amministratore responsabile della registrazione del nuovo impiegato avvisandolo del accaduto.
+
+
+
+### UseCase Visualizza lista dipendenti {-}  
+
+***Summary***
+
+Questo use case descrive come un amministratore può visualizzare tutti gli dipendenti della azienda.
+
+***Description***
+
+1. L'amministratore visualizza una lista di tutti i dipendenti in ordine alfabetico. [Exception 1]
+
+2. L'amministratore può inoltre selezionare il filtro ruolo,alfabetico o data di arruolamento.
+
+3. L'amministratore seleziona il menu degli ulteriori filtri e ne seleziona uno specifico.[Exception 1]
+<!-- repeat di dubbio numero 1. -->
+
+
+***Exceptions***
+
+1. Nessun dipendente soddisfa tale filtro; la lista è vuota e appare la scritta "Nessun dipendente"
+
+
+### UseCase Dati singolo dipendente {-}  
+
+***Summary***
+
+Questo use case descrive come un amministratore può visualizzare e modificare i dati di un  dipendente della azienda.
+
+***Description***
+
+1. L'amministratore visualizza i dati del singolo impiegato.
+
+2. L'amministratore preme su modifica dati.
+
+3. L'amministratore modifica i campi che a voglia di cambiare.
+
+4. L'amministratore preme su conferma [Exception 1][Exception 2][Exception 3].
+
+
+***Exceptions***
+
+1. Se un utente con lo stesso nome e cognome e già presente nel database un errore e dato.
+
+2. Se il formatto e lunghezza del numero di telefono o il formatto del email sono sbagliati un errore e dato. 
+
+3. Se uno dei campi e vuoto un errore e dato.
+
+
+
+### UseCase Visualizza grafo vendite {-}  
+
+***Summary***
+
+Questo use case descrive come un amministratore può visualizzare un grafo delle vendite.
+
+***Description***
+
+1. L'amministratore visualizza un grafo delle vendite con granularita mensile. Il grafo inizialmente include nei suoi dati le vendite di tutti i modelli nel ultimo anno e mostra solo la quantità d'impianti venduti.
+
+2. L'amministratore preme sul tasto 'intervallo tempo' e un calendario pop up permette di selezionare un mese d'inizio e uno di fine ha scelta del amministratore. [Exception 1]
+
+3. L'amministratore può selezionare attraverso menu a tendina se visualizzare il grafo in funzione degli impianti o sensori venduti.
+
+4. L'amministratore seleziona il menu degli ulteriori filtri e ne seleziona uno specifico.
+
+***Exceptions***
+
+1. L'amministratore non può selezionare un intervallo di tempo superiore ai 10 anni. inoltre non può selezionare date di inizio che precedono l'esistenza del azienda o date nel futuro.
+F
+
+
+### UseCase Visualizza grafo interventi {-}  
+
+***Summary***
+
+Questo use case descrive come un amministratore può visualizzare un grafo di tutti gli interventi su impianti del azienda.
+
+***Description***
+
+1. L'amministratore visualizza un grafo degli interventi con granularità mensile. Il grafo inizialmente include nei suoi dati le vendite di tutti i modelli nel ultimo anno e mostra solo la quantita di impianti venduti.
+
+2. L'amministratore preme sul tasto 'intervallo tempo' e un calendario pop up permette di selezionare un mese di inizio e uno di fine a scelta del amministratore. [Exception 1]
+
+3. L'amministratore può selezionare attraverso menu a tendina se visualizzare il grafo in funzione degli interventi conclusi o in corso.
+
+4. L'amministratore seleziona il menu degli ulteriori filtri e ne seleziona uno specifico.
+
+***Exceptions***
+
+1. L'amministratore non può selezionare un intervallo di tempo superiore ai 10 anni. Inoltre non può selezionare date di inizio che precedono l'esistenza del azienda o date nel futuro.
+
+
+
+
+
+
 
 \pagebreak
 # Requisiti Non Funzionali
