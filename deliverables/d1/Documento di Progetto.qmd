@@ -33,7 +33,7 @@ format:
 
 \pagebreak
 
-**Abstract**
+# Abstract {.unlisted .unnumbered}
 
 Questo documento descrive ad alto livello -- e in maniera non tecnica -- il sistema da realizzare. Vengono definiti gli obiettivi e -- in linguaggio naturale -- i requisiti funzionali e non funzionali. Infine, viene mostrato un *mock-up* dell'applicazione e vengono fatte le prime considerazioni su come il BackEnd del sistema dovrà interagire con i sistemi esterni.
 
@@ -226,7 +226,7 @@ Il sistema -- attraverso la selezione di un dipendente effettuata in [RF24](#rf2
 Il sistema deve far visualizzare un grafico dove si mostra in funzione del tempo -- con granularità mensile -- il numero di acquisti effettuati dai clienti.
 
 ### RF27 Visualizzazione grafico interventi {-}
-Il sistema deve far visualizzare un grafico dove si mostra in funzione del tempo -- con granularità mensile -- il numero di interventi effettuati sugli impianti.
+Il sistema deve far visualizzare un grafico dove si mostra in funzione del tempo -- con granularità mensile -- il numero di interventi richiesti.
 
 # Requisiti Non Funzionali
 
@@ -304,20 +304,20 @@ In particolare vedremo mock-up per:
 - [RF21 Visualizzazione e modifica singolo intervento](#rf21-visualizzazione-e-modifica-singolo-intervento)
 
 ### RF1 Visualizzazione Presentazione {-}
-![Visualizzazione Presentazione](./.media/mockups/presentazione.png){width=6cm}
+![Visualizzazione Presentazione](./.media/mockups/presentazione.png){width=6cm fig-pos=H}
 
 Pagina d'ingresso della WebApp, dove si mostra una breve presentazione, la posizione delle filiali ed i contatti (email, telefono). Si osservi la presenza di un menù laterale, il quale contiene le varie funzioni del sistema, ed un tasto login per procedere all'autenticazione.
 
 \pagebreak
 ### RF5 Autenticazione {-}
-![Autenticazione](./.media/mockups/login.png){width=6cm}
+![Autenticazione](./.media/mockups/login.png){width=6cm fig-pos=H}
 
 Un'utente anonimo - registrato nel sistema - può autenticarsi inserendo email e password. Se la combinazione (email, password) non è presente nel sistema, verrà mostrata in rosso la scritta **Password Errata** [RNF1](#rnf1-privacy). Se l'email non è confermata verrà mostrata in rosso la scritta **Email non confermata**, assieme al link **Invia di nuovo il link**.
 Si osservi la presenza del bottone **Recupera Password** e **Registrati**.
 
 \pagebreak
 ### RF11 Visualizzazione impianti acquistati, RF11.1 Dashboard {-}
-![Visualizzazione impianti acquistati e Dashboard](./.media/mockups/impianti-dashboard.png){width=12cm}
+![Visualizzazione impianti acquistati e Dashboard](./.media/mockups/impianti-dashboard.png){width=12cm fig-pos=H}
 
 Nella figura a sinistra si ha la pagina mostrata ad un cliente che si è appena autenticato. In azzurro si hanno gli impianti attivi, in arancione quelli dismessi. Tramite gli appositi bottoni si può effettuare un filtraggio per impianti attivi o dismessi. Il filtro selezionato presenta uno sfondo scuro. Gli ulteriori filtri (modello e tipo) sono accessibili tramite l'icona al lato.
 
@@ -325,13 +325,13 @@ Tra gli impianti in lista se ne può selezionare uno. Alla selezione si è porta
 
 \pagebreak
 ### RF12 Visualizzazione misurazioni su heatmap {-}
-![Heatmap](./.media/mockups/heatmap.png){width=6cm}
+![Heatmap](./.media/mockups/heatmap.png){width=6cm fig-pos=H}
 
 La heatmap riporta in forma grafica (scala di colori dal giallo al rosso) su una mappa geografica le più recenti misurazioni. Il parametro preso in considerazione può essere selezionato dalla lista di tutti i parametri misurati. Si possono scorrere tutte le misurazioni tramite le due frecce.
 
 \pagebreak
 ### RF20 Visualizzazione interventi -- tecnico, RF21 {-}
-![Lista interventi](./.media/mockups/interventi.png){width=6cm}
+![Lista interventi](./.media/mockups/interventi.png){width=6cm fig-pos=H}
 
 In questa pagina un tecnico può visualizzare la lista di tutti gli interventi a lui assegnati. In arancione si mostrano gli interventi assegnati in corso mentre in grigio quelli assegnati conclusi. Gli interventi sono ordinati per data di richiesta da più recente a meno recente.
 
@@ -355,4 +355,4 @@ Il sistema da sviluppare interagisce con più sistemi esterni attraverso delle A
 
 - **Ardeeno DataLayer**: Sistema che contiene la base di dati (gestita da cloud.mongodb.com) e il sottosistema di polling che inserisce nella base di dati tutte le misurazioni degli impianti. Ardeeno WebApp si interfaccia con questo sistema in tutti i [RF](#requisiti-funzionali) esclusi: [RF1](#rf1-visualizzazione-presentazione), [RF5.1](#rf5.1-logout), [RF16](#rf16-richiesta-recensione).
 
-![Sistemi esterni a cui si collegherà il backend](./.media/backend.png)     
+![Sistemi esterni a cui si collegherà il backend](./.media/backend.png){fig-pos=H}     

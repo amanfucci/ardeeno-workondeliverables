@@ -32,7 +32,7 @@ format:
 ---
 
 \pagebreak
-**Abstract**
+# Abstract {.unlisted .unnumbered}
 
 Questo documento descrive in maniera più dettagliata -- ma sempre non tecnica -- i requisiti del sistema da realizzare. Per i requisiti funzionali si utilizza il linguaggio di modellazione UML, mentre per i requisiti non funzionali si utilizzano particolari tabelle.
 
@@ -53,11 +53,24 @@ Questo capitolo presenta i requisiti funzionali del sistema, raggruppati per ruo
 
 ## Utente autenticato
 
+<!--FORM
+
+1. Il <attore> inserisce X [Exception 1]
+2. Il <attore> invia il form premendo il bottone "<bottone>" [Exception 2]
+3. <qualcosa> è stato correttamente <fatto> ed appare la scritta <scritta>
+
+Exceptions
+1. X non è valido (<motivo>), il bordo del campo del form diventa rosso.
+2. Vi è almeno un campo del form vuoto o non valido, appare in rosso la scritta "Compila correttamente il form".
+
+-->
+
 ## Cliente
 
-![RF10, RF16](.media/cliente1.drawio.png){width=10cm}
+![RF10, RF16](.media/cliente1.drawio.png){width=10cm fig-pos=H}
 
-### UseCase Acquisto impianto {-}  
+### UseCase Acquisto impianto {-}
+  
 ***Summary***
 
 Questo use case descrive come il cliente effettua l'acquisto dell'impianto precedentemente selezionato.
@@ -68,7 +81,7 @@ Questo use case descrive come il cliente effettua l'acquisto dell'impianto prece
 
 2. Il cliente inserisce la superficie in $m^2$. [Exception 2]
 
-3. Il cliente invia il form premendo sul bottone "Acquista", al cui lato è presente il costo del tipo di impianto. [Exception 1][Exception 2][Exception 3]
+3. Il cliente invia il form premendo il bottone "Acquista", al cui lato è presente il costo del tipo di impianto. [Exception 3]
 
 4. Il cliente effettua il pagamento tramite PayPal. [Exception 4]
 
@@ -88,9 +101,10 @@ Questo use case descrive come il cliente effettua l'acquisto dell'impianto prece
 
 ***Sequence Diagram***
 
-![Sequence Diagram](.media/cliente1seq.drawio.png){width=7cm}
+![Sequence Diagram](.media/cliente1seq.drawio.png){width=7cm fig-pos=H}
 
 ### UseCase Pagamento {-}  
+
 ***Summary***
 
 Questo use case descrive come avviene il pagamento dell'impianto tramite PayPal.
@@ -123,7 +137,7 @@ Questo use case descrive come avviene la richiesta e l'inserimento di una recens
 
 4. TrustPilot riporta che la recensione è stata correttamente inserita.
 
-![RF11, RF12, RF13](.media/cliente2.drawio.png){width=12cm}
+![RF11, RF12, RF13](.media/cliente2.drawio.png){width=12cm fig-pos=H}
 
 ### UseCase Visualizzazione Impianti Acquistati {-}  
 
@@ -133,11 +147,7 @@ Questo use case descrive la visualizzazione da parte di un cliente degli impiant
 
 ***Description***
 
-1. Il cliente visualizza la lista di tutti gli impianti acquistati; è attivo il filtro Tutti. [Exception 1] [Extension 1]
-
-2. Il cliente seleziona il filtro Tutti, Attivi o Dismessi. [Exception 1]
-
-3. Il cliente seleziona il menu degli ulteriori filtri e seleziona uno specifico filtro. [Exception 1]
+1. Il cliente visualizza la lista di tutti gli impianti acquistati; è attivo il filtro Tutti. [Exception 1] [Extension 1] [Extension 2] [Extension 3]
 
 ***Exceptions***
 
@@ -146,6 +156,10 @@ Questo use case descrive la visualizzazione da parte di un cliente degli impiant
 ***Extensions***
 
 1. Il cliente seleziona uno specifico impianto e visualizza la Dashboard dell'impianto.
+
+2. Il cliente seleziona il filtro Tutti, Attivi o Dismessi. [Exception 1]
+
+3. Il cliente seleziona il menu degli ulteriori filtri e seleziona uno specifico filtro (tra cui vi sono tutti i modelli e tutti i tipi degli impianti acquistati). [Exception 1]
 
 ### UseCase Dashboard {-}
 
@@ -173,7 +187,7 @@ Questo use case descrive come un cliente visualizza le misurazioni di uno specif
 
 ***Exceptions***
 
-1. Se l'impianto è dismesso non è presente tale bottone
+1. L'impianto è dismesso e non è presente tale bottone
 
 ### UseCase Visualizzazione misurazioni su heatmap {-}  
 
@@ -197,7 +211,7 @@ Questo use case descrive come un cliente visualizza le misurazioni di uno specif
 
 2. Lo snapshot attuale è il più recente in assoluto, viene visualizzata con pop-up la scritta "Nessuno snapshot successivo"
 
-![RF14, RF15](.media/cliente3.drawio.png){width=10cm}
+![RF14, RF15](.media/cliente3.drawio.png){width=10cm fig-pos=H}
 
 ### UseCase Visualizzazione interventi {-}  
 
@@ -207,15 +221,17 @@ Questo use case descrive come un cliente visualizza gli interventi effettuati su
 
 ***Description***
 
-1. Il cliente visualizza la lista di tutti gli interventi effettuati sull'impianto selezionato; è attivo il filtro Tutti. [Exception 1]
-
-2. Il cliente seleziona il filtro Tutti, Richiesti, In Corso, Conclusi. [Exception 1]
-
-3. Il cliente seleziona il menu degli ulteriori filtri e seleziona uno specifico filtro. [Exception 1]
+1. Il cliente visualizza la lista di tutti gli interventi effettuati sull'impianto selezionato; è attivo il filtro Tutti. [Exception 1] [Extension 1] [Extension 2]
 
 ***Exceptions***
 
 1. Nessun intervento soddisfa tale filtro; la lista è vuota ed appare la scritta "Nessun intervento"
+
+***Extensions***
+
+1. Il cliente seleziona il filtro Tutti, Richiesti, In Corso, Conclusi. [Exception 1]
+
+2. Il cliente seleziona il menu degli ulteriori filtri e seleziona uno specifico filtro (Installazioni, Manutenzioni, Riparazioni, Dismissioni). [Exception 1]
 
 ### UseCase Richiesta intervento di riparazione {-}
 
@@ -237,276 +253,269 @@ Questo use case descrive come un cliente richiede un intervento di riparazione p
 
 ## Supervisore
 
-![RF17, RF18, RF19](.media/supervisore1.png){width=12cm}
+![RF17, RF18, RF19](.media/supervisore1.png){width=12cm fig-pos=H}
 
-### UseCase Visualizza lista interventi {-}  
-
-***Summary***
-
-Questo use case descrive come un supervisore può visuallizzare tutti gli interventi.
-
-***Description***
-
-1. Il supervisore visualizza una lista di tutti gli interventi in ordine cronologico. [Exception 1]
-
-2. Il supervisore può inoltre selezionare il filtro Tipo o stato intervento. Cio mostrerà solo i risultati soddisfacenti i filtri in ordine cronologico.
-
-3. Il supervisore seleziona il menu degli ulteriori filtri e ne seleziona uno. [Exception 1]
-<!-- dubbio n1: si può aggiungere 4. Il supervisore seleziona un singolo intervento premendoci sopra ?  o i include/extends non possono essere messi nella descrizione? -->
-***Exceptions***
-
-1. Nessun intervento soddisfa tale filtro; la lista è vuota e appare la scritta "Nessun intervento"
-
-### UseCase Visualizzazione singolo intervento {-}  
+### UseCase Visualizzazione interventi {-}  
 
 ***Summary***
 
-Questo use case descrive come un supervisore può visualizzare nel dettaglio un singolo intervento.
+Questo use case descrive la visualizzazione da parte del supervisore di tutti gli interventi.
 
 ***Description***
 
-dubbio dubbio grosso
-<!--
-dubbio numero 2: da un lato non ce niente da dire su questo use case. dal altro se lo togliamo dal diagrama non si vede piu da nessuna parte la possibilita di selezionare il singolo impianto richiesto da RF18-->
+1. Il supervisore visualizza la lista di tutti gli interventi; è attivo il filtro Tutti. [Exception 1] [Extension 1] [Extension 2]
+
+2. Il supervisore seleziona uno specifico intervento e appare un pop-up con ulteriori informazioni e con un link per assegnare l'intervento al tecnico [Exception 2]
 
 ***Exceptions***
 
-dubbio dubbio grosso
+1. Nessun intervento soddisfa tale filtro; la lista è vuota e appare la scritta "Nessun intervento".
 
-### UseCase Assegnazione tecnico {-}
+2. L'intervento è assegnato; non si mostra il link per assegnare l'intervento al tecnico.
+
+***Extensions***
+
+1. Il supervisore seleziona il filtro Tutti, Richiesti, In Corso, Conclusi. [Exception 1]
+
+2. Il supervisore seleziona il menu degli ulteriori filtri e seleziona uno specifico filtro (Installazioni, Manutenzioni, Riparazioni, Dismissioni). [Exception 1]
+
+### UseCase Assegnazione intervento {-}
 
 ***Summary***
 
-Questo use case descrive come un supervisore può assegnare un tecnico al intervento che sta visualizzando.
+Questo use case descrive come un supervisore assegna l'intervento precedentemente selezionato a un tecnico in una certa data,
 
 ***Description***
 
-1. Il supervisore preme il bottone 'assegna tecnico' [exception 1]
-<!-- dubbio numero 3: quando il supervisore preme il bottone e presumibilmente portato in un altra pagina dove compila questi dati. Questo lo scriviamo o lasciamo per inteso? -->
-2. Il supervisore seleziona il campo data, e mostrato un elenco di tutte le date in cui rimangono tanti tecnici liberi in verde, pochi in giallo, nessuno in rosso e i giorni feriali in grigio. Può selezionare un giorno verde o giallo.
+1. Il supervisore clicca sul campo data ed appare un calendario
 
-3. Il supervisore e mostrato una lista dei tecnici liberi in quel giorno e ne seleziona uno.
+2. Il supervisore seleziona una data dal calendario; non sono selezionabili i giorni precedenti a quello corrente ed i festivi
 
-4. Il supervisore può aggiungere opzionalmente un commento.
+3. Il sistema mostra una lista (nome, cognome) dei tecnici liberi in quella data [Exception 1]
 
-5. Il supervisore preme il tasto 'assegna' [exception 2]
+4. Il supervisore seleziona un tecnico dalla lista ed il sistema controlla nuovamente la disponibilità e lo considera *Prenotato* [Exception 2]
+
+5. Appare il bottone "Assegna" ed il supervisore lo preme [Exception 3] [Exception 3]
 
 ***Exceptions***
 
-1. L'intervento visualizzato a già un tecnico assegnato. il tasto 'assegna tecnico' e allora assente.
+1. Non vi sono tecnici liberi in quella data, quindi la lista è vuota e appare la scritta "Nessun tecnico disponibile"
 
-2. Se più di 15 minuti sono erogati dalla selezione della data il supervisore e chiesto di ricominciare da capo.
+2. Dal momento di selezione della data al momento di selezione del tecnico, il dato tecnico è stato *prenotato* o assegnato ad un intervento; appare la scritta "Tecnico non disponibile" e viene caricata nuovamente la lista dei tecnici
 
+3. Sono trascorsi più di 15 minuti dalla selezione del tecnico; appare la scritta "Tempo scaduto, ripeti l'operazione" e si rimuove la *prenotazione* del tecnico e la selezione della data
 
 ## Tecnico
 
-![RF20, RF21, RF22](.media/tecnico1.png){width=12cm}
+![RF20, RF21, RF22](.media/tecnico1.png){width=12cm fig-pos=H}
 
-### UseCase Visualizza lista interventi {-}  
+### UseCase Visualizzazione interventi {-}  
 
 ***Summary***
 
-Questo use case descrive come un tecnico può visuallizzare tutti gli interventi che gli sono stati assegnati.
+Questo use case descrive come un tecnico visualizza gli interventi che gli sono stati assegnati.
 
 ***Description***
 
-1. Il tecnico visualizza una lista di tutti gli interventi in ordine cronologico. [Exception 1]
+1. Il tecnico visualizza la lista di tutti gli interventi; è attivo il filtro Tutti. [Exception 1] [Extension 1] [Extension 2]
 
-2. Il tecnico può inoltre selezionare il filtro Tipo o stato intervento. Ciò mostrerà solo i risultati soddisfacenti i filtri in ordine cronologico.
-
-3. Il tecnico seleziona il menu degli ulteriori filtri e ne seleziona uno. [Exception 1]
-<!-- repeat di dubbio numero 1. -->
-
+2. Il tecnico seleziona uno specifico intervento e appare un pop-up con ulteriori informazioni e con un link per aggiungere/rimuovere sensori e per concludere l'intervento [Exception 2]
 
 ***Exceptions***
 
 1. Nessun intervento soddisfa tale filtro; la lista è vuota e appare la scritta "Nessun intervento"
 
+2. L'intervento è concluso; non si mostrano tali link.
 
-### UseCase Visualizzazione singolo intervento {-}  
+***Extensions***
 
-***Summary***
+1. Il supervisore seleziona il filtro Tutti, Richiesti, In Corso, Conclusi. [Exception 1]
 
-Questo use case descrive come un tecnico può visualizzare e concludere interventi singoli.
+2. Il tecnico seleziona il menu degli ulteriori filtri e seleziona uno specifico filtro (Installazioni, Manutenzioni, Riparazioni, Dismissioni). [Exception 1]
 
-***Description***
-
-1. Il tecnico preme sul tasto 'concludi intervento' [exception 1]
-<!-- repeat di dubbio numero 3 -->
-2. Il tecnico compila un form compreso da un campo data e un campo resoconto.
-
-3. Il tecnico preme su 'conferma' per concludere l'intervento. [exception 2]
-
-***Exceptions***
-
-1. Se l'intervento visualizzato e già concluso il tasto e assente.
-
-2. se il campo data non soddisfa il formato dd/mm/yyyy o se il campo resoconto e vuoto un errore e generato.
-
-
-### UseCase Aggiunta/Rimozione sensori {-}  
+### UseCase Conclusione intervento {-}  
 
 ***Summary***
 
-Questo use case descrive come un tecnico può aggiungere/rimuovere sensori associati al intervento in corso selezionato.
-
+Questo use case descrive come un tecnico conclude l'intervento precedentemente selezionato.
 
 ***Description***
 
-1. Il tecnico preme il tasto 'aggiungi sensore' o il tasto 'rimuovi sensore' [Exception 1].
-<!-- repeat di dubbio numero 3 -->
-2. Il tecnico inserisce nei loro campi il ID del sensore e le sue coordinate GPS. <!--dubbio n4: ma leggendo il RF mi sta venendo un dubbio, questo e collegato al OpenStreetMap o e solo il tecnico che inserisce la posizione e ci fidiamo? -->
-3. Il tecnico preme il tasto conferma [Exception 2].
+1. Il tecnico inserisce il resoconto testuale dell'intervento.
+
+2. Il sistema inserisce automaticamente nel form la data corrente.
+
+3. Il tecnico invia il form premendo sul bottone "Concludi".
+
+### UseCase Aggiunta sensore {-}  
+
+***Summary***
+
+Questo use case descrive come un tecnico aggiunge un sensore all'impianto relativo all'intervento in corso precedentemente selezionato.
+
+***Description***
+
+1. Il tecnico inserisce da tastiera l'id alfanumerico del sensore [Exception 1] [Extension 1]
+
+2. Il tecnico inserisce da tastiera latitudine e longitudine in gradi decimali [Exception 2] [Extension 2]
+
+3. Il tecnico invia il form premendo il bottone "Aggiungi" [Exception 3]
+
+4. Il sensore è stato correttamente aggiunto ed appare la scritta "Sensore aggiunto"
 
 ***Exceptions***
 
-1. Se l'intervento selezionato e già concluso i due tasti non sono visibili.
+1. L'id non è valido \(non soddisfa la regex "\[\\dA-Za-z\]\{10\}"\), il bordo del campo del form diventa rosso.
 
-2. Se l'ID non corrisponde al formatto corretto dell'azienda o se le coordinate inserite sono troppo distanti dal impianto selezionato un errore e generato.
+2. Le coordinate non sono valide (non sono un numero), il bordo del campo del form diventa rosso.
 
-\pagebreak <!-- messo perche se no l'imagine succesiva mi andava in posizioni strane -->
+3. I campi id o coordinate sono vuoti o non validi, appare in rosso la scritta "Compila correttamente il form".
+
+4. Il dispositivo con cui si accede ad Ardeeno WebApp non dispone di GPS; appare la scritta "GPS Non disponibile"
+
+***Extensions***
+
+1. Il tecnico preme un bottone al lato, inquadra con la fotocamera il codice qr del sensore ed l'id è inserito dal sistema
+
+2. Il tecnico preme un bottone al lato ed il GPS inserisce automaticamente le coordinate [Exception 4]
+
+### UseCase Rimozione sensore {-}  
+
+***Summary***
+
+Questo use case descrive come un tecnico rimuove un sensore dall'impianto relativo all'intervento precedentemente selezionato.
+
+***Description***
+
+1. Il tecnico inserisce da tastiera l'id alfanumerico del sensore [Exception 1] [Extension 1]
+
+2. Il tecnico invia il form premendo il bottone "Rimuovi" [Exception 2]
+
+3. Il sensore è stato correttamente aggiunto ed appare la scritta "Sensore rimosso"
+
+***Exceptions***
+
+1. L'id non è valido \(non soddisfa la regex "\[\\dA-Za-z\]\{10\}"\), il bordo del campo del form diventa rosso.
+
+2. Il campo id è vuoto o non valido, appare in rosso la scritta "Compila correttamente il form".
 
 ## Amministratore
 
-![RF23, RF24, RF25, RF26, RF27, RF28](.media/amministratore1.png){width=12cm}
+![RF23, RF24, RF25, RF26, RF27](.media/amministratore1.png){width=12cm fig-pos=H}
 
-
-### UseCase form registrazione dipendenti {-}  
+### UseCase Registrazione dipendente {-}  
 
 ***Summary*** 
-Questo use case descrive la maniera in cui l'Amministratore può registrare dipendenti.
+
+Questo use case descrive come avviene la registrazione di un dipendente da parte di un amministratore.
 
 ***Description***
 
-1. L'amministratore compila un form contenente i seguenti campi: nome,cognome,email,telefono,indirizzo e CF <!-- cose CF? che mi piacerebbe non abbreviarlo qui -->
+1. L'amministratore inserisce il nome e il cognome [Exception 1]
 
-2. L'amministratore seleziona a traverso un menu a tendina se il dipendente e un tecnico supervisore o amministratore.
+2. L'amministratore inserisce l'email [Exception 2]
 
-3. L'amministratore preme sul tasto 'registra dipendente'. [Exception 1] [Exception 2] [Exception 3].
+3. L'amministratore inserisce il numero di telefono [Exception 3]
 
+4. L'amministratore inserisce l'indirizzo di domicilio [Exception 4]
 
-***Exceptions***
+5. L'amministratore inserisce il CF [Exception 5]
 
-1. Se un utente con lo stesso nome e cognome e già presente nel database un errore e dato.
+6. L'amministratore seleziona il ruolo del dipendente da una lista contenente: tecnico, supervisore o amministratore.
 
-2. Se il formatto e lunghezza del numero di telefono o il formatto del email sono sbagliati un errore e dato. 
+7. L'amministratore invia il form premendo il bottone "Registra dipendente". [Exception 6] [Exception 7].
 
-3. Se uno dei campi e vuoto un errore e dato.
+8. Il sistema invia l'email contenente la password generata automaticamente per il nuovo account.
 
+9. Il sistema invia l'email per il recupero della password -- come sollecito a modificare la password.
 
-### Comunicazione di registrazione {-}  
-
-***Summary*** <!-- ma dovevo forse collegare il datalayer anche con questo? -->
-Questo use case descrive la maniera in cui il sistema manda mail a un dipendente appena registrato. Il servizio e fatto tramite Gmail.
-
-***Description***
-
-1. Una mail contenente password auto generata viene inviata tramite uno degli account Gmail automatizzati della azienda al email del nuovo dipendente inserita dal amministratore. [Exception 1]
-
-2. Una mail ricordando al nuovo dipendente di cambiare la sua password e inviata. [Exception 1]
-
+10. La registrazione è stata correttamente effettuata, appare la scritta "Registrazione completata".
 
 ***Exceptions***
 
-1. Se l'email risulta invalida una email e inviata al l'amministratore responsabile della registrazione del nuovo impiegato avvisandolo del accaduto.
+1. Il nome e/o il cognome non è valido \(non soddisfa la regex "\[A-Za-z\]\{3,20\}"\), il bordo del campo del form diventa rosso.
 
+2. L'email non è valida \(non soddisfa la regex ".\*@.\*"\), il bordo del campo del form diventa rosso.
 
+3. Il numero di telefono non è valido (non soddisfa la regex "(.\\d*) \\d\{10\}" \), il bordo del campo del form diventa rosso.
 
-### UseCase Visualizza lista dipendenti {-}  
+4. L'indirizzo non è valido, il bordo del campo del form diventa rosso.
+
+5. Il CF non è valido, il bordo del campo del form diventa rosso.
+
+6. Vi è almeno un campo del form vuoto o non valido, appare in rosso la scritta "Compila correttamente il form".
+
+7. Il CF inserito è già presente nella BD, appare la scritta "Dipendente già registrato"
+
+### UseCase Visualizzazione lista dipendenti {-}  
 
 ***Summary***
 
-Questo use case descrive come un amministratore può visualizzare tutti gli dipendenti della azienda.
+Questo use case descrive come un amministratore visualizza la lista di tutti i dipendenti.
 
 ***Description***
 
-1. L'amministratore visualizza una lista di tutti i dipendenti in ordine alfabetico. [Exception 1]
+1. L'amministratore visualizza la lista di tutti i dipendenti; è attivo il filtro Tutti [Exception 1] [Extension 1] [Extension 2]
 
-2. L'amministratore può inoltre selezionare il filtro ruolo,alfabetico o data di arruolamento.
-
-3. L'amministratore seleziona il menu degli ulteriori filtri e ne seleziona uno specifico.[Exception 1]
-<!-- repeat di dubbio numero 1. -->
-
+2. L'amministratore seleziona uno specifico dipendente dalla lista.
 
 ***Exceptions***
 
 1. Nessun dipendente soddisfa tale filtro; la lista è vuota e appare la scritta "Nessun dipendente"
 
+***Extensions***
 
-### UseCase Dati singolo dipendente {-}  
+1. L'amministratore seleziona il filtro Tutti, Attivi, Dimessi. [Exception 1]
 
-***Summary***
+2. L'amministratore seleziona il menu degli ulteriori filtri e seleziona uno specifico filtro (Clienti, Tecnici, Supervisori, Amministratori). [Exception 1]
 
-Questo use case descrive come un amministratore può visualizzare e modificare i dati di un  dipendente della azienda.
-
-***Description***
-
-1. L'amministratore visualizza i dati del singolo impiegato.
-
-2. L'amministratore preme su modifica dati.
-
-3. L'amministratore modifica i campi che a voglia di cambiare.
-
-4. L'amministratore preme su conferma [Exception 1][Exception 2][Exception 3].
-
-
-***Exceptions***
-
-1. Se un utente con lo stesso nome e cognome e già presente nel database un errore e dato.
-
-2. Se il formatto e lunghezza del numero di telefono o il formatto del email sono sbagliati un errore e dato. 
-
-3. Se uno dei campi e vuoto un errore e dato.
-
-
-
-### UseCase Visualizza grafo vendite {-}  
+### UseCase Modifica dati dipendente {-}  
 
 ***Summary***
 
-Questo use case descrive come un amministratore può visualizzare un grafo delle vendite.
+Questo use case descrive come un amministratore modifica i dati di un dipendente della azienda.
 
 ***Description***
 
-1. L'amministratore visualizza un grafo delle vendite con granularita mensile. Il grafo inizialmente include nei suoi dati le vendite di tutti i modelli nel ultimo anno e mostra solo la quantità d'impianti venduti.
+1. L'amministratore compila almeno uno dei campi descritti nella [Registrazione dipendente](#usecase-registrazione-dipendente)
 
-2. L'amministratore preme sul tasto 'intervallo tempo' e un calendario pop up permette di selezionare un mese d'inizio e uno di fine ha scelta del amministratore. [Exception 1]
-
-3. L'amministratore può selezionare attraverso menu a tendina se visualizzare il grafo in funzione degli impianti o sensori venduti.
-
-4. L'amministratore seleziona il menu degli ulteriori filtri e ne seleziona uno specifico.
+2. L'amministratore invia il form premendo il bottone "Modifica dati" [Exception 1]
 
 ***Exceptions***
 
-1. L'amministratore non può selezionare un intervallo di tempo superiore ai 10 anni. inoltre non può selezionare date di inizio che precedono l'esistenza del azienda o date nel futuro.
-F
+1. Tutti i campi del form sono vuoti o vi è almeno un campo non valido, appare in rosso la scritta "Compila correttamente il form".
 
-
-### UseCase Visualizza grafo interventi {-}  
+### UseCase Visualizzazione grafico vendite {-}  
 
 ***Summary***
 
-Questo use case descrive come un amministratore può visualizzare un grafo di tutti gli interventi su impianti del azienda.
+Questo use case descrive la visualizzazione da parte di un amministratore del grafico delle vendite.
 
 ***Description***
 
-1. L'amministratore visualizza un grafo degli interventi con granularità mensile. Il grafo inizialmente include nei suoi dati le vendite di tutti i modelli nel ultimo anno e mostra solo la quantita di impianti venduti.
+1. L'amministratore visualizza il grafico delle vendite con granularità mensile; inizialmente comprende il massimo intervallo possibile. [Extension 1] [Extension 2]
 
-2. L'amministratore preme sul tasto 'intervallo tempo' e un calendario pop up permette di selezionare un mese di inizio e uno di fine a scelta del amministratore. [Exception 1]
+***Extensions***
 
-3. L'amministratore può selezionare attraverso menu a tendina se visualizzare il grafo in funzione degli interventi conclusi o in corso.
+1. L'amministratore seleziona un punto sull'asse del tempo ed appare un pop-up con il numero esatto di impianti venduti in quel mese
 
-4. L'amministratore seleziona il menu degli ulteriori filtri e ne seleziona uno specifico.
+2. L'amministratore seleziona un intervallo sull'asse del tempo ed il grafico si adatta al nuovo intervallo considerato
 
-***Exceptions***
+### UseCase Visualizzazione grafico interventi {-}  
 
-1. L'amministratore non può selezionare un intervallo di tempo superiore ai 10 anni. Inoltre non può selezionare date di inizio che precedono l'esistenza del azienda o date nel futuro.
+***Summary***
 
+Questo use case descrive la visualizzazione da parte di un amministratore del grafico degli interventi effettuati.
 
+***Description***
 
+1. L'amministratore visualizza il grafico degli interventi effettuati con granularità mensile; inizialmente comprende il massimo intervallo possibile. [Extension 1] [Extension 2]
 
+***Extensions***
 
+1. L'amministratore seleziona un punto sull'asse del tempo ed appare un pop-up con il numero di interventi richiesti (sia totale che suddiviso per tipo). 
 
+2. L'amministratore seleziona un intervallo sull'asse del tempo ed il grafico si adatta al nuovo intervallo considerato
 
 \pagebreak
 # Requisiti Non Funzionali
@@ -630,7 +639,7 @@ Il DB del DataLayer è gestito da cloud.mongodb.com .
 
 ## Diagramma di contesto
 
-![Diagramma di contesto](./.media/contesto.png)
+![Diagramma di contesto](./.media/contesto.png){fig-pos=H}
 
 # Analisi dei Componenti
 
