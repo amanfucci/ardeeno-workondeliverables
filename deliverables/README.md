@@ -47,6 +47,8 @@ quarto render my-pretty-file.qmd
 ```rmd
 {-}
 {.unnumbered}
+{.unlisted}
+{.unlisted .unnumbered}
 ```
 #### Wrapped Figures
 ```latex

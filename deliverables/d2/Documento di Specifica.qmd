@@ -34,7 +34,7 @@ format:
 \pagebreak
 # Abstract {.unlisted .unnumbered}
 
-Questo documento descrive in maniera più dettagliata -- ma sempre non tecnica -- i requisiti del sistema da realizzare. Per i requisiti funzionali si utilizza il linguaggio di modellazione UML, mentre per i requisiti non funzionali si utilizzano particolari tabelle.
+Questo documento descrive in maniera più dettagliata -- ma sempre non tecnica -- i requisiti del sistema da realizzare. Per i requisiti funzionali si utilizza il linguaggio di modellazione UML, mentre per i requisiti non funzionali si utilizzano particolari tabelle. Vedremo poi nel dettaglio il contesto del sistema da realizzare, ovvero gli attori ed i sistemi esterni, e poi descriveremo una prima architettura in componenti.
 
 # Terminologia {-}
 
@@ -42,9 +42,16 @@ Questo documento descrive in maniera più dettagliata -- ma sempre non tecnica -
 
 - **ciclo di polling**: periodo di tempo in cui la stazione di polling -- compresa nell'impianto -- richiede ad ogni sensore le loro misurazioni.
 
-- **intervallo di polling**: periodo di tempo che occorre tra l'inizio di due cicli di polling. Il ciclo di polling ha durata estremamente breve rispetto all'intervallo di polling. I sensori calcolano ogni valore di una misurazione aggregando in media i dati raccolti durante l'intervallo di polling. Ogni modello di impianto specifica i parametri misurati e l'intervallo di polling.
+- **intervallo di polling (PI)**: periodo di tempo che occorre tra l'inizio di due cicli di polling. Il ciclo di polling ha durata estremamente breve rispetto all'intervallo di polling. I sensori calcolano ogni valore di una misurazione aggregando in media i dati raccolti durante l'intervallo di polling. Ogni modello di impianto specifica i parametri misurati e l'intervallo di polling.
 
 - **snapshot**: insieme delle misurazioni raccolte in un certo ciclo di polling. Ogni misurazione di uno snapshot ha lo stesso timestamp.
+
+- **modelli**:  
+modello=tipo+num.sensori+variante+versione  
+tipo=("TR", "AQ", "FP", "TE", "WQ", "ME") // Specifica i parametri misurati  
+num.sensori=("10", "50", "100", "200", "500")  
+variante=("A", "B", "C") // A => PI=5m, B => PI=30m, C => PI=3h  
+versione=(" ", "0", "1", "2", ...) // Hardware differente
 
 # Requisiti funzionali
 Questo capitolo presenta i requisiti funzionali del sistema, raggruppati per ruolo. Vengono utilizzati i diagrammi UML Use Case (descrivendo nel dettaglio ogni singolo Use Case) e, per i requisiti funzionali più complessi, anche i Sequence Diagrams, gli Activity Diagrams e gli State Diagrams.
@@ -295,7 +302,7 @@ Questo use case descrive come un supervisore assegna l'intervento precedentement
 
 4. Il supervisore seleziona un tecnico dalla lista ed il sistema controlla nuovamente la disponibilità e lo considera *Prenotato* [Exception 2]
 
-5. Appare il bottone "Assegna" ed il supervisore lo preme [Exception 3] [Exception 3]
+5. Appare il bottone "Assegna" ed il supervisore lo preme [Exception 3]
 
 ***Exceptions***
 
@@ -304,6 +311,10 @@ Questo use case descrive come un supervisore assegna l'intervento precedentement
 2. Dal momento di selezione della data al momento di selezione del tecnico, il dato tecnico è stato *prenotato* o assegnato ad un intervento; appare la scritta "Tecnico non disponibile" e viene caricata nuovamente la lista dei tecnici
 
 3. Sono trascorsi più di 15 minuti dalla selezione del tecnico; appare la scritta "Tempo scaduto, ripeti l'operazione" e si rimuove la *prenotazione* del tecnico e la selezione della data
+
+***Activity Diagram***
+
+![Activity Diagram](./.media/supactivity.drawio.png){width=12cm fig-pos=H}
 
 ## Tecnico
 
@@ -594,6 +605,7 @@ Un software proprietario effettua in contemporanea <x> test di prestazione come 
 |Scalabilità tecnici|Il sistema deve mantenere le prestazione descritte in [RNF4.Tecnici](#rnf4-prestazioni) anche con 100 tecnici che contemporaneamente usano una qualsiasi delle funzioni [RF.Tecnico](#tecnico)|Un software proprietario effettua in contemporanea 1000 test di prestazione come da [RNF4.Tecnici](#rnf4-prestazioni) (dove nel sistema sono presenti 1000 clienti con ognuno un impianto modello ME100A -- 100 sensori, 10 parametri misurati -- con $12*24*30*12*5=518400$ snapshot); il sistema soddisfa il RNF se almeno 700 test hanno ogni sottotest con durata di al più 3 secondi|
 
 # Analisi del Contesto
+Nel seguente capitolo vedremo una dettagliata analisi del contesto del sistema da realizzare. Identificheremo gli attori del sistema ed i sistemi esterni (paritari, subordinati e superiori) con cui si interagisce ed evidenzieremo -- con una certa astrazione -- i principali flussi di informazione. Il risultato sarà sintetizzato in un Context Diagram UML.
 
 ## Utenti e sistemi esterni
 
@@ -642,6 +654,7 @@ Il DB del DataLayer è gestito da cloud.mongodb.com .
 ![Diagramma di contesto](./.media/contesto.png){fig-pos=H}
 
 # Analisi dei Componenti
+Nel seguente capitolo analizzeremo una prima architettura a componenti del sistema da realizzare, cercando di minimizzare l'accoppiamento (connessioni inter-componenti) e massimizzare la coesione (connessioni intra-componente). Descriveremo ogni singolo componente nel suo scopo, nel suo livello di coesione e nel suo livello di accoppiamento. Il risultato sarà sintetizzato in un Diagramma dei Componenti UML.
 
 ## Definizione dei componenti
 
