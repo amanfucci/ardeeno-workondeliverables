@@ -8,9 +8,9 @@ subtitle: |
 
   D2-Documento di Specifica
 
-  v0.1
+  v0.7
 author: [alessandro.manfucci@studenti.unitn.it, enrico.cescato@studenti.unitn.it ,m.sottocornola-1@studenti.unitn.it]
-date: "10-10-2022"
+date: "25-10-2022"
 lang: it
 format:
   pdf:
@@ -56,6 +56,28 @@ versione=(" ", "0", "1", "2", ...) // Hardware differente
 # Requisiti funzionali
 Questo capitolo presenta i requisiti funzionali del sistema, raggruppati per ruolo. Vengono utilizzati i diagrammi UML Use Case (descrivendo nel dettaglio ogni singolo Use Case) e, per i requisiti funzionali più complessi, anche i Sequence Diagrams, gli Activity Diagrams e gli State Diagrams.
 
+<!--FORM
+1. Il <attore> inserisce X [Exception 1]
+2. Il <attore> invia il form premendo il bottone "<bottone>" [Exception 2]
+3. <qualcosa> è stato correttamente <fatto> ed appare la scritta "<scritta>"
+Exceptions
+1. X non è valido (<motivo>), il bordo del campo del form diventa rosso.
+2. Vi è almeno un campo del form vuoto o non valido, appare in rosso la scritta "Compila correttamente il form".
+-->
+
+<!--
+1. L'utente anonimo riceve un'email da *<component>.ardeeno@gmail.com* con oggetto "<oggetto>".
+
+2. L'utente anonimo visualizza il messaggio dell'email e preme sul link con testo "<testo>"
+
+3. Il sistema <fa qualcosa> e mostra una pagina con scritto "<Ho fatto qualcosa>"
+-->
+
+<!--CONTROLLO ERRORI
+\*\*\*.*\*\*\*\n\w+
+^\d\.\s*[\w\s\d'",\-/:\*()èéÈÉàù@;]+\.
+-->
+
 ## Utente anonimo
 
 ![RF1, RF2, RF2.1, RF3](.media/utente_anonimo1.drawio.png){width=10cm fig-pos=H}
@@ -72,7 +94,7 @@ Questo use case descrive la visualizzazione da parte di un utente anonimo della 
 
 2. L'utente anonimo visualizza una mappa fornita da OpenStreetMap, in cui è evidenziata la posizione delle sedi dell'azienda.
 
-3. L'utente anonimo visualizza email e numero di telefono dell'azienda [Extension 1]
+3. L'utente anonimo visualizza email e numero di telefono dell'azienda. [Extension 1]
 
 ***Extensions***
 
@@ -86,9 +108,9 @@ Questo use case descrive la visualizzazione da parte di un utente anonimo dei mo
 
 ***Description***
 
-1. L'utente anonimo visualizza una lista dei modelli di impianto in vendita, dove per ognuno si mostra: nome del modello, nome del tipo, prezzo, immagine esemplificativa, superficie consigliata per il modello di impianto (in $m^2$) e lista dei parametri misurati. I modelli sono ordinati per prezzo crescente. [Exception 1] [Extension 1] [Extension 2]
+1. L'utente anonimo visualizza una lista dei modelli di impianto in vendita. [Exception 1] [Extension 1] [Extension 2]
 
-2. L'utente anonimo seleziona uno specifico filtro dal menù dei filtri, che consente di filtrare i modelli per: tipo, prezzo, superficie consigliata. [Exception 1]
+2. L'utente anonimo seleziona uno specifico filtro dal menu dei filtri, che consente di filtrare i modelli per: tipo, prezzo, superficie consigliata. [Exception 1]
 
 ***Exceptions***
 
@@ -96,9 +118,9 @@ Questo use case descrive la visualizzazione da parte di un utente anonimo dei mo
 
 ***Extensions***
 
-1. L'utente anonimo seleziona uno specifico modello di impianto e, oltre alle informazioni precedenti, visualizza le *product reviews* di TrustPilot con nome dell'autore, valutazione in stelle (da una a cinque), data, titolo e descrizione. Le recensioni sono sempre ordinate per data: da più recente a meno recente. [Extension 2]
+1. L'utente anonimo seleziona uno specifico modello di impianto e visualizza inoltre le *product reviews* di TrustPilot. [Extension 2]
 
-2. L'utente anonimo seleziona uno specifico filtro dal menù dei filtri, che consente di filtrare le recensioni per: valutazione in stelle, data.
+2. L'utente anonimo seleziona uno specifico filtro dal menu dei filtri, che consente di filtrare le recensioni per: valutazione in stelle, data.
 
 ### UseCase Visualizzazione recensioni {-}
 
@@ -108,7 +130,7 @@ Questo use case descrive la visualizzazione da parte di un utente anonimo delle 
 
 ***Description***
 
-1. L'utente anonimo visualizza una lista delle dieci più recenti *service reviews* con almeno quattro stelle. Per ogni recensione si mostra: nome dell'autore, valutazione in stelle (da una a cinque), data, titolo e descrizione. [Exception 1]
+1. L'utente anonimo visualizza una lista delle dieci più recenti *service reviews* con almeno quattro stelle. [Exception 1]
 
 2. L'utente anonimo visualizza il *TrustScore* dell'azienda, fornito dal servizio TrustPilot. [Exception 2]
 
@@ -119,15 +141,6 @@ Questo use case descrive la visualizzazione da parte di un utente anonimo delle 
 2. Non ci sono *service reviews*; compare la scritta "TrustScore non disponibile".
 
 ![RF4, RF5, RF6, RF7](.media/utente_anonimo2.drawio.png){width=10cm fig-pos=H}
-
-<!--FORM
-1. Il <attore> inserisce X [Exception 1]
-2. Il <attore> invia il form premendo il bottone "<bottone>" [Exception 2]
-3. <qualcosa> è stato correttamente <fatto> ed appare la scritta "<scritta>"
-Exceptions
-1. X non è valido (<motivo>), il bordo del campo del form diventa rosso.
-2. Vi è almeno un campo del form vuoto o non valido, appare in rosso la scritta "Compila correttamente il form".
--->
 
 ### UseCase Registrazione cliente {-}
 ***Summary***
@@ -166,15 +179,7 @@ Questo use case descrive come l'utente anonimo effettua la registrazione come cl
 
 6. Vi è almeno un campo del form vuoto o non valido, appare in rosso la scritta "Compila correttamente il form".
 
-7. L'email inserità è gia utilizzata da un altro account, appare la scritta "Email già utilizzata".
-
-<!--
-1. L'utente anonimo riceve un'email da *<component>.ardeeno@gmail.com* con oggetto "<oggetto>".
-
-2. L'utente anonimo visualizza il messaggio dell'email e preme sul link con testo "<testo>"
-
-3. Il sistema <fa qualcosa> e mostra una pagina con scritto "<Ho fatto qualcosa>"
--->
+7. L'email inserita è già utilizzata da un altro account, appare la scritta "Email già utilizzata".
 
 ### UseCase Conferma email {-}
 ***Summary***
@@ -183,11 +188,11 @@ Questo use case descrive come avviene la conferma dell'email inserita nella regi
 
 ***Description***
 
-1. L'utente anonimo riceve un'email da *accounts.ardeeno@gmail.com* con oggeto "Conferma email".
+1. L'utente anonimo riceve un'email da *accounts.ardeeno@gmail.com* con oggetto "Conferma email".
 
 2. L'utente anonimo visualizza il messaggio dell'email e preme sul link con testo "Conferma la mia email". [Exception 1]
 
-3. Il sistema conferma l'email e mostra una pagina con scritto "Email confermata" 
+3. Il sistema conferma l'email e mostra una pagina con scritto "Email confermata".
 
 ***Exceptions***
 
@@ -197,7 +202,7 @@ Questo use case descrive come avviene la conferma dell'email inserita nella regi
 
 ***Summary***
 
-Questo use case descrive come l'utente anonimo effettua l'autentificazione tramite form.
+Questo use case descrive come l'utente anonimo effettua l'autenticazione tramite form.
 
 ***Description***
 
@@ -209,7 +214,7 @@ Questo use case descrive come l'utente anonimo effettua l'autentificazione trami
 
 4. Il sistema verifica che l'email inserita appartenga ad un account. [Exception 3]
 
-5. IL sistema verifica che l'email inserita sia stata confermata. [Exception 4]
+5. Il sistema verifica che l'email inserita sia stata confermata. [Exception 4]
 
 5. Il sistema verifica che la password sia corretta. [Exception 5]
 
@@ -227,7 +232,7 @@ Questo use case descrive come l'utente anonimo effettua l'autentificazione trami
 
 5. La password non è corretta, appare la scritta "Password non corretta" ed il link alla pagina "Recupera password".
 
-### UseCase7 Recupero password {-}
+### UseCase Recupero password {-}
 ***Summary***
 
 Questo use case descrive come avviene il recupero -- ovvero il cambio -- della password da parte di un utente anonimo.
@@ -240,7 +245,7 @@ Questo use case descrive come avviene il recupero -- ovvero il cambio -- della p
 
 3. Il sistema invia all'email inserita un link per recuperare la password. 
 
-4. L'utente anonimo riceve un'email da *accounts.ardeeno@gmail.com* con oggeto "Recupero password".
+4. L'utente anonimo riceve un'email da *accounts.ardeeno@gmail.com* con oggetto "Recupero password".
 
 5. L'utente anonimo visualizza il messaggio dell'email e preme sul link con testo "Modifica la mia password". [Exception 3]
 
@@ -248,7 +253,7 @@ Questo use case descrive come avviene il recupero -- ovvero il cambio -- della p
 
 7. L'utente anonimo invia il form premendo il bottone "Modifica password". [Exception 4]
 
-8. Il sistema modifica la password dell'account
+8. Il sistema modifica la password dell'account.
 
 ***Exceptions***
 
@@ -256,7 +261,7 @@ Questo use case descrive come avviene il recupero -- ovvero il cambio -- della p
 
 2. L'email non appartiene ad alcun account o appartiene all'account di un Dipendente dimesso, appare la scritta "Email non corretta".
 
-3. Dal momento dell'invio dell'email all'apertura del link sono trascorse più di 24h, il link non è più valido ed appare la scritta "Recupero non possibile, link non valido!"
+3. Dal momento dell'invio dell'email all'apertura del link sono trascorse più di 24h, il link non è più valido ed appare la scritta "Recupero non possibile, link non valido!".
 
 4. Le due password non sono congruenti oppure la prima non e valida ([RNF2 Sicurezza](#rnf2-sicurezza)), il bordo del campo del form diventa rosso.
 
@@ -264,67 +269,59 @@ Questo use case descrive come avviene il recupero -- ovvero il cambio -- della p
 
 ![RF5.1, RF8, RF9](./.media/autenticato.drawio.png){width=12cm fig-pos=H}
 
-### UseCase Lougout{-}
+### UseCase Logout {-}
 
 ***Summary***
-Questo use case descrive come un Utente Autenticato effettua il logout dal sistema
+
+Questo use case descrive come un Utente Autenticato effettua il logout dal sistema.
 
 ***Description***
 
-1. L'utente autenticato preme il bottone "Logout"
+1. L'utente autenticato preme il bottone "Logout".
 
-2. Il sistema riporta l'utente alla pagina di presentazione; l'utente non è pià autenticato
+2. Il sistema riporta l'utente alla pagina di presentazione; l'utente non è più autenticato.
 
-### UseCase Visualizzazione dati personali{-}
+### UseCase Visualizzazione dati personali {-}
 
 ***Summary***
-Questo use case descrive come l'utente autenticato visualizza i suoi dati personali
+
+Questo use case descrive come l'utente autenticato visualizza i suoi dati personali.
 
 ***Description***
 
-1. L'utente autenticato visualizza una pagina contenente la lista dei dati personali. Vi è un link alla pagina di modifica [Extension 1]
+1. L'utente autenticato visualizza una pagina contenente la lista dei dati personali. Vi è un link alla pagina di modifica [Extension 1].
 
 ***Extensions***
-1. Se l'utente è un dipendete vi è in aggiunta il campo CF
+
+1. Se l'utente è un dipendete vi è in aggiunta il campo CF.
 
 ### UseCase Modifica dati personali{-}
 
 ***Summary***
-Questo use case descrive come l'utente autenticato modifica i propri dati personali
+
+Questo use case descrive come l'utente autenticato modifica i propri dati personali.
 
 ***Description***
 
-1. L'utente autenticato visualizza un form contenente tutti i campi presente nella registrazione Cliente
+1. L'utente autenticato visualizza un form contenente tutti i campi presenti nella registrazione Cliente.
 
 2. L'utente riempie certi campi. [Exception 1] 
 
-3. L'utente invia il form premendo il tasto "Modifica dati" [Exception 2] [Exception 3]
+3. L'utente invia il form premendo il tasto "Modifica dati". [Exception 2] [Exception 3]
 
 4. Il sistema aggiorna solo quei campi riempiti.
 
 ***Exceptions***
 
-1. Se certi campi non sono validi, il bordo diventa rosso
+1. Se certi campi non sono validi, il bordo diventa rosso.
 
-2. Alcuni campi non sono validi o nessun campo è riempito, appare la scritta "Compila correttamente il form"
+2. Alcuni campi non sono validi o nessun campo è riempito, appare la scritta "Compila correttamente il form".
 
-3. La nuova email email che è stata inserita è gia presente nel sistema.
+3. La nuova email che è stata inserita è già presente nel sistema.
 
 ***Extensions***
 
-1. È stata inserita una nuova email; viene inviata una nuova email di conferma
-
-<!--FORM
-
-1. Il <attore> inserisce X [Exception 1]
-2. Il <attore> invia il form premendo il bottone "<bottone>" [Exception 2]
-3. <qualcosa> è stato correttamente <fatto> ed appare la scritta <scritta>
-
-Exceptions
-1. X non è valido (<motivo>), il bordo del campo del form diventa rosso.
-2. Vi è almeno un campo del form vuoto o non valido, appare in rosso la scritta "Compila correttamente il form".
-
--->
+1. È stata inserita una nuova email; viene inviata una nuova email di conferma.
 
 ## Cliente
 
@@ -346,7 +343,7 @@ Questo use case descrive come il cliente effettua l'acquisto dell'impianto prece
 
 4. Il cliente effettua il pagamento tramite PayPal. [Exception 4]
 
-5. L'acquisto è concluso, nella pagina di acquisto appare in verde la scritta "Acquisto concluso!.
+5. L'acquisto è concluso, nella pagina di acquisto appare in verde la scritta "Acquisto concluso!".
 
 6. L'acquisto è concluso, il sistema inserisce un intervento di installazione per il nuovo impianto ed invia una richiesta di recensione per email.
 
@@ -392,7 +389,7 @@ Questo use case descrive come avviene la richiesta e l'inserimento di una recens
 
 1. Il cliente riceve un'email da *sales.ardeeno@gmail.com* con oggetto "Acquisto concluso".
 
-2. Il cliente visualizza il messaggio dell'email e clicca sul link con testo "Recensisci il modello di impianto!"
+2. Il cliente visualizza il messaggio dell'email e clicca sul link con testo "Recensisci il modello di impianto!".
 
 3. Il cliente si collega al sistema TrustPilot ed inserisce una recensione.
 
@@ -442,9 +439,9 @@ Questo use case descrive come un cliente visualizza le misurazioni di uno specif
 
 ***Description***
 
-1. Il cliente visualizza una tabella contenente tutte le misurazioni ordinate per data da più recente a meno recente
+1. Il cliente visualizza una tabella contenente tutte le misurazioni ordinate per data da più recente a meno recente.
 
-2. Il cliente clicca un bottone per aggiornare la tabella con le più recenti misurazioni [Exception 1]
+2. Il cliente clicca un bottone per aggiornare la tabella con le più recenti misurazioni. [Exception 1]
 
 ***Exceptions***
 
@@ -460,17 +457,17 @@ Questo use case descrive come un cliente visualizza le misurazioni di uno specif
 
 1. La heatmap mostra lo snapshot più recente dell'impianto considerando un parametro arbitrario. Per ogni misurazione nello snapshot, il valore del parametro considerato è posizionato sulla mappa alle coordinate del dato sensore. Il valore del parametro considerato è rappresentato con una scala di colori dal giallo (valore minimo assoluto) al rosso (valore massimo assoluto).
 
-2. Il cliente seleziona il parametro considerato da una lista contenente tutti i parametri misurati dall'impianto selezionato
+2. Il cliente seleziona il parametro considerato da una lista contenente tutti i parametri misurati dall'impianto selezionato.
 
-3. Il cliente clicca su un bottone per visualizzare lo snapshot precedente (meno recente) [Exception 1]
+3. Il cliente clicca su un bottone per visualizzare lo snapshot precedente (meno recente). [Exception 1]
 
-4. Il cliente clicca su un bottone per visualizzare lo snapshot successivo (più recente) [Exception 2]
+4. Il cliente clicca su un bottone per visualizzare lo snapshot successivo (più recente). [Exception 2]
 
 ***Exceptions***
 
-1. Lo snapshot attuale è il meno recente in assoluto, viene visualizzata con pop-up la scritta "Nessuno snapshot precedente"
+1. Lo snapshot attuale è il meno recente in assoluto, viene visualizzata con pop-up la scritta "Nessuno snapshot precedente".
 
-2. Lo snapshot attuale è il più recente in assoluto, viene visualizzata con pop-up la scritta "Nessuno snapshot successivo"
+2. Lo snapshot attuale è il più recente in assoluto, viene visualizzata con pop-up la scritta "Nessuno snapshot successivo".
 
 ![RF14, RF15](.media/cliente3.drawio.png){width=10cm fig-pos=H}
 
@@ -478,7 +475,7 @@ Questo use case descrive come un cliente visualizza le misurazioni di uno specif
 
 ***Summary***
 
-Questo use case descrive come un cliente visualizza gli interventi effettuati su uno specifico impianto su heatmap
+Questo use case descrive come un cliente visualizza gli interventi effettuati su uno specifico impianto su heatmap.
 
 ***Description***
 
@@ -486,7 +483,7 @@ Questo use case descrive come un cliente visualizza gli interventi effettuati su
 
 ***Exceptions***
 
-1. Nessun intervento soddisfa tale filtro; la lista è vuota ed appare la scritta "Nessun intervento"
+1. Nessun intervento soddisfa tale filtro; la lista è vuota ed appare la scritta "Nessun intervento".
 
 ***Extensions***
 
@@ -502,11 +499,11 @@ Questo use case descrive come un cliente richiede un intervento di riparazione p
 
 ***Description***
 
-1. Il cliente clicca sul bottone "Richiedi riparazione" [Exception 1]
+1. Il cliente clicca sul bottone "Richiedi riparazione". [Exception 1]
 
-2. Il cliente inserisce la motivazione della riparazione
+2. Il cliente inserisce la motivazione della riparazione.
 
-3. Il cliente invia la richiesta di riparazione
+3. Il cliente invia la richiesta di riparazione.
 
 ***Exceptions***
 
@@ -526,7 +523,7 @@ Questo use case descrive la visualizzazione da parte del supervisore di tutti gl
 
 1. Il supervisore visualizza la lista di tutti gli interventi; è attivo il filtro Tutti. [Exception 1] [Extension 1] [Extension 2]
 
-2. Il supervisore seleziona uno specifico intervento e appare un pop-up con ulteriori informazioni e con un link per assegnare l'intervento al tecnico [Exception 2]
+2. Il supervisore seleziona uno specifico intervento e appare un pop-up con ulteriori informazioni e con un link per assegnare l'intervento al tecnico. [Exception 2]
 
 ***Exceptions***
 
@@ -544,31 +541,31 @@ Questo use case descrive la visualizzazione da parte del supervisore di tutti gl
 
 ***Summary***
 
-Questo use case descrive come un supervisore assegna l'intervento precedentemente selezionato a un tecnico in una certa data,
+Questo use case descrive come un supervisore assegna l'intervento precedentemente selezionato a un tecnico in una certa data.
 
 ***Description***
 
-1. Il supervisore clicca sul campo data ed appare un calendario
+1. Il supervisore clicca sul campo data ed appare un calendario.
 
-2. Il supervisore seleziona una data dal calendario; non sono selezionabili i giorni precedenti a quello corrente ed i festivi
+2. Il supervisore seleziona una data dal calendario; non sono selezionabili i giorni precedenti a quello corrente ed i festivi.
 
-3. Il sistema mostra una lista (nome, cognome) dei tecnici liberi in quella data [Exception 1]
+3. Il sistema mostra una lista (nome, cognome) dei tecnici liberi in quella data. [Exception 1]
 
-4. Il supervisore seleziona un tecnico dalla lista ed il sistema controlla nuovamente la disponibilità e lo considera *Prenotato* [Exception 2]
+4. Il supervisore seleziona un tecnico dalla lista ed il sistema controlla nuovamente la disponibilità e lo considera *Prenotato*. [Exception 2]
 
-5. Appare il bottone "Assegna" ed il supervisore lo preme [Exception 3]
+5. Appare il bottone "Assegna" ed il supervisore lo preme. [Exception 3]
 
 ***Exceptions***
 
-1. Non vi sono tecnici liberi in quella data, quindi la lista è vuota e appare la scritta "Nessun tecnico disponibile"
+1. Non vi sono tecnici liberi in quella data, quindi la lista è vuota e appare la scritta "Nessun tecnico disponibile".
 
-2. Dal momento di selezione della data al momento di selezione del tecnico, il dato tecnico è stato *prenotato* o assegnato ad un intervento; appare la scritta "Tecnico non disponibile" e viene caricata nuovamente la lista dei tecnici
+2. Dal momento di selezione della data al momento di selezione del tecnico, il dato tecnico è stato *prenotato* o assegnato ad un intervento; appare la scritta "Tecnico non disponibile" e viene caricata nuovamente la lista dei tecnici.
 
-3. Sono trascorsi più di 15 minuti dalla selezione del tecnico; appare la scritta "Tempo scaduto, ripeti l'operazione" e si rimuove la *prenotazione* del tecnico e la selezione della data
+3. Sono trascorsi più di 15 minuti dalla selezione del tecnico; appare la scritta "Tempo scaduto, ripeti l'operazione" e si rimuove la *prenotazione* del tecnico e la selezione della data.
 
 ***Activity Diagram***
 
-![Activity Diagram](./.media/supactivity.drawio.png){width=12cm fig-pos=H}
+![Activity Diagram](./.media/supactivity.drawio.png){width=10cm fig-pos=H}
 
 ## Tecnico
 
@@ -584,11 +581,11 @@ Questo use case descrive come un tecnico visualizza gli interventi che gli sono 
 
 1. Il tecnico visualizza la lista di tutti gli interventi; è attivo il filtro Tutti. [Exception 1] [Extension 1] [Extension 2]
 
-2. Il tecnico seleziona uno specifico intervento e appare un pop-up con ulteriori informazioni e con un link per aggiungere/rimuovere sensori e per concludere l'intervento [Exception 2]
+2. Il tecnico seleziona uno specifico intervento e appare un pop-up con ulteriori informazioni e con un link per aggiungere/rimuovere sensori e per concludere l'intervento. [Exception 2]
 
 ***Exceptions***
 
-1. Nessun intervento soddisfa tale filtro; la lista è vuota e appare la scritta "Nessun intervento"
+1. Nessun intervento soddisfa tale filtro; la lista è vuota e appare la scritta "Nessun intervento".
 
 2. L'intervento è concluso; non si mostrano tali link.
 
@@ -620,13 +617,13 @@ Questo use case descrive come un tecnico aggiunge un sensore all'impianto relati
 
 ***Description***
 
-1. Il tecnico inserisce da tastiera l'id alfanumerico del sensore [Exception 1] [Extension 1]
+1. Il tecnico inserisce da tastiera l'id alfanumerico del sensore. [Exception 1] [Extension 1]
 
-2. Il tecnico inserisce da tastiera latitudine e longitudine in gradi decimali [Exception 2] [Extension 2]
+2. Il tecnico inserisce da tastiera latitudine e longitudine in gradi decimali. [Exception 2] [Extension 2]
 
-3. Il tecnico invia il form premendo il bottone "Aggiungi" [Exception 3]
+3. Il tecnico invia il form premendo il bottone "Aggiungi". [Exception 3]
 
-4. Il sensore è stato correttamente aggiunto ed appare la scritta "Sensore aggiunto"
+4. Il sensore è stato correttamente aggiunto ed appare la scritta "Sensore aggiunto".
 
 ***Exceptions***
 
@@ -636,13 +633,13 @@ Questo use case descrive come un tecnico aggiunge un sensore all'impianto relati
 
 3. I campi id o coordinate sono vuoti o non validi, appare in rosso la scritta "Compila correttamente il form".
 
-4. Il dispositivo con cui si accede ad Ardeeno WebApp non dispone di GPS; appare la scritta "GPS Non disponibile"
+4. Il dispositivo con cui si accede ad Ardeeno WebApp non dispone di GPS; appare la scritta "GPS Non disponibile".
 
 ***Extensions***
 
-1. Il tecnico preme un bottone al lato, inquadra con la fotocamera il codice qr del sensore ed l'id è inserito dal sistema
+1. Il tecnico preme un bottone al lato, inquadra con la fotocamera il codice qr del sensore ed l'id è inserito dal sistema.
 
-2. Il tecnico preme un bottone al lato ed il GPS inserisce automaticamente le coordinate [Exception 4]
+2. Il tecnico preme un bottone al lato ed il GPS inserisce automaticamente le coordinate. [Exception 4]
 
 ### UseCase Rimozione sensore {-}  
 
@@ -670,21 +667,21 @@ Questo use case descrive come un tecnico rimuove un sensore dall'impianto relati
 
 ### UseCase Registrazione dipendente {-}  
 
-***Summary*** 
+***Summary***
 
 Questo use case descrive come avviene la registrazione di un dipendente da parte di un amministratore.
 
 ***Description***
 
-1. L'amministratore inserisce il nome e il cognome [Exception 1]
+1. L'amministratore inserisce il nome e il cognome. [Exception 1]
 
-2. L'amministratore inserisce l'email [Exception 2]
+2. L'amministratore inserisce l'email. [Exception 2]
 
-3. L'amministratore inserisce il numero di telefono [Exception 3]
+3. L'amministratore inserisce il numero di telefono. [Exception 3]
 
-4. L'amministratore inserisce l'indirizzo di domicilio [Exception 4]
+4. L'amministratore inserisce l'indirizzo di domicilio. [Exception 4]
 
-5. L'amministratore inserisce il CF [Exception 5]
+5. L'amministratore inserisce il CF. [Exception 5]
 
 6. L'amministratore seleziona il ruolo del dipendente da una lista contenente: tecnico, supervisore o amministratore.
 
@@ -694,7 +691,9 @@ Questo use case descrive come avviene la registrazione di un dipendente da parte
 
 9. Il sistema invia l'email per il recupero della password -- come sollecito a modificare la password.
 
-10. La registrazione è stata correttamente effettuata, appare la scritta "Registrazione completata".
+10. L'email è automaticamente confermata.
+
+11. La registrazione è stata correttamente effettuata, appare la scritta "Registrazione completata".
 
 ***Exceptions***
 
@@ -710,7 +709,7 @@ Questo use case descrive come avviene la registrazione di un dipendente da parte
 
 6. Vi è almeno un campo del form vuoto o non valido, appare in rosso la scritta "Compila correttamente il form".
 
-7. Il CF inserito è già presente nella BD, appare la scritta "Dipendente già registrato"
+7. Il CF o l'email inserita sono già presenti nella BD, appare la scritta "Dipendente già registrato".
 
 ### UseCase Visualizzazione lista dipendenti {-}  
 
@@ -720,13 +719,13 @@ Questo use case descrive come un amministratore visualizza la lista di tutti i d
 
 ***Description***
 
-1. L'amministratore visualizza la lista di tutti i dipendenti; è attivo il filtro Tutti [Exception 1] [Extension 1] [Extension 2]
+1. L'amministratore visualizza la lista di tutti i dipendenti; è attivo il filtro Tutti. [Exception 1] [Extension 1] [Extension 2]
 
 2. L'amministratore seleziona uno specifico dipendente dalla lista.
 
 ***Exceptions***
 
-1. Nessun dipendente soddisfa tale filtro; la lista è vuota e appare la scritta "Nessun dipendente"
+1. Nessun dipendente soddisfa tale filtro; la lista è vuota e appare la scritta "Nessun dipendente".
 
 ***Extensions***
 
@@ -742,13 +741,17 @@ Questo use case descrive come un amministratore modifica i dati di un dipendente
 
 ***Description***
 
-1. L'amministratore compila almeno uno dei campi descritti nella [Registrazione dipendente](#usecase-registrazione-dipendente)
+1. L'amministratore compila almeno uno dei campi descritti nella [Registrazione dipendente](#usecase-registrazione-dipendente). [Extension 1]
 
-2. L'amministratore invia il form premendo il bottone "Modifica dati" [Exception 1]
+3. L'amministratore invia il form premendo il bottone "Modifica dati". [Exception 1]
 
 ***Exceptions***
 
 1. Tutti i campi del form sono vuoti o vi è almeno un campo non valido, appare in rosso la scritta "Compila correttamente il form".
+
+***Extensions***
+
+1. L'amministratore segna il dipendente come dimesso o non dimesso.
 
 ### UseCase Visualizzazione grafico vendite {-}  
 
@@ -762,9 +765,9 @@ Questo use case descrive la visualizzazione da parte di un amministratore del gr
 
 ***Extensions***
 
-1. L'amministratore seleziona un punto sull'asse del tempo ed appare un pop-up con il numero esatto di impianti venduti in quel mese
+1. L'amministratore seleziona un punto sull'asse del tempo ed appare un pop-up con il numero esatto di impianti venduti in quel mese.
 
-2. L'amministratore seleziona un intervallo sull'asse del tempo ed il grafico si adatta al nuovo intervallo considerato
+2. L'amministratore seleziona un intervallo sull'asse del tempo ed il grafico si adatta al nuovo intervallo considerato.
 
 ### UseCase Visualizzazione grafico interventi {-}  
 
@@ -780,7 +783,7 @@ Questo use case descrive la visualizzazione da parte di un amministratore del gr
 
 1. L'amministratore seleziona un punto sull'asse del tempo ed appare un pop-up con il numero di interventi richiesti (sia totale che suddiviso per tipo). 
 
-2. L'amministratore seleziona un intervallo sull'asse del tempo ed il grafico si adatta al nuovo intervallo considerato
+2. L'amministratore seleziona un intervallo sull'asse del tempo ed il grafico si adatta al nuovo intervallo considerato.
 
 \pagebreak
 # Requisiti Non Funzionali
@@ -856,7 +859,7 @@ Un software proprietario effettua in contemporanea <x> test di prestazione come 
 ||||
 |Scalabilità heatmap|Il sistema deve mantenere le prestazione descritte in [RNF4.Heatmap](#rnf4-prestazioni) anche con 1000 clienti che contemporaneamente usano [RF12](#a)|Un software proprietario effettua in contemporanea 1000 test di prestazione come da [RNF4.Heatmap](#rnf4-prestazioni) (dove nel sistema sono presenti 1000 clienti con ognuno un impianto modello ME100A -- 100 sensori, 10 parametri misurati -- con $12*24*30*12*5=518400$ snapshot); il sistema soddisfa il RNF se almeno 700 test hanno durata di al più 5 secondi|
 ||||
-|Scalabilità tecnici|Il sistema deve mantenere le prestazione descritte in [RNF4.Tecnici](#rnf4-prestazioni) anche con 100 tecnici che contemporaneamente usano una qualsiasi delle funzioni [RF.Tecnico](#tecnico)|Un software proprietario effettua in contemporanea 1000 test di prestazione come da [RNF4.Tecnici](#rnf4-prestazioni) (dove nel sistema sono presenti 1000 clienti con ognuno un impianto modello ME100A -- 100 sensori, 10 parametri misurati -- con $12*24*30*12*5=518400$ snapshot); il sistema soddisfa il RNF se almeno 700 test hanno ogni sottotest con durata di al più 3 secondi|
+|Scalabilità tecnici|Il sistema deve mantenere le prestazione descritte in [RNF4.Tecnici](#rnf4-prestazioni) anche con 100 tecnici che contemporaneamente usano una qualsiasi delle funzioni [RF.Tecnico](#tecnico)|Un software proprietario effettua in contemporanea 100 test di prestazione come da [RNF4.Tecnici](#rnf4-prestazioni) (dove nel sistema sono presenti 1000 clienti con ognuno un impianto modello ME100A -- 100 sensori, 10 parametri misurati -- con $12*24*30*12*5=518400$ snapshot); il sistema soddisfa il RNF se almeno 700 test hanno ogni sottotest con durata di al più 3 secondi|
 
 # Analisi del Contesto
 Nel seguente capitolo vedremo una dettagliata analisi del contesto del sistema da realizzare. Identificheremo gli attori del sistema ed i sistemi esterni (paritari, subordinati e superiori) con cui si interagisce ed evidenzieremo -- con una certa astrazione -- i principali flussi di informazione. Il risultato sarà sintetizzato in un Context Diagram UML.
