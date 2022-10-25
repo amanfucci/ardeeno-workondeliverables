@@ -60,6 +60,58 @@ Questo capitolo presenta i requisiti funzionali del sistema, raggruppati per ruo
 
 ## Utente autenticato
 
+![RF5.1, RF8, RF9](./.media/autenticato.drawio.png){width=12cm fig-pos=H}
+
+### UseCase Lougout{-}
+
+***Summary***
+Questo use case descrive come un Utente Autenticato effettua il logout dal sistema
+
+***Description***
+
+1. L'utente autenticato preme il bottone "Logout"
+
+2. Il sistema riporta l'utente alla pagina di presentazione; l'utente non è pià autenticato
+
+### UseCase Visualizzazione dati personali{-}
+
+***Summary***
+Questo use case descrive come l'utente autenticato visualizza i suoi dati personali
+
+***Description***
+
+1. L'utente autenticato visualizza una pagina contenente la lista dei dati personali. Vi è un link alla pagina di modifica [Extension 1]
+
+***Extensions***
+1. Se l'utente è un dipendete vi è in aggiunta il campo CF
+
+### UseCase Modifica dati personali{-}
+
+***Summary***
+Questo use case descrive come l'utente autenticato modifica i propri dati personali
+
+***Description***
+
+1. L'utente autenticato visualizza un form contenente tutti i campi presente nella registrazione Cliente
+
+2. L'utente riempie certi campi. [Exception 1] 
+
+3. L'utente invia il form premendo il tasto "Modifica dati" [Exception 2] [Exception 3]
+
+4. Il sistema aggiorna solo quei campi riempiti.
+
+***Exceptions***
+
+1. Se certi campi non sono validi, il bordo diventa rosso
+
+2. Alcuni campi non sono validi o nessun campo è riempito, appare la scritta "Compila correttamente il form"
+
+3. La nuova email email che è stata inserita è gia presente nel sistema.
+
+***Extensions***
+
+1. È stata inserita una nuova email; viene inviata una nuova email di conferma
+
 <!--FORM
 
 1. Il <attore> inserisce X [Exception 1]
