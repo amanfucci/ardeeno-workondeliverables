@@ -58,6 +58,208 @@ Questo capitolo presenta i requisiti funzionali del sistema, raggruppati per ruo
 
 ## Utente anonimo
 
+![RF1, RF2, RF2.1, RF3](.media/utente_anonimo1.drawio.png){width=10cm fig-pos=H}
+
+### UseCase Visualizzazione presentazione {-}
+
+***Summary***
+
+Questo use case descrive la visualizzazione da parte di un utente anonimo della presentazione dell'azienda.
+
+***Description***
+
+1. L'utente anonimo visualizza una breve descrizione dell'azienda.
+
+2. L'utente anonimo visualizza una mappa fornita da OpenStreetMap, in cui è evidenziata la posizione delle sedi dell'azienda.
+
+3. L'utente anonimo visualizza email e numero di telefono dell'azienda [Extension 1]
+
+***Extensions***
+
+1. L'utente preme il bottone "Copia", posto a fianco dell email/numero di telefono, e copia sulla clipboard del dispositivo con cui si sta accedendo al sistema l'email/il numero di telefono.
+
+### UseCase Visualizzazione vetrina {-}
+
+***Summary***
+
+Questo use case descrive la visualizzazione da parte di un utente anonimo dei modelli di impianto in vendita.
+
+***Description***
+
+1. L'utente anonimo visualizza una lista dei modelli di impianto in vendita, dove per ognuno si mostra: nome del modello, nome del tipo, prezzo, immagine esemplificativa, superficie consigliata per il modello di impianto (in $m^2$) e lista dei parametri misurati. I modelli sono ordinati per prezzo crescente. [Exception 1] [Extension 1] [Extension 2]
+
+2. L'utente anonimo seleziona uno specifico filtro dal menù dei filtri, che consente di filtrare i modelli per: tipo, prezzo, superficie consigliata. [Exception 1]
+
+***Exceptions***
+
+1. Nessun impianto soddisfa il filtro selezionato; la lista è vuota e compare la scritta "Nessun impianto".
+
+***Extensions***
+
+1. L'utente anonimo seleziona uno specifico modello di impianto e, oltre alle informazioni precedenti, visualizza le *product reviews* di TrustPilot con nome dell'autore, valutazione in stelle (da una a cinque), data, titolo e descrizione. Le recensioni sono sempre ordinate per data: da più recente a meno recente. [Extension 2]
+
+2. L'utente anonimo seleziona uno specifico filtro dal menù dei filtri, che consente di filtrare le recensioni per: valutazione in stelle, data.
+
+### UseCase Visualizzazione recensioni {-}
+
+***Summary***
+
+Questo use case descrive la visualizzazione da parte di un utente anonimo delle *service reviews* di TrustPilot.
+
+***Description***
+
+1. L'utente anonimo visualizza una lista delle dieci più recenti *service reviews* con almeno quattro stelle. Per ogni recensione si mostra: nome dell'autore, valutazione in stelle (da una a cinque), data, titolo e descrizione. [Exception 1]
+
+2. L'utente anonimo visualizza il *TrustScore* dell'azienda, fornito dal servizio TrustPilot. [Exception 2]
+
+***Exceptions***
+
+1. Non ci sono *service reviews*; compare la scritta "Nessuna recensione disponibile".
+
+2. Non ci sono *service reviews*; compare la scritta "TrustScore non disponibile".
+
+![RF4, RF5, RF6, RF7](.media/utente_anonimo2.drawio.png){width=10cm fig-pos=H}
+
+<!--FORM
+1. Il <attore> inserisce X [Exception 1]
+2. Il <attore> invia il form premendo il bottone "<bottone>" [Exception 2]
+3. <qualcosa> è stato correttamente <fatto> ed appare la scritta "<scritta>"
+Exceptions
+1. X non è valido (<motivo>), il bordo del campo del form diventa rosso.
+2. Vi è almeno un campo del form vuoto o non valido, appare in rosso la scritta "Compila correttamente il form".
+-->
+
+### UseCase Registrazione cliente {-}
+***Summary***
+
+Questo use case descrive come l'utente anonimo effettua la registrazione come cliente nel sistema tramite form.
+
+***Description***
+
+1. L'utente anonimo inserisce il nome e il cognome. [Exception 1]
+
+2. L'utente anonimo inserisce l'email. [Exception 2]
+
+3. L'utente anonimo inserisce il numero di telefono. [Exception 3]
+
+4. L'utente anonimo inserisce l'indirizzo di domicilio. [Exception 4]
+
+5. L'utente anonimo inserisce due volte la password. [Exception 5]
+
+5. L'utente anonimo invia il form premendo il bottone "Registrati". [Exception 6] [Exception 7]
+
+6. Il sistema invia l'email contenente il codice per confermare l'indirizzo email.
+
+7. La registrazione è stata correttamente effettuata, appare la scritta "Registrazione completata".
+
+***Exceptions***
+
+1. Il nome e/o il cognome non è valido \(non soddisfa la regex "\[A-Za-z\]\{3,20\}"\), il bordo del campo del form diventa rosso.
+
+2. L'email non è valida \(non soddisfa la regex ".\*@.\*"\), il bordo del campo del form diventa rosso.
+
+3. Il numero di telefono non è valido (non soddisfa la regex "(.\\d*) \\d\{10\}" \), il bordo del campo del form diventa rosso.
+
+4. L'indirizzo non è valido, il bordo del campo del form diventa rosso.
+
+5. Le due password non sono congruenti oppure la prima non e valida ([RNF2 Sicurezza](#rnf2-sicurezza)), il bordo del campo del form diventa rosso.
+
+6. Vi è almeno un campo del form vuoto o non valido, appare in rosso la scritta "Compila correttamente il form".
+
+7. L'email inserità è gia utilizzata da un altro account, appare la scritta "Email già utilizzata".
+
+<!--
+1. L'utente anonimo riceve un'email da *<component>.ardeeno@gmail.com* con oggetto "<oggetto>".
+
+2. L'utente anonimo visualizza il messaggio dell'email e preme sul link con testo "<testo>"
+
+3. Il sistema <fa qualcosa> e mostra una pagina con scritto "<Ho fatto qualcosa>"
+-->
+
+### UseCase Conferma email {-}
+***Summary***
+
+Questo use case descrive come avviene la conferma dell'email inserita nella registrazione da parte dell'utente anonimo.
+
+***Description***
+
+1. L'utente anonimo riceve un'email da *accounts.ardeeno@gmail.com* con oggeto "Conferma email".
+
+2. L'utente anonimo visualizza il messaggio dell'email e preme sul link con testo "Conferma la mia email". [Exception 1]
+
+3. Il sistema conferma l'email e mostra una pagina con scritto "Email confermata" 
+
+***Exceptions***
+
+1. Dal momento dell'invio dell'email all'apertura del link sono trascorse più di 24h, il link non è più valido ed appare la scritta "Email non confermata, link non valido"!
+
+### UseCase Autenticazione {-}
+
+***Summary***
+
+Questo use case descrive come l'utente anonimo effettua l'autentificazione tramite form.
+
+***Description***
+
+1. L'utente anonimo inserisce l'email. [Exception 1]
+
+2. L'utente anonimo inserisce la password.
+
+3. L'utente anonimo invia il form premendo il bottone "Login". [Exception 2]
+
+4. Il sistema verifica che l'email inserita appartenga ad un account. [Exception 3]
+
+5. IL sistema verifica che l'email inserita sia stata confermata. [Exception 4]
+
+5. Il sistema verifica che la password sia corretta. [Exception 5]
+
+6. L'autenticazione è conclusa, l'utente è portato alla pagina degli impianti o degli interventi.
+
+***Exceptions***
+
+1. L'email non è valida \(non soddisfa la regex ".\*@.\*"\), il bordo del campo del form diventa rosso.
+
+2. Vi è almeno un campo del form vuoto o non valido, appare in rosso la scritta "Compila correttamente il form".
+
+3. L'email non appartiene ad alcun account o appartiene all'account di un Dipendente dimesso, appare la scritta "Email non corretta".
+
+4. L'email non è confermata; il sistema invia all'email un nuovo link per confermare tale email ed appare la scritta "Inviato nuovo link di conferma!"; il link precedente non è più valido.
+
+5. La password non è corretta, appare la scritta "Password non corretta" ed il link alla pagina "Recupera password".
+
+### UseCase7 Recupero password {-}
+***Summary***
+
+Questo use case descrive come avviene il recupero -- ovvero il cambio -- della password da parte di un utente anonimo.
+
+***Description***
+
+1. L'utente anonimo inserisce l'email. [Exception 1]
+
+2. L'utente anonimo invia il form premendo il bottone "Recupera password". [Exception 2]
+
+3. Il sistema invia all'email inserita un link per recuperare la password. 
+
+4. L'utente anonimo riceve un'email da *accounts.ardeeno@gmail.com* con oggeto "Recupero password".
+
+5. L'utente anonimo visualizza il messaggio dell'email e preme sul link con testo "Modifica la mia password". [Exception 3]
+
+6. L'utente anonimo visualizza il form ed inserisce due volte la nuova password.
+
+7. L'utente anonimo invia il form premendo il bottone "Modifica password". [Exception 4]
+
+8. Il sistema modifica la password dell'account
+
+***Exceptions***
+
+1. L'email non è valida \(non soddisfa la regex ".\*@.\*"\), il bordo del campo del form diventa rosso.
+
+2. L'email non appartiene ad alcun account o appartiene all'account di un Dipendente dimesso, appare la scritta "Email non corretta".
+
+3. Dal momento dell'invio dell'email all'apertura del link sono trascorse più di 24h, il link non è più valido ed appare la scritta "Recupero non possibile, link non valido!"
+
+4. Le due password non sono congruenti oppure la prima non e valida ([RNF2 Sicurezza](#rnf2-sicurezza)), il bordo del campo del form diventa rosso.
+
 ## Utente autenticato
 
 ![RF5.1, RF8, RF9](./.media/autenticato.drawio.png){width=12cm fig-pos=H}
