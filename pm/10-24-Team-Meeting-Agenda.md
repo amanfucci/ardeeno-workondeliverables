@@ -21,4 +21,4 @@
 |**Changes/Problems**|**What to do**|
 |---|---|
 
-**Next Meeting:** TBA
+**Next Meeting:** TBD

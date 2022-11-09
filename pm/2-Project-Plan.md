@@ -51,7 +51,7 @@ gantt
 |Diagramma di Contesto   |A|30/10|Done|
 |Diagramma dei Componenti|A,M|9/11|Active|
 |Class Diagrams          |A,E,M|23/11||
-|OCL                     ||||
+|OCL                     |TBA|||
 |BPMN                    ||||
 |FrontEnd                ||||
 |BackEnd                 ||||
