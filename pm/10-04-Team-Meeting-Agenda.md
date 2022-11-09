@@ -6,8 +6,6 @@
 
 **Invited:** Alessandro Manfucci, Enrico Cescato
 
-**Attendees:** Alessandro Manfucci, Enrico Cescato
-
 ## Agenda
 
 |**Agenda Item**|**Time**|

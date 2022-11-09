@@ -15,27 +15,26 @@ gantt
     Documento di Progetto :milestone, am, 10-10, 0d
     
     section Specifica dei Requisiti
-    Spec ReqF (UCD) :s0, after am, 15d
-    Spec ReqNF :s1, 16-10, 7d
-    Diagramma di Contesto :s2, 16-10, 7d
-    Diagramma dei Componenti :s3, after s2, 6d
-    Documento di Specifica :milestone, sm, 30-10, 0d
+    Spec ReqF (UCD) :s0, after am, 12d
+    Spec ReqNF :s1, after s0, 4d
+    Diagramma di Contesto :s2, after s1, 5d
+    Diagramma dei Componenti :s3, after s2, 13d
+    Documento di Specifica :milestone, sm, 9-11, 0d
 
-    section Progettazione Design
-    Class Diagrams :pa0, after sm, 7d
-    OCL :pa1, after sm, 7d
-    BPMN :pa2, after pa1, 7d
-    Documento di Design :milestone, pam, 13-11, 0d
+    section Progettazione Design e Architettura
+    Class Diagrams :pa0, after sm, 12d
+    OCL :pa1, after pa0, 8d
+    Documento di Design :milestone, pam, 30-11, 0d
 
     section Sviluppo e Deployment
-    FrontEnd :d0, after pam, 21-11
-    BackEnd :d1, after pam, 21-11
-    Deployment :d2, after d1, 22-11
-    Documento di Sviluppo :milestone, dm, 22-11, 0d
+    FrontEnd :d0, after pam, 21-12
+    BackEnd :d1, after pam, 21-12
+    Deployment :d2, after d1, 22-12
+    Documento di Sviluppo :milestone, dm, 22-12, 0d
 
     section Report
-    Closing meeting :i0, 21-11, 22-11
-    Report Finale :milestone, fm, 22-11, 0d
+    Closing meeting :i0, 21-12, 22-12
+    Report Finale :milestone, fm, 22-12, 0d
 
 ```
 
@@ -49,9 +48,9 @@ gantt
 |Schema BackEnd          |A|10/10|Done|
 |Spec ReqF               |A,E,M|24/10|Active|
 |Spec ReqNF              |A|24/10|Done|
-|Diagramma di Contesto   |A,E,M|30/10|Active|
-|Diagramma dei Componenti||30/10|Active|
-|Class Diagrams          ||||
+|Diagramma di Contesto   |A|30/10|Done|
+|Diagramma dei Componenti|A,M|9/11|Active|
+|Class Diagrams          |A,E,M|23/11||
 |OCL                     ||||
 |BPMN                    ||||
 |FrontEnd                ||||

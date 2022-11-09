@@ -6,8 +6,6 @@
 
 **Invited:** Alessandro Manfucci, Enrico Cescato, Matteo Sottocornola
 
-**Attendees:** Alessandro Manfucci, Enrico Cescato, Matteo Sottocornola
-
 ## Agenda
 
 |**Agenda Item**|**Time**|
