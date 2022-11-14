@@ -1134,3 +1134,5 @@ Interfaccia fornita – richiesta riparazione.
 Inoltra la richiesta di riparazione inserita dall’utente a un supervisore.
 
 ## Diagramma dei componenti
+
+![](./.media/diagrammacomp.drawio.png){width=12cm fig-pos=H}
