@@ -83,7 +83,7 @@ Non vi è filtraggio.
 ## Utente anonimo
 
 ### RF1 Visualizzazione presentazione {-}
-Il sistema deve mostrare una pagina di presentazione, che comprende una breve descrizione dell'azienda, una mappa che indica la posizione della sede, ed i contatti (email, telefono).
+Il sistema deve mostrare una pagina di presentazione, che comprende una breve descrizione dell'azienda, una mappa che indica la posizione della sede, ed i contatti (indirizzo email, telefono).
 
 ### RF2 Visualizzazione vetrina {-}
 Il sistema deve mostrare una lista dei modelli di impianto in vendita, dove per ognuno si mostra: nome del modello, nome del tipo, prezzo, immagine esemplificativa, superficie consigliata per il modello di impianto (in $m^2$) e lista dei parametri misurati. Tra gli impianti visualizzati, il sistema deve permettere di selezionarne uno.
@@ -102,16 +102,16 @@ Il sistema deve mostrare una lista delle dieci più recenti recensioni dell'azie
 Le recensioni sono sempre ordinate per data: da più recente a meno recente. Non vi è filtraggio.
 
 ### RF4 Registrazione cliente {-}
-Il sistema deve consentire ad un utente anonimo di registrarsi come cliente, compilando un form con campi: nome, cognome, email, indirizzo, telefono e password (richiesta due volte al fine di evitare errori).
+Il sistema deve consentire ad un utente anonimo di registrarsi come cliente, compilando un form con campi: nome, cognome, indirizzo email, indirizzo, telefono e password (richiesta due volte al fine di evitare errori).
 
 ### RF5 Autenticazione {-}
-Il sistema deve permettere ad un utente anonimo di autenticarsi tramite un form, inserendo email e password.
+Il sistema deve permettere ad un utente anonimo di autenticarsi tramite un form, inserendo indirizzo email e password.
 
-### RF6 Conferma email {-}
-Il sistema deve inviare all'email inserita in [RF4](#rf4-registrazione-cliente) un link per confermare tale email; la conferma dell'email avviene all'apertura del link. Quest'ultimo ha una scadenza di 24 ore e viene inviato nuovamente dalla pagina di autenticazione [RF5](#rf5-autenticazione), a seguito di un tentativo di accesso con email non verificata. Se l'email non è confermata, l'autenticazione non è permessa.
+### RF6 Conferma indirizzo email {-}
+Il sistema deve inviare all'indirizzo email inserito in [RF4](#rf4-registrazione-cliente) un link per confermare tale indirizzo email; la conferma dell'indirizzo email avviene all'apertura del link. Quest'ultimo ha una scadenza di 24 ore e viene inviato nuovamente dalla pagina di autenticazione [RF5](#rf5-autenticazione), a seguito di un tentativo di accesso con indirizzo email non verificato. Se l'indirizzo email non è confermato, l'autenticazione non è permessa.
 
 ### RF7 Recupero password {-}
-Il sistema -- tramite la pagina mostrata da [RF5](#rf5-autenticazione) -- deve permettere a un utente anonimo di inserire l'email di autenticazione per cui cambiare la password associata. A tale email arriverà il link ad una pagina in cui inserire tramite form la nuova password: all'invio del form verrà cambiata la password.
+Il sistema -- tramite la pagina mostrata da [RF5](#rf5-autenticazione) -- deve permettere a un utente anonimo di inserire l'indirizzo email di autenticazione per cui cambiare la password associata. A tale indirizzo email arriverà il link ad una pagina in cui inserire tramite form la nuova password: all'invio del form verrà cambiata la password.
 
 ## Utente autenticato
 
@@ -213,10 +213,10 @@ Il sistema -- tramite la pagina mostrata da [RF21](#rf21-visualizzazzione-e-modi
 ## Amministratore
 
 ### RF23 Registrazione dipendenti {-}
-Il sistema deve permettere ad un amministratore di registrare nel sistema i dipendenti tramite un form, nel quale sono presenti i campi: nome, cognome, email, telefono, indirizzo, CF, ruolo (selezionato da una lista contenente tecnico, supervisore, amministratore). Alla registrazione viene inviata un'email contenente la password generata automaticamente dal sistema, ed un'altra email per sollecitare il cambio della password ([RF7](#rf7-recupero-della-password)).
+Il sistema deve permettere ad un amministratore di registrare nel sistema i dipendenti tramite un form, nel quale sono presenti i campi: nome, cognome, indirizzo email, telefono, indirizzo, CF, ruolo (selezionato da una lista contenente tecnico, supervisore, amministratore). Alla registrazione viene inviata un'email contenente la password generata automaticamente dal sistema, ed un'altra email per sollecitare il cambio della password ([RF7](#rf7-recupero-della-password)).
 
 ### RF24 Visualizzazione lista dipendenti {-}
-Il sistema deve far visualizzare una lista di tutti i dipendenti, dove per ognuno si mostra: nome, cognome, email, telefono, indirizzo, CF, password, ruolo. Il sistema deve permettere di selezionare un dipendente dalla lista.
+Il sistema deve far visualizzare una lista di tutti i dipendenti, dove per ognuno si mostra: nome, cognome, indirizzo email, telefono, indirizzo, CF, password, ruolo. Il sistema deve permettere di selezionare un dipendente dalla lista.
 Il sistema deve permettere di filtrare la lista dei dipendenti per: ruolo, stato (attivo, dimesso). I dipendenti sono sempre ordinati per (cognome, nome) in ordine alfabetico.
 
 ### RF25 Modifica dati dipendente {-}
@@ -306,13 +306,13 @@ In particolare vedremo mock-up per:
 ### RF1 Visualizzazione Presentazione {-}
 ![Visualizzazione Presentazione](./.media/mockups/presentazione.png){width=6cm fig-pos=H}
 
-Pagina d'ingresso della WebApp, dove si mostra una breve presentazione, la posizione delle filiali ed i contatti (email, telefono). Si osservi la presenza di un menù laterale, il quale contiene le varie funzioni del sistema, ed un tasto login per procedere all'autenticazione.
+Pagina d'ingresso della WebApp, dove si mostra una breve presentazione, la posizione delle filiali ed i contatti (indirizzo email, telefono). Si osservi la presenza di un menù laterale, il quale contiene le varie funzioni del sistema, ed un tasto login per procedere all'autenticazione.
 
 \pagebreak
 ### RF5 Autenticazione {-}
 ![Autenticazione](./.media/mockups/login.png){width=6cm fig-pos=H}
 
-Un'utente anonimo - registrato nel sistema - può autenticarsi inserendo email e password. Se la combinazione (email, password) non è presente nel sistema, verrà mostrata in rosso la scritta **Password Errata** [RNF1](#rnf1-privacy). Se l'email non è confermata verrà mostrata in rosso la scritta **Email non confermata**, assieme al link **Invia di nuovo il link**.
+Un'utente anonimo - registrato nel sistema - può autenticarsi inserendo indirizzo email e password. Se la combinazione (indirizzo email, password) non è presente nel sistema, verrà mostrata in rosso la scritta **Password Errata** [RNF1](#rnf1-privacy). Se l'indirizzo email non è confermato verrà mostrata in rosso la scritta **Indirizzo email non confermato**, assieme al link **Invia di nuovo il link**.
 Si osservi la presenza del bottone **Recupera Password** e **Registrati**.
 
 \pagebreak
@@ -345,7 +345,7 @@ Il sistema da sviluppare interagisce con più sistemi esterni attraverso delle A
 
 - **PayPal**: Sistema tramite cui il cliente che utilizza Ardeeno WebApp invia le richieste di pagamento per acquistare un impianto in vendita. PayPal invierà una conferma di avvenuto pagamento, e solo dopo questa conferma Ardeeno WebApp considererà l'acquisto come avvenuto. Questo sistema è usato da [RF10](#rf10-acquisto-impianto).
 
-- **Gmail**: Sistema tramite cui si inviano messaggi email contenenti link per confermare l'indirizzo email di un utente, per cambiare la password di un utente o per sollecitare una recensione dopo avvenuto acquisto. Questo sistema è usato da [RF6](#rf6-conferma-email), [RF7](#rf7-recupero-della-password), [RF9](#rf9-modifica-dei-dati-personali), [RF25](#rf25-modifica-dati-dipendente), [RF10](#rf10-acquisto-impianto).
+- **Gmail**: Sistema tramite cui si inviano messaggi email contenenti link per confermare l'indirizzo email di un utente, per cambiare la password di un utente o per sollecitare una recensione dopo avvenuto acquisto. Questo sistema è usato da [RF6](#rf6-conferma-indirizzo-email), [RF7](#rf7-recupero-della-password), [RF9](#rf9-modifica-dei-dati-personali), [RF25](#rf25-modifica-dati-dipendente), [RF10](#rf10-acquisto-impianto).
 
 - **TrustPilot**: Sistema tramite cui Ardeeno WebApp reperirà le recensioni fatte dagli utenti e che permetterà agli utenti di inserire una nuova recensione tramite un link. Questo sistema è usato da [RF16](#rf16-richiesta-recensione)
 

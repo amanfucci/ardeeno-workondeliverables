@@ -8,9 +8,9 @@ subtitle: |
 
   D2-Documento di Specifica
 
-  v0.7
+  v0.9
 author: [alessandro.manfucci@studenti.unitn.it, enrico.cescato@studenti.unitn.it ,m.sottocornola-1@studenti.unitn.it]
-date: "25-10-2022"
+date: "15-11-2022"
 lang: it
 format:
   pdf:
@@ -94,11 +94,11 @@ Questo use case descrive la visualizzazione da parte di un utente anonimo della 
 
 2. L'utente anonimo visualizza una mappa fornita da OpenStreetMap, in cui è evidenziata la posizione delle sedi dell'azienda.
 
-3. L'utente anonimo visualizza email e numero di telefono dell'azienda. [Extension 1]
+3. L'utente anonimo visualizza indirizzo email e numero di telefono dell'azienda. [Extension 1]
 
 ***Extensions***
 
-1. L'utente preme il bottone "Copia", posto a fianco dell email/numero di telefono, e copia sulla clipboard del dispositivo con cui si sta accedendo al sistema l'email/il numero di telefono.
+1. L'utente preme il bottone "Copia", posto a fianco dell'indirizzo email/numero di telefono, e copia sulla clipboard del dispositivo con cui si sta accedendo al sistema l'indirizzo email/il numero di telefono.
 
 ### UseCase Visualizzazione vetrina {-}
 
@@ -151,7 +151,7 @@ Questo use case descrive come l'utente anonimo effettua la registrazione come cl
 
 1. L'utente anonimo inserisce il nome e il cognome. [Exception 1]
 
-2. L'utente anonimo inserisce l'email. [Exception 2]
+2. L'utente anonimo inserisce l'indirizzo email. [Exception 2]
 
 3. L'utente anonimo inserisce il numero di telefono. [Exception 3]
 
@@ -161,7 +161,7 @@ Questo use case descrive come l'utente anonimo effettua la registrazione come cl
 
 5. L'utente anonimo invia il form premendo il bottone "Registrati". [Exception 6] [Exception 7]
 
-6. Il sistema invia l'email contenente il codice per confermare l'indirizzo email.
+6. Il sistema -- tramite Gmail -- invia l'email contenente il codice per confermare l'indirizzo email.
 
 7. La registrazione è stata correttamente effettuata, appare la scritta "Registrazione completata".
 
@@ -169,7 +169,7 @@ Questo use case descrive come l'utente anonimo effettua la registrazione come cl
 
 1. Il nome e/o il cognome non è valido \(non soddisfa la regex "\[A-Za-z\]\{3,20\}"\), il bordo del campo del form diventa rosso.
 
-2. L'email non è valida \(non soddisfa la regex ".\*@.\*"\), il bordo del campo del form diventa rosso.
+2. L'indirizzo email non è valido \(non soddisfa la regex ".\*@.\*"\), il bordo del campo del form diventa rosso.
 
 3. Il numero di telefono non è valido (non soddisfa la regex "(.\\d*) \\d\{10\}" \), il bordo del campo del form diventa rosso.
 
@@ -179,24 +179,24 @@ Questo use case descrive come l'utente anonimo effettua la registrazione come cl
 
 6. Vi è almeno un campo del form vuoto o non valido, appare in rosso la scritta "Compila correttamente il form".
 
-7. L'email inserita è già utilizzata da un altro account, appare la scritta "Email già utilizzata".
+7. L'indirizzo email inserito è già utilizzato da un altro account, appare la scritta "Indirizzo email già utilizzato".
 
-### UseCase Conferma email {-}
+### UseCase Conferma indirizzo email {-}
 ***Summary***
 
-Questo use case descrive come avviene la conferma dell'email inserita nella registrazione da parte dell'utente anonimo.
+Questo use case descrive come avviene la conferma dell'indirizzo email inserito nella registrazione da parte dell'utente anonimo.
 
 ***Description***
 
-1. L'utente anonimo riceve un'email da *accounts.ardeeno@gmail.com* con oggetto "Conferma email".
+1. L'utente anonimo riceve un'email da *accounts.ardeeno@gmail.com* con oggetto "Conferma indirizzo email".
 
-2. L'utente anonimo visualizza il messaggio dell'email e preme sul link con testo "Conferma la mia email". [Exception 1]
+2. L'utente anonimo visualizza il messaggio dell'email e preme sul link con testo "Conferma il mio indirizzo email". [Exception 1]
 
-3. Il sistema conferma l'email e mostra una pagina con scritto "Email confermata".
+3. Il sistema conferma l'indirizzo email e mostra una pagina con scritto "Indirizzo email confermato".
 
 ***Exceptions***
 
-1. Dal momento dell'invio dell'email all'apertura del link sono trascorse più di 24h, il link non è più valido ed appare la scritta "Email non confermata, link non valido"!
+1. Dal momento dell'invio dell'email all'apertura del link sono trascorse più di 24h, il link non è più valido ed appare la scritta "Indirizzo email non confermato, link non valido"!
 
 ### UseCase Autenticazione {-}
 
@@ -206,15 +206,15 @@ Questo use case descrive come l'utente anonimo effettua l'autenticazione tramite
 
 ***Description***
 
-1. L'utente anonimo inserisce l'email. [Exception 1]
+1. L'utente anonimo inserisce l'indirizzo email. [Exception 1]
 
 2. L'utente anonimo inserisce la password.
 
 3. L'utente anonimo invia il form premendo il bottone "Login". [Exception 2]
 
-4. Il sistema verifica che l'email inserita appartenga ad un account. [Exception 3]
+4. Il sistema verifica che l'indirizzo email inserito appartenga ad un account. [Exception 3]
 
-5. Il sistema verifica che l'email inserita sia stata confermata. [Exception 4]
+5. Il sistema verifica che l'indirizzo email inserito sia stato confermato. [Exception 4]
 
 5. Il sistema verifica che la password sia corretta. [Exception 5]
 
@@ -222,13 +222,13 @@ Questo use case descrive come l'utente anonimo effettua l'autenticazione tramite
 
 ***Exceptions***
 
-1. L'email non è valida \(non soddisfa la regex ".\*@.\*"\), il bordo del campo del form diventa rosso.
+1. L'indirizzo email non è valido \(non soddisfa la regex ".\*@.\*"\), il bordo del campo del form diventa rosso.
 
 2. Vi è almeno un campo del form vuoto o non valido, appare in rosso la scritta "Compila correttamente il form".
 
-3. L'email non appartiene ad alcun account o appartiene all'account di un Dipendente dimesso, appare la scritta "Email non corretta".
+3. L'indirizzo email non appartiene ad alcun account o appartiene all'account di un Dipendente dimesso, appare la scritta "Indirizzo email non corretto".
 
-4. L'email non è confermata; il sistema invia all'email un nuovo link per confermare tale email ed appare la scritta "Inviato nuovo link di conferma!"; il link precedente non è più valido.
+4. L'indirizzo email non è confermato; il sistema -- tramite Gmail -- invia all'indirizzo email un nuovo link per confermare tale indirizzo email ed appare la scritta "Inviato nuovo link di conferma!"; il link precedente non è più valido.
 
 5. La password non è corretta, appare la scritta "Password non corretta" ed il link alla pagina "Recupera password".
 
@@ -239,11 +239,11 @@ Questo use case descrive come avviene il recupero -- ovvero il cambio -- della p
 
 ***Description***
 
-1. L'utente anonimo inserisce l'email. [Exception 1]
+1. L'utente anonimo inserisce l'indirizzo email. [Exception 1]
 
 2. L'utente anonimo invia il form premendo il bottone "Recupera password". [Exception 2]
 
-3. Il sistema invia all'email inserita un link per recuperare la password. 
+3. Il sistema -- tramite Gmail -- invia all'indirizzo email inserito un link per recuperare la password. 
 
 4. L'utente anonimo riceve un'email da *accounts.ardeeno@gmail.com* con oggetto "Recupero password".
 
@@ -257,9 +257,9 @@ Questo use case descrive come avviene il recupero -- ovvero il cambio -- della p
 
 ***Exceptions***
 
-1. L'email non è valida \(non soddisfa la regex ".\*@.\*"\), il bordo del campo del form diventa rosso.
+1. L'indirizzo email non è valido \(non soddisfa la regex ".\*@.\*"\), il bordo del campo del form diventa rosso.
 
-2. L'email non appartiene ad alcun account o appartiene all'account di un Dipendente dimesso, appare la scritta "Email non corretta".
+2. L'indirizzo email non appartiene ad alcun account o appartiene all'account di un Dipendente dimesso, appare la scritta "Indirizzo email non corretto".
 
 3. Dal momento dell'invio dell'email all'apertura del link sono trascorse più di 24h, il link non è più valido ed appare la scritta "Recupero non possibile, link non valido!".
 
@@ -317,11 +317,11 @@ Questo use case descrive come l'utente autenticato modifica i propri dati person
 
 2. Alcuni campi non sono validi o nessun campo è riempito, appare la scritta "Compila correttamente il form".
 
-3. La nuova email che è stata inserita è già presente nel sistema.
+3. Il nuovo indirizzo email che è stato inserito è già presente nel sistema.
 
 ***Extensions***
 
-1. È stata inserita una nuova email; viene inviata una nuova email di conferma.
+1. È stato inserito un nuovo indirizzo email; viene inviata una nuova email di conferma tramite Gmail.
 
 ## Cliente
 
@@ -345,7 +345,7 @@ Questo use case descrive come il cliente effettua l'acquisto dell'impianto prece
 
 5. L'acquisto è concluso, nella pagina di acquisto appare in verde la scritta "Acquisto concluso!".
 
-6. L'acquisto è concluso, il sistema inserisce un intervento di installazione per il nuovo impianto ed invia una richiesta di recensione per email.
+6. L'acquisto è concluso, il sistema inserisce un intervento di installazione per il nuovo impianto ed -- tramite Gmail -- invia una richiesta di recensione per email.
 
 ***Exceptions***
 
@@ -427,7 +427,7 @@ Questo use case descrive come il cliente interagisce con la Dashboard dell'impia
 
 ***Description***
 
-1. Il cliente visualizza le informazioni del singolo impianto (id, indirizzo, modello, stato, data acquisto, superficie) e le funzioni disponibili (Heatmap, visualizzazione su tabella, visualizzazione interventi).
+1. Il cliente visualizza le informazioni del singolo impianto (ID, indirizzo, modello, stato, data acquisto, superficie) e le funzioni disponibili (Heatmap, visualizzazione su tabella, visualizzazione interventi).
 
 2. Il cliente seleziona una funzione. 
 
@@ -455,7 +455,7 @@ Questo use case descrive come un cliente visualizza le misurazioni di uno specif
 
 ***Description***
 
-1. La heatmap mostra lo snapshot più recente dell'impianto considerando un parametro arbitrario. Per ogni misurazione nello snapshot, il valore del parametro considerato è posizionato sulla mappa alle coordinate del dato sensore. Il valore del parametro considerato è rappresentato con una scala di colori dal giallo (valore minimo assoluto) al rosso (valore massimo assoluto).
+1. La heatmap mostra lo snapshot più recente dell'impianto considerando un parametro arbitrario. Per ogni misurazione nello snapshot, il valore del parametro considerato è posizionato sulla mappa alle coordinate del dato sensore. Il valore del parametro considerato è rappresentato con una scala di colori dal giallo (valore minimo assoluto) al rosso (valore massimo assoluto). Le mappe sono reperite da OpenStreetMap.
 
 2. Il cliente seleziona il parametro considerato da una lista contenente tutti i parametri misurati dall'impianto selezionato.
 
@@ -617,7 +617,7 @@ Questo use case descrive come un tecnico aggiunge un sensore all'impianto relati
 
 ***Description***
 
-1. Il tecnico inserisce da tastiera l'id alfanumerico del sensore. [Exception 1] [Extension 1]
+1. Il tecnico inserisce da tastiera l'ID alfanumerico del sensore. [Exception 1] [Extension 1]
 
 2. Il tecnico inserisce da tastiera latitudine e longitudine in gradi decimali. [Exception 2] [Extension 2]
 
@@ -627,17 +627,17 @@ Questo use case descrive come un tecnico aggiunge un sensore all'impianto relati
 
 ***Exceptions***
 
-1. L'id non è valido \(non soddisfa la regex "\[\\dA-Za-z\]\{10\}"\), il bordo del campo del form diventa rosso.
+1. L'ID non è valido \(non soddisfa la regex "\[\\dA-Za-z\]\{10\}"\), il bordo del campo del form diventa rosso.
 
 2. Le coordinate non sono valide (non sono un numero), il bordo del campo del form diventa rosso.
 
-3. I campi id o coordinate sono vuoti o non validi, appare in rosso la scritta "Compila correttamente il form".
+3. I campi ID o coordinate sono vuoti o non validi, appare in rosso la scritta "Compila correttamente il form".
 
 4. Il dispositivo con cui si accede ad Ardeeno WebApp non dispone di GPS; appare la scritta "GPS Non disponibile".
 
 ***Extensions***
 
-1. Il tecnico preme un bottone al lato, inquadra con la fotocamera il codice qr del sensore ed l'id è inserito dal sistema.
+1. Il tecnico preme un bottone al lato, inquadra con la fotocamera il codice qr del sensore ed l'ID è inserito dal sistema.
 
 2. Il tecnico preme un bottone al lato ed il GPS inserisce automaticamente le coordinate. [Exception 4]
 
@@ -649,7 +649,7 @@ Questo use case descrive come un tecnico rimuove un sensore dall'impianto relati
 
 ***Description***
 
-1. Il tecnico inserisce da tastiera l'id alfanumerico del sensore [Exception 1] [Extension 1]
+1. Il tecnico inserisce da tastiera l'ID alfanumerico del sensore [Exception 1] [Extension 1]
 
 2. Il tecnico invia il form premendo il bottone "Rimuovi" [Exception 2]
 
@@ -657,9 +657,9 @@ Questo use case descrive come un tecnico rimuove un sensore dall'impianto relati
 
 ***Exceptions***
 
-1. L'id non è valido \(non soddisfa la regex "\[\\dA-Za-z\]\{10\}"\), il bordo del campo del form diventa rosso.
+1. L'ID non è valido \(non soddisfa la regex "\[\\dA-Za-z\]\{10\}"\), il bordo del campo del form diventa rosso.
 
-2. Il campo id è vuoto o non valido, appare in rosso la scritta "Compila correttamente il form".
+2. Il campo ID è vuoto o non valido, appare in rosso la scritta "Compila correttamente il form".
 
 ## Amministratore
 
@@ -675,7 +675,7 @@ Questo use case descrive come avviene la registrazione di un dipendente da parte
 
 1. L'amministratore inserisce il nome e il cognome. [Exception 1]
 
-2. L'amministratore inserisce l'email. [Exception 2]
+2. L'amministratore inserisce l'indirizzo email. [Exception 2]
 
 3. L'amministratore inserisce il numero di telefono. [Exception 3]
 
@@ -687,11 +687,11 @@ Questo use case descrive come avviene la registrazione di un dipendente da parte
 
 7. L'amministratore invia il form premendo il bottone "Registra dipendente". [Exception 6] [Exception 7].
 
-8. Il sistema invia l'email contenente la password generata automaticamente per il nuovo account.
+8. Il sistema -- tramite Gmail -- invia l'email contenente la password generata automaticamente per il nuovo account.
 
-9. Il sistema invia l'email per il recupero della password -- come sollecito a modificare la password.
+9. Il sistema -- tramite Gmail -- invia l'email per il recupero della password -- come sollecito a modificare la password.
 
-10. L'email è automaticamente confermata.
+10. L'indirizzo email è automaticamente confermato.
 
 11. La registrazione è stata correttamente effettuata, appare la scritta "Registrazione completata".
 
@@ -699,7 +699,7 @@ Questo use case descrive come avviene la registrazione di un dipendente da parte
 
 1. Il nome e/o il cognome non è valido \(non soddisfa la regex "\[A-Za-z\]\{3,20\}"\), il bordo del campo del form diventa rosso.
 
-2. L'email non è valida \(non soddisfa la regex ".\*@.\*"\), il bordo del campo del form diventa rosso.
+2. L'indirizzo email non è valido \(non soddisfa la regex ".\*@.\*"\), il bordo del campo del form diventa rosso.
 
 3. Il numero di telefono non è valido (non soddisfa la regex "(.\\d*) \\d\{10\}" \), il bordo del campo del form diventa rosso.
 
@@ -709,7 +709,7 @@ Questo use case descrive come avviene la registrazione di un dipendente da parte
 
 6. Vi è almeno un campo del form vuoto o non valido, appare in rosso la scritta "Compila correttamente il form".
 
-7. Il CF o l'email inserita sono già presenti nella BD, appare la scritta "Dipendente già registrato".
+7. Il CF o l'indirizzo email inserito sono già presenti nella BD, appare la scritta "Dipendente già registrato".
 
 ### UseCase Visualizzazione lista dipendenti {-}  
 
@@ -845,7 +845,7 @@ Per 10 dipendenti di Ardeeno sarà organizzato un breve corso di formazione spec
 ||||
 |Facilità d'uso tecnico|I tecnici devono imparare ad usare le funzioni [RF20](#a), [RF21](#a), [RF22](#a) con un corso di formazione specifica di al più 15 minuti|Per 10 tecnici di Ardeeno sarà organizzato un breve corso di formazione specifica di 15 minuti. Successivamente, verrà fatto un test.  Ai 10 tecnici di Ardeeno sarà fornito: un dispositivo compatibile con Ardeeno WebApp (di cui 4 smartphones Android, 4 pc Windows, 2 tablet Android), l'URL della WebApp (ardeeno.it), un account di Ardeeno WebApp, un sensore; saranno quindi date le seguenti istruzioni: "Visualizzare gli interventi assegnati, selezionare il più recente intervento di riparazione in corso, aggiungere il sensore fornito, scrivere il resoconto e concludere l'intervento"; la misurazione parte dal momento in cui si forniscono le istruzioni e si conclude quando appare la scritta "Intervento concluso"; il sistema soddisfa il RNF se almeno 7 tecnici concludono il test in al più 5 minuti |
 ||||
-|Codice QR|L'id sensore deve essere compilabile sia con scrittura da tastiera che inquadrando un codice QR ISO/IEC 18004:2006 con la fotocamera del dispositivo con cui si utilizza il sistema|Funzione presente nel [RF22](#rfa)|
+|Codice QR|L'ID sensore deve essere compilabile sia con scrittura da tastiera che inquadrando un codice QR ISO/IEC 18004:2006 con la fotocamera del dispositivo con cui si utilizza il sistema|Funzione presente nel [RF22](#rfa)|
 
 \pagebreak
 ### RNF6 Scalabilità {-}
@@ -867,7 +867,7 @@ Nel seguente capitolo vedremo una dettagliata analisi del contesto del sistema d
 ## Utenti e sistemi esterni
 
 ### Utente Anonimo {-}
-L'Utente Anonimo è l'attore qualsiasi che accede al sistema. Egli può visualizzare la vetrina, visualizzare le recensioni, registrarsi, recuperare la password, confermare l'email ed autenticarsi. A seguito dell'autenticazione [RF5](#a) si specializza in Utente Autenticato.
+L'Utente Anonimo è l'attore qualsiasi che accede al sistema. Egli può visualizzare la vetrina, visualizzare le recensioni, registrarsi, recuperare la password, confermare l'indirizzo email ed autenticarsi. A seguito dell'autenticazione [RF5](#a) si specializza in Utente Autenticato.
 
 ### Utente Autenticato {-}
 L'Utente Autenticato è colui che si è autenticato tramite [RF5](#a) e può in aggiunta fare il logout, visualizzare i dati dell'account e modificarli. Ogni Utente Autenticato è specializzato come Cliente o Dipendente.
@@ -891,7 +891,7 @@ L'Amministratore è colui che si occupa di gestire i Dipendenti, segnando i Dipe
 PayPal è il sistema esterno subordinato tramite cui il Cliente effettua il pagamento per concludere l'acquisto di un impianto ([RF10](#a)). L'interazione con PayPal è guidata da ArdeenoWebApp all'invio del form di acquisto in [RF10](#a).
 
 ### Gmail {-}
-Gmail è il sistema esterno subordinato tramite cui Ardeeno WebApp richiede l'invio delle email utilizzate per [RF6 Conferma email](#a), [RF7 Recupero password](#a), [RF9 Modifica dati personali](#a) (nel caso della modifica dell'email), [RF25 Modifica dati dipendente](#a) (nel caso della modifica dell'email) ed [RF16 Richiesta recensione](#a).
+Gmail è il sistema esterno subordinato tramite cui Ardeeno WebApp richiede l'invio delle email utilizzate per [RF6 Conferma indirizzo email](#a), [RF7 Recupero password](#a), [RF9 Modifica dati personali](#a) (nel caso della modifica dell'indirizzo email), [RF25 Modifica dati dipendente](#a) (nel caso della modifica dell'indirizzo email) ed [RF16 Richiesta recensione](#a).
 
 ### TrustPilot {-}
 TrustPilot è il sistema esterno subordinato tramite cui Ardeeno WebApp richiede e riceve le *service reviews*, le *product reviews* ed i codici per inserire le *product reviews*. TrustPilot è inoltre il sistema tramite cui il Cliente interagisce in maniera guidata in [RF16 Richiesta recensione](#a) per inserire una *product review*.
@@ -918,18 +918,22 @@ Nel seguente capitolo analizzeremo una prima architettura a componenti del siste
 
 <!--
 Interfacce (interne|relative a (SISTEMA ESTERNO|ATTORE))
-Fornita-> Il componente fornisce al (sistema SISTEMA|ATTORE)
-Richiesta-> Il componente attende dal (sistema SISTEMA|ATTORE) la richiesta per XXX che comprende : PAR1, PAR2, ...
+
+Il componente fornisce al (sistema SISTEMA|ATTORE)
+
+Il componente attende dal (sistema SISTEMA|ATTORE) la richiesta per XXX che comprende : PAR1, PAR2, ...
+
 Il componente inoltra al comp. "COMP"
+
+Il componente fornisce al comp. "Gestione invio email" l'email da inviare (che contiene il messaggio XXX)
 -->
 
 ## Definizione dei componenti
+
 ### Pagina presentazione
 
-***Coesione*** Funzionale
-
 ***Descrizione***
-Questo componente si occupa della funzione di visualizzazione della presentazione dell'azienda, che comprende descrizione testuale e mappa che indica la posizione dell'azienda. La mappa è reperita da OpenStreetMap.
+Questo componente si occupa della funzione di visualizzazione della presentazione dell'azienda, che comprende descrizione testuale e mappa con sedi dell'azienda. La mappa è reperita da OpenStreetMap.
 
 ***Interfacce relative ad OpenStreetMap***
 
@@ -942,18 +946,16 @@ Questo componente si occupa della funzione di visualizzazione della presentazion
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Richiesta|Richiesta Pagina|Il componente attende dall'Utente Anonimo la richiesta della pagina di presentazione|
-|Fornita|Mostra Pagina|Il componente costruisce e invia all'utente anonimo la pagina di presentazione|
+|Richiesta|Richiesta pagina|Il componente attende dall'Utente Anonimo la richiesta della pagina di presentazione|
+|Fornita|Mostra Pagina|Il componente costruisce e fornisce all'Utente Anonimo la pagina di presentazione|
 
 ***Interfacce interne***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Richiesta|Service Reviews|Il componenente attende le service reviews fornite da "Gestione service reviews" in un certo formato|
+|Richiesta|Service Reviews|Il componente attende le service reviews fornite -- in un certo formato -- dal comp. "Gestione service reviews"|
 
 ### Gestione service reviews
-
-***Coesione*** Funzionale
 
 ***Descrizione***
 Questo componente si occupa di reperire le service reviews dal sistema esterno TrustPilot, e fornirle al componente "Pagina Presentazione".
@@ -969,11 +971,9 @@ Questo componente si occupa di reperire le service reviews dal sistema esterno T
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Fornita|Service Reviews|Il componente fornisce le service reviews ottenute da TrustPilot e trasformate in un formato comprensibile agli altri componenti|
+|Fornita|Service reviews|Il componente fornisce le service reviews ottenute da TrustPilot e trasformate in un formato comprensibile agli altri componenti|
 
 ### Gestione invio email
-
-***Coesione*** Funzionale
 
 ***Descrizione***
 Questo componente si occupa di interagire col sistema esterno Gmail, a cui richiede di inviare le email fornite dalle altre componenti.
@@ -992,17 +992,15 @@ Questo componente si occupa di interagire col sistema esterno Gmail, a cui richi
 
 ### Conferma indirizzo email
 
-***Coesione*** Funzionale
-
 ***Descrizione***
-Questo componente si occupa dell'intero proccesso di conferma dell'indirizzo email: generazione del codice di conferma, invio dell'email con il codice di conferma e verifica del codice di conferma inserito dall'Utente Anonimo.
+Questo componente si occupa dell'intero processo di conferma dell'indirizzo email: generazione del codice di conferma, invio dell'email con il codice di conferma e verifica del codice di conferma fornito dall'Utente Anonimo.
 
 ***Interfacce interne***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Richiesta|Richiesta generazione codice conferma|Il componente attende dagli altri componenti la richiesta -- relativa ad un Utente --  di generare ed inviare un nuovo codice di conferma|
-|Fornita|Email|Il componenete fornisce alla "Gestione invio email" l'email contenente il codice di conferma da inviare|
+|Richiesta|Richiesta generazione codice conferma|Il componente attende dagli altri componenti la richiesta -- relativa ad un Utente -- di generare ed inviare un nuovo codice di conferma|
+|Fornita|Email|Il componenete fornisce al comp. "Gestione invio email" l'email da inviare (che contiene il codice di conferma generato)|
 
 ***Interfacce relative ad Ardeeno DataLayer***
 
@@ -1010,7 +1008,7 @@ Questo componente si occupa dell'intero proccesso di conferma dell'indirizzo ema
 |---|---|---------------------|
 |Fornita|Richiesta inserimento codice|Il componente fornisce al DataLayer una richiesta di inserimento del codice di conferma generato; la richiesta comprende il codice di conferma e l'email da confermare|
 |Fornita|Richiesta verifica codice|Il componente fornisce ad Ardeeno DataLayer un codice di conferma (inserito dall'Utente Anonimo) da verificare|
-|Richiesta|Esito Verifica|Il componente ottiene da Ardeeno DataLayer l'esito della richiesta di verifica precedentemente inviata.|
+|Richiesta|Esito Verifica|Il componente ottiene da Ardeeno DataLayer l'esito della verifica del codice di conferma|
 
 ***Interfacce relative all'Utente Anonimo***
 
@@ -1021,41 +1019,37 @@ Questo componente si occupa dell'intero proccesso di conferma dell'indirizzo ema
 
 ### Recupero password
 
-***Coesione*** Funzionale
-
 ***Descrizione***
-Questo componente si occupa dell'intero processo di recupero della password: generazione del codice di recupero, invio dell'email con il codice di recupero, verifica del codice di conferma inserito dall'utente anonimo e inserimento della nuova password.
+Questo componente si occupa dell'intero processo di recupero della password: generazione del codice di recupero, invio dell'email con il codice di recupero, verifica del codice di conferma fornito dall'utente anonimo e inserimento della nuova password.
 
 
 ***Interfacce relative all'Utente Anonimo***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Richiesta|Richiesta generazione codice recupero|Il componente attende dall'Utente Anonimo una richiesta di generazione del codice di recupero. La richiesta comprende un'indirizzo email|
-|Richiesta|Richiesta Recupero|Il componente aspetta dall'Utente Anonimo una richiesta di recupero, che comprende un codice di recupero e una nuova password|
-|Fornita|Esito Recupero|Il componente fornisce all'Utente Anonimo l'esito della richiesta di recupero. L'esito è positivo se il codice è esistente e non scaduto|
+|Richiesta|Richiesta generazione codice recupero|Il componente attende dall'Utente Anonimo una richiesta di generazione del codice di recupero. La richiesta comprende un indirizzo email|
+|Richiesta|Richiesta recupero|Il componente aspetta dall'Utente Anonimo una richiesta di recupero, che comprende un codice di recupero e una nuova password|
+|Fornita|Esito recupero|Il componente fornisce all'Utente Anonimo l'esito della richiesta di recupero. L'esito è positivo se il codice è esistente e non scaduto|
 
 ***Interfacce relative ad Ardeeno DataLayer ***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Fornita|Richiesta inserimento codice|Il componente fornisce al sistema DataLayer un nuovo codice di recupero -- legato ad una certa email -- da inserire nella base di dati. Si assume che l'inserimento non abbia errori (e che l'email sia associata a qualche account)|
-|Fornita|Richiesta verifica codice|Il componente fornisce al sistema DataLayer il codice di recupero ottenuto dall'Utente Anonimo da verificare. |
-|Richiesta|Esito Verifica|Il componente attende l'esito della verifica del codice di recupero. Se l'esito è positivo (codice esistente e non scaduto), il sistema fornisce al DataLayer la nuova password |
-|Fornita|Richiesta modifica password|Il componente -- se l'esito della verifica è positivo -- fornisce al DataLayer la nuova password inserita dall'utente. Si assume che l'inserimento non abbia errori.|
+|Fornita|Richiesta inserimento codice|Il componente fornisce al sistema DataLayer un nuovo codice di recupero -- legato ad una certa email -- da inserire nella base di dati. Il componente assume che l'inserimento non abbia errori (e che l'email sia associata a qualche account)|
+|Fornita|Richiesta verifica codice|Il componente fornisce al sistema DataLayer il codice di recupero fornito dall'Utente Anonimo|
+|Richiesta|Esito Verifica|Il componente attende l'esito della verifica del codice di recupero|
+|Fornita|Richiesta modifica password|Il componente -- se l'esito della verifica è positivo -- fornisce al DataLayer la nuova password fornita dall'Utente Anonimo. Il componente assume che l'inserimento non abbia errori|
 
 ***Interfacce interne***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Fornita|Email|Il componente fornisce alla "Gestione invio email" l'email contenente il codice di recupero da inviare.|
+|Fornita|Email|Il componente fornisce al comp. "Gestione invio email" l'email da inviare (che contiene il codice di recupero generato)|
 
-### Registrazione cliente
-
-***Coesione*** Funzionale
+### Registrazione Cliente
 
 ***Descrizione***
-Questo componente si occupa di tutto ciò che riguarda la registrazione da parte di un utente anonimo.
+Questo componente gestisce il processo di registrazione di un cliente nel sistema.
 
 ***Interfacce relative all'Utente Anonimo***
 
@@ -1068,64 +1062,58 @@ Questo componente si occupa di tutto ciò che riguarda la registrazione da parte
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Fornita|Richiesta inserimento account|Il componenente fornisce al sistema DataLayer una richiesta di inserimento del nuovo account, che comprende tutti quei dati immessi in fase di registrazione|
-|Richiesta|Esito inserimento|Il componente attende dal sistema DataLayer l'esito dell'inserimento del nuovo account|
+|Fornita|Richiesta inserimento account|Il componente fornisce al sistema DataLayer una richiesta di inserimento del nuovo account, che comprende tutti quei dati immessi in fase di registrazione|
+|Richiesta|Esito inserimento|Il componente attende dal sistema DataLayer l'esito dell'inserimento del nuovo account. L'esito è negativo se l'indirizzo email fornito dall'Utente Anonimo è già associato a qualche account|
 
 ***Interfacce interne***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Fornita|Email|Il componente fornisce a "Gestione invio email" l'email di avvenuta registrazione da inviare al nuovo cliente|
+|Fornita|Email|Il componente fornisce al comp. "Gestione invio email" l'email da inviare (che contiene il messaggio di avvenuta registrazione)|
 
 ### Login
 
-***Coesione*** Funzionale
-
 ***Descrizione***
-Questo componente si occupa della funzione di login e rappresenta in sintesi l'interfaccia utente per il componente "Autenticazione"
+Questo componente si occupa della funzione di login. In sintesi, si tratta di un componente cuscinetto tra l'Utente Anonimo ed il componente "Autenticazione".
 
 ***Interfacce relative all'Utente Anonimo***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Richiesta|Richiesta Login|Il componente attende dall'Utente Anonimo la richiesta di login, che comprende indirizzo email e password|
-|Fornita|Esito Login|Il componente inoltra all'Utente Anonimo l'esito della richiesta di login ottenuta dal comp. "Autenticazione"|
+|Richiesta|Richiesta login|Il componente attende dall'Utente Anonimo la richiesta di Login, che comprende indirizzo email e password|
+|Fornita|Esito login|Il componente fornisce all'Utente Anonimo l'esito della richiesta di login ottenuta dal comp. "Autenticazione"|
 
 ***Interfacce interne***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Richiesta|Richiesta Login|Il componente inoltra al comp. "Autenticazione" la richiesta di login ricevuta dall'utente anonimo|
-|Richiesta|Esito Login|Il componente attende dal comp. "Autenticazione" l'esito della richiesta di login|
+|Richiesta|Richiesta login|Il componente fornisce al comp. "Autenticazione" la richiesta di login ricevuta dall'utente anonimo|
+|Richiesta|Esito login|Il componente attende dal comp. "Autenticazione" l'esito della richiesta di login|
 
 ### Autenticazione
 
-***Coesione*** Funzionale
-
 ***Descrizione***
-Questo componente si occupa dell'autenticazione, interfacciandosi col sistema DataLayer. Inoltre è utilizzato dagli altri componenti per verificare lo stato di autenticazione.
+Questo componente si occupa dell'autenticazione e comunica col sistema DataLayer. Inoltre è utilizzato dagli altri componenti per verificare lo stato di autenticazione.
 
 ***Interfacce interne***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Richiesta|Richiesta Login|[Comp. "Login"](#login)|
-|Fornita|Esito Login|[Comp. "Login"](#login)|
-|Fornita|Check Auth|Il componente fornisce agli altri componenti lo stato corrente dell'autenticazione, che comprende anche -- se il login ha avuto esito positivo-- id utente ed email|
+|Richiesta|Richiesta login|[Comp. "Login"](#login)|
+|Fornita|Esito login|[Comp. "Login"](#login)|
+|Fornita|Check auth|Il componente fornisce agli altri componenti lo stato corrente di autenticazione, che comprende -- se il login ha avuto esito positivo -- ID utente ed indirizzo email|
 
 ***Interfacce relative ad Ardeeno DataLayer***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Fornita|Richiesta Verifica Credenziali|Il componente fornisce al sistema DataLayer la richiesta di verifica delle credenziali, che comprende email e password|
-|Richiesta|Esito Verifica|Il componente attende dal sistema DataLayer l'esito della verifica delle credenziali. L'esito è positivo se l'email è associata a un account esistente e non dimesso, e se la password è corretta|
+|Fornita|Richiesta verifica credenziali|Il componente fornisce al sistema DataLayer la richiesta di verifica delle credenziali, che comprende indirizzo email e password|
+|Richiesta|Esito verifica|Il componente attende dal sistema DataLayer l'esito della verifica delle credenziali. L'esito è positivo se l'indirizzo email è associato a un account esistente e non dimesso, e se la password è corretta|
 
 ### Gestione Account
 
-***Coesione*** Funzionale
-
 ***Descrizione***
-Questo componente si occupa della gestione dell'account di un utente autenticato; ovvero permette a un Utente Autenticato di visualizzare e modificare i propri dati. Interagisce col comp. "Autenticazione". Inoltre, interagisce anche col comp. "Conferma email" nel caso in cui l'Utente modifichi la propria email.
+Questo componente si occupa della gestione dell'account di un Utente Autenticato; ovvero permette a un Utente Autenticato di visualizzare e modificare i propri dati. Interagisce col comp. "Autenticazione". Inoltre, interagisce anche col comp. "Conferma email" nel caso in cui l'Utente modifichi il proprio indirizzo email.
 
 ***Interfacce interne***
 
@@ -1139,7 +1127,7 @@ Questo componente si occupa della gestione dell'account di un utente autenticato
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
 |Fornita|Dati Account|Il componente fornisce all'Utente Autenticato i dati del proprio account.|
-|Richiesta|Richiesta modifica|Il componente attende dall'Utente Autenticato la richiesta di modifica del proprio account, che comprende come parametri il tipo di dato e il nuovo dato|
+|Richiesta|Richiesta modifica|Il componente attende dall'Utente Autenticato la richiesta di modifica del proprio account, che comprende come parametri i dati modificati|
 |Fornita|Esito modifica|Il componente fornisce all'Utente Autenticato l'esito della modifica dell'account|
 
 ***Interfacce relative ad Ardeeno DataLayer***
@@ -1149,11 +1137,9 @@ Questo componente si occupa della gestione dell'account di un utente autenticato
 |Fornita|Richiesta dati|Il componente fornisce al sistema DataLayer l'account di cui ottenere i dati|
 |Richiesta|Dati|Il componente attende dal sistema DataLayer i dati dell'account prima fornito|
 |Fornita|Richiesta modifica|Il componente fornisce al sistema DataLayer i dati da modificare relativamente a un certo account|
-|Richiesta|Esito modifica| Il componente attende dal sistema DataLayer l'esito della modifica|
+|Richiesta|Esito modifica|Il componente attende dal sistema DataLayer l'esito della modifica|
 
 ### Gestione pagamento
-
-***Coesione*** Funzionale
 
 ***Descrizione***
 Questo componente si occupa di gestire i pagamenti tramite PayPal.
@@ -1162,19 +1148,17 @@ Questo componente si occupa di gestire i pagamenti tramite PayPal.
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Richiesta|Richiesta pagamento|Il componente attende dal comp. "Acquisto Impianto" una richiesta di pagamento, che comprende: id account, id ordine|
+|Richiesta|Richiesta pagamento|Il componente attende dal comp. "Acquisto Impianto" una richiesta di pagamento, che comprende: ID account, ID ordine|
 |Fornita|Conferma pagamento|Il componente fornisce al comp. "Acquisto Impianto" l'esito della richiesta di pagamento per un certo ordine; l'esito può essere negativo o positivo|
 
 ***Interfacce relative a PayPal***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Fornita|Purchase unit|Il componente fornisce a PayPal una richiesta di pagamento, che comprende: id ordine, id cliente, api token, valuta, costo... e altri parametri. In seguito alla richiesta il Cliente dialogherà direttamente con PayPal|
+|Fornita|Purchase unit|Il componente fornisce a PayPal una richiesta di pagamento, che comprende: ID ordine, ID cliente, API token, valuta, costo... e altri parametri. In seguito alla richiesta il Cliente dialogherà direttamente con PayPal|
 |Richiesta|Purchase response|Il componente attende da PayPal l'esito del pagamento, che comprende vari parametri|
 
 ### Acquisto impianto
-
-***Coesione*** Funzionale
 
 ***Descrizione***
 Questo componente si occupa di gestire il processo di acquisto di un impianto da parte di un Cliente.
@@ -1187,9 +1171,9 @@ Questo componente si occupa di gestire il processo di acquisto di un impianto da
 |Richiesta|Check auth.|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione. L'acquisto può procedere solo se l'Utente è Autenticato ed è un Cliente.|
 |Fornita|Richiesta pagamento|[Comp. "Gestione Pagamento"](#gestione-pagamento)|
 |Richiesta|Esito pagamento|[Comp. "Gestione Pagamento"](#gestione-pagamento)|
-|Fornita|ID Ordine|Il componente fornisce l'ID dell'ordine correttamente concluso ai comp. "Gestione codice prod.review" (che genera un nuovo codice prod.review) ed "Gestione installazioni e manutenzioni" (che genera inserisce un nuovo intervento di installazione)|
-|Richiesta|Codice prod.review|Il componenete attende da "Gestione codice prod.review" il codice generato|
-|Fornita|Email|Il componente fornisce al comp."Gestione invio email" un'email contenente il codice prod.review, da inviare al Cliente che ha correttamente concluso l'acquisto|
+|Fornita|ID ordine|Il componente fornisce l'ID dell'ordine correttamente concluso al comp. "Gestione codice prod.review" (che genera un nuovo codice prod.review) ed al comp. "Gestione installazioni e manutenzioni" (che genera e inserisce un nuovo intervento di installazione)|
+|Richiesta|Codice prod.review|Il componenete attende dal comp. "Gestione codice prod.review" il codice generato|
+|Fornita|Email|Il componente fornisce al comp. "Gestione invio email" un'email contenente il codice prod.review, da inviare al Cliente che ha correttamente concluso l'acquisto|
 
 ***Interfacce relative ad Ardeeno DataLayer***
 
@@ -1205,8 +1189,6 @@ Questo componente si occupa di gestire il processo di acquisto di un impianto da
 
 ### Gestione codice prod.reviews
 
-***Coesione*** Funzionale
-
 ***Descrizione***
 Questo componente si occupa di richiedere e ricevere da TrustPilot i codici prod.reviews.
 
@@ -1214,59 +1196,76 @@ Questo componente si occupa di richiedere e ricevere da TrustPilot i codici prod
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Richiesta|ID Ordine|Il componente attende l'ID Ordine per cui generare il codice prod.review|
+|Richiesta|ID ordine|Il componente attende l'ID ordine per cui generare il codice prod.review|
 
 ***Interfacce relative a TrustPilot***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Fornita|Richiesta codice prod.review|Il componente fornisce a TrustPilot la richiesta di un nuovo codice prod.review, che comprende: id cliente, id ordine, API token|
+|Fornita|Richiesta codice prod.review|Il componente fornisce a TrustPilot la richiesta di un nuovo codice prod.review, che comprende: ID cliente, ID ordine, API token|
 |Richiesta|Codice prod.review|Il componente attende da TrustPilot il nuovo codice prod.review|
 
 ### Gestione installazioni e manutenzioni
 
-***Coesione*** Funzionale
-
 ***Descrizione***
-Questo componente si occupa di inserire automaticamente le richieste di interventi di installazione (all'acquisto di un impianto) e di manutenzione (periodicamente).
+Questo componente si occupa di inserire automaticamente le richieste di intervento di installazione (all'acquisto di un impianto) e di manutenzione (periodicamente).
 
 ***Interfacce interne***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Richiesta|ID Ordine|Il componente attende dal comp. "Acquisto impianto" l'id dell ordine completato e per cui aggiungere un intervento di installazione|
+|Richiesta|ID ordine|Il componente attende dal comp. "Acquisto impianto" l'ID dell ordine completato e per cui aggiungere un intervento di installazione|
 
 ***Interfacce relative ad Ardeeno DataLayer***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
 |Fornita|Richiesta impianti attivi|Il componente fornisce al sistema DataLayer la richiesta degli impianti al momento attivi|
-|Richiesta|Impianti attivi|Il componente attende dal sistema DataLayer la lista deli impianti al momento attivi|
-|Fornita|Richiesta inserimento interventi|Il componente fornisce al sistema DataLayer il nuovo intervento -- manutenzione o installazione -- da inserire, sulla base degli impianti attivi precedentemente ricevuti o sulla base dell'id ordine|
+|Richiesta|Impianti attivi|Il componente attende dal sistema DataLayer la lista degli impianti al momento attivi|
+|Fornita|Richiesta inserimento intervento|Il componente fornisce al sistema DataLayer il nuovo intervento -- manutenzione o installazione -- da inserire, sulla base degli impianti attivi ricevuti o sulla base dell'ID ordine|
 
 ### Vetrina
 
-***Coesione***
-
 ***Descrizione***
-Questo componente
+Questo componente si occupa di gestire la visualizzazione da parte dell'utente anonimo dei modelli di impianto in vendita e delle prod.reviews; questo componente si occupa inoltre di inoltrare la richiesta di acquisto al comp. "Acquisto impianto".
 
-***Interfacce relative ad ***
+***Interfacce relative all'Utente Anonimo ***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
+|Richiesta|Richiesta modelli|Il componente attende che l'utente anonimo richieda i modelli di impianto in vendita|
+|Fornita|Modelli|Il componente fornisce all'Utente Anonimo i modelli di impianto in vendita|
+|Richiesta|Selezione modello|Il componenete attende che l'Utente Anonimo fornisca l'impianto selezionato|
+|Fornita|Product reviews|Il componente fornisce all'Utente Anonimo le prod.reviews relative all'impianto selezionato|
+|Richiesta|Richiesta acquisto impianto|Il componente attende che l'Utente Anonimo fornisca una richiesta di acquisto riguardo all'impianto selezionato|
+
+***Interfacce interne***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Richiesta prod.reviews|Il componente fornisce al comp. "Gestione product reviews" l'ID prodotto per il quale richiedere la prod.reviews|
+|Richiesta|Prod.reviews|Il componente attende che gli siano fornite le prod.reviews dell'ID prodotto specificato precedentemente|
+|Fornita|Richiesta acquisto impianto|[Comp. "Acquisto impianto"](#acquisto-impianto)|
 
 ### Gestione product reviews
 
-***Coesione***
-
 ***Descrizione***
-Questo componente
+Questo componente si occupa di reperire da TrustPilot le prod.reviews.
 
-***Interfacce relative ad ***
+***Interfacce interne***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
+|Richiesta|Richiesta prod.reviews|[Comp. "Vetrina"](#vetrina)|
+|Fornita|Richiesta acquisto impianto|[Comp. "Vetrina"](#vetrina)|
+
+
+***Interfacce relative a TrustPilot ***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Richiesta prod.reviews|Il componente fornisce a TrustPilot una richiesta che comprende: API token, ID prodotto, numero di prod.reviews|
+|Richiesta|Prod.reviews|Il componente attende che TrustPilot fornisca le prod.reviews|
 
 
 ## Diagramma dei componenti
