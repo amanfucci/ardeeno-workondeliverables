@@ -65,3 +65,7 @@ height=(%, cm, ...)
 scale=(%)
 fig-cap-location=(top, bottom, margin)
 ```
+#### Concatenate pdf files
+```
+pdftk Documento-di-Specifica.pdf diagrammacomp.pdf cat output D2-T41.pdf
+```

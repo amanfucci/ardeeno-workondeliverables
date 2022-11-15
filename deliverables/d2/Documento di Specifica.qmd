@@ -910,229 +910,367 @@ Il DB del DataLayer è gestito da cloud.mongodb.com .
 
 ![Diagramma di contesto](./.media/contesto.png){fig-pos=H}
 
+<!-- Componente s.m. -->
+\pagebreak
 # Analisi dei Componenti
-Nel seguente capitolo analizzeremo una prima architettura a componenti del sistema da realizzare, cercando di minimizzare l'accoppiamento (connessioni inter-componenti) e massimizzare la coesione (connessioni intra-componente). Descriveremo ogni singolo componente nel suo scopo, nel suo livello di coesione e nel suo livello di accoppiamento. Il risultato sarà sintetizzato in un Diagramma dei Componenti UML.
+Nel seguente capitolo analizzeremo una prima architettura a componenti del sistema da realizzare, cercando di minimizzare l'accoppiamento (connessioni inter-componenti) e massimizzare la coesione (connessioni intra-componente). Descriveremo ogni singolo componente nel suo scopo, nelle sue interfacce e nel suo livello di coesione. Il risultato sarà sintetizzato in un Diagramma dei Componenti UML.
+
+
+<!--
+Interfacce (interne|relative a (SISTEMA ESTERNO|ATTORE))
+Fornita-> Il componente fornisce al (sistema SISTEMA|ATTORE)
+Richiesta-> Il componente attende dal (sistema SISTEMA|ATTORE) la richiesta per XXX che comprende : PAR1, PAR2, ...
+Il componente inoltra al comp. "COMP"
+-->
 
 ## Definizione dei componenti
+### Pagina presentazione
 
-4.2.1 Gestione credenziali
+***Coesione*** Funzionale
 
-Descrizione:
-Questo componente si occupa delle pagine relative alla modifica delle credenziali dell’utente. E della visualizazione delle credenziali gia esistenti.
+***Descrizione***
+Questo componente si occupa della funzione di visualizzazione della presentazione dell'azienda, che comprende descrizione testuale e mappa che indica la posizione dell'azienda. La mappa è reperita da OpenStreetMap.
 
-Interfaccia richiesta – modifica dati account.
-Permette la modifica dei dati del utente. Email, numero di telefono, nome, cognome, indirizzo e informazioni bancarie.
+***Interfacce relative ad OpenStreetMap***
 
-Interfaccia richiesta – richiesta recupero password.
-Facendo la richiesta si inizia il processo automatico che, sara dopo gestito dal componente di gestione Gmail.
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Richiesta mappe|Il componente fornisce al sistema OSM una richiesta delle mappe, che comprende: API Token, la tipologia della mappa|
+|Richiesta|Mappe|Le mappe fornite da OpenStreetMap, su cui saranno poste le sedi dell'azienda|
 
-Interfaccia richiesta – dati account.
-Recupera le informazioni sul’account del cliente dal database.
+***Interfacce relative all'Utente Anonimo***
 
-Interfaccia richiesta – Conferma operazione.
-Riceve la conferma dal componente ‘Authentication management’ che l’utente si e autenticato corretamente. Neccessario per permettere la modifica/visualizzazione dei dati personali che gestisce   questo componente.
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Richiesta Pagina|Il componente attende dall'Utente Anonimo la richiesta della pagina di presentazione|
+|Fornita|Mostra Pagina|Il componente costruisce e invia all'utente anonimo la pagina di presentazione|
 
-Interfaccia fornita – richiesta recupero password.
-Trasmette al componente ‘Gestione Gmail’ la richiesta di recupero password del’utente e il suo indirizzo email.
+***Interfacce interne***
 
-Interfaccia fornita – Mostra dati account.
-Mostra al cliente una pagina con i suoi dati.
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Service Reviews|Il componenente attende le service reviews fornite da "Gestione service reviews" in un certo formato|
 
-Interfaccia fornita – Nuovi dati account.
-Modifica/aggiunge nel database i nuovi dati inseriti dall utente				
+### Gestione service reviews
 
+***Coesione*** Funzionale
 
+***Descrizione***
+Questo componente si occupa di reperire le service reviews dal sistema esterno TrustPilot, e fornirle al componente "Pagina Presentazione".
 
+***Interfacce relative a TrustPilot ***
 
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Richiesta service reviews|Il componente fornisce al sistema TrustPilot la richiesta delle service reviews, che comprende: API Token, minimo numero di stelle, minima data di invio delle recensioni, numero di service reviews richieste|
+|Richiesta|Service Reviews|Il componente attende da TrustPilot la lista di service reviews|
 
+***Interfacce interne***
 
-4.2.2 Gestione Gmail
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Service Reviews|Il componente fornisce le service reviews ottenute da TrustPilot e trasformate in un formato comprensibile agli altri componenti|
 
-Descrizione:
-Il componente si occupa di gestire l’interfaccia con Gmail rispetto alle richieste di cambio password.
+### Gestione invio email
 
-Interfaccia richiesta – richiesta recupero password.
-Riceve dal componente ‘Gestione credenziali’ la richiesta di cambiare password di un utente e il suo indirizzo mail.
+***Coesione*** Funzionale
 
-Interfaccia fornita – mail con codice cambio password.
-Manda una mail al indirizzo email dell’utente con un codice generato dal componente necessario per potere cambiare password.
+***Descrizione***
+Questo componente si occupa di interagire col sistema esterno Gmail, a cui richiede di inviare le email fornite dalle altre componenti.
 
-Interfaccia fornita – codice recupero password.
-Trasmette al componente ‘Authentication management’ il codice di cambio password generato dal componente e l’utente associato.
+***Interfacce interne***
 
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Email|Il componente attende dagli altri componenti una email da inviare. L'email è composta da destinatari, oggetto, corpo e file allegati|
 
+***Interfacce relative a Gmail***
 
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Richiesta invio email|Il componenete fornisce al sistema Gmail l'API Token e l'email da inviare|
 
+### Conferma indirizzo email
 
+***Coesione*** Funzionale
 
+***Descrizione***
+Questo componente si occupa dell'intero proccesso di conferma dell'indirizzo email: generazione del codice di conferma, invio dell'email con il codice di conferma e verifica del codice di conferma inserito dall'Utente Anonimo.
 
+***Interfacce interne***
 
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Richiesta generazione codice conferma|Il componente attende dagli altri componenti la richiesta -- relativa ad un Utente --  di generare ed inviare un nuovo codice di conferma|
+|Fornita|Email|Il componenete fornisce alla "Gestione invio email" l'email contenente il codice di conferma da inviare|
 
+***Interfacce relative ad Ardeeno DataLayer***
 
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Richiesta inserimento codice|Il componente fornisce al DataLayer una richiesta di inserimento del codice di conferma generato; la richiesta comprende il codice di conferma e l'email da confermare|
+|Fornita|Richiesta verifica codice|Il componente fornisce ad Ardeeno DataLayer un codice di conferma (inserito dall'Utente Anonimo) da verificare|
+|Richiesta|Esito Verifica|Il componente ottiene da Ardeeno DataLayer l'esito della richiesta di verifica precedentemente inviata.|
 
-4.2.3 Authentication management
+***Interfacce relative all'Utente Anonimo***
 
-Descrizione:
-Il componente si occupa del login dell’utente, di modifiche password e di confermare l’identita dello utente agli altri componenti.
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Richiesta conferma|Il componente attende dall'Utente Anonimo un codice di conferma da verificare|
+|Fornita|Esito conferma|Il componente fornisce all'utente anonimo l'esito della conferma; se il codice è non esistente o scaduto l'esito è negativo, altrimenti l'email è confermata|
 
-Interfaccia richiesta – codice recupero password.
-Riceve eventuali codici di recupero password generati per utenti particolari dal componente ‘Gestione Gmail’
+### Recupero password
 
-Interfaccia richiesta – form autenticazione.
-Pagina di login di un utente richiede email e password dall’ utente.
+***Coesione*** Funzionale
 
-Interfaccia richiesta –  password.
-richiede al database la password associata a un account per verificare se il login è corretto.
+***Descrizione***
+Questo componente si occupa dell'intero processo di recupero della password: generazione del codice di recupero, invio dell'email con il codice di recupero, verifica del codice di conferma inserito dall'utente anonimo e inserimento della nuova password.
 
-Interfaccia richiesta –  codice recupero password (da utente).
-Permette di ricevere email e codice di recupero password dall’utente, autorizzando cosi il cambiamento password.
 
-Interfaccia richiesta –  nuova password.
-Inserimento della nuova password.
+***Interfacce relative all'Utente Anonimo***
 
-Interfaccia fornita – nuova password.
-trasmette al database la nuova password.
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Richiesta generazione codice recupero|Il componente attende dall'Utente Anonimo una richiesta di generazione del codice di recupero. La richiesta comprende un'indirizzo email|
+|Richiesta|Richiesta Recupero|Il componente aspetta dall'Utente Anonimo una richiesta di recupero, che comprende un codice di recupero e una nuova password|
+|Fornita|Esito Recupero|Il componente fornisce all'Utente Anonimo l'esito della richiesta di recupero. L'esito è positivo se il codice è esistente e non scaduto|
 
-Interfaccia fornita – autentica cliente.
-Questo componenete fornisce un interfaccia che permette di confermare l’utente, in quanto cliente, a tutti gli componenti che ne hanno bisogno.
+***Interfacce relative ad Ardeeno DataLayer ***
 
-Interfaccia fornita – autentica supervisore.
-Questo componenete fornisce un interfaccia che permette di confermare l’utente in quanto cliente a tutti gli componenti che ne hanno bisogno.
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Richiesta inserimento codice|Il componente fornisce al sistema DataLayer un nuovo codice di recupero -- legato ad una certa email -- da inserire nella base di dati. Si assume che l'inserimento non abbia errori (e che l'email sia associata a qualche account)|
+|Fornita|Richiesta verifica codice|Il componente fornisce al sistema DataLayer il codice di recupero ottenuto dall'Utente Anonimo da verificare. |
+|Richiesta|Esito Verifica|Il componente attende l'esito della verifica del codice di recupero. Se l'esito è positivo (codice esistente e non scaduto), il sistema fornisce al DataLayer la nuova password |
+|Fornita|Richiesta modifica password|Il componente -- se l'esito della verifica è positivo -- fornisce al DataLayer la nuova password inserita dall'utente. Si assume che l'inserimento non abbia errori.|
 
-Interfaccia fornita – autentica amministratore.
-Questo componenete fornisce un interfaccia che permette di confermare l’utente in quanto cliente a tutti gli componenti che ne hanno bisogno.
+***Interfacce interne***
 
-Interfaccia fornita – autentica tecnico.
-Questo componenete fornisce un interfaccia che permette di confermare l’utente in quanto cliente a tutti gli componenti che ne hanno bisogno.
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Email|Il componente fornisce alla "Gestione invio email" l'email contenente il codice di recupero da inviare.|
 
+### Registrazione cliente
 
+***Coesione*** Funzionale
 
+***Descrizione***
+Questo componente si occupa di tutto ciò che riguarda la registrazione da parte di un utente anonimo.
 
+***Interfacce relative all'Utente Anonimo***
 
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Richiesta registrazione|Il componente attende dall'Utente Anonimo una richiesta di registrazione, che comprende: email, password, anagrafica|
+|Fornita|Esito registrazione|Il componente fornisce all'Utente Anonimo l'esito della registrazione|
 
-4.2.4 pagine di presentazione
+***Interfacce relative ad Ardeeno DataLayer***
 
-Descrizione:
-Il componente si occupa di gestire la visualizzazione di tutte le pagine pubblicitarie o di presentazione dell’azienda a gli utenti non autenticati  
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Richiesta inserimento account|Il componenente fornisce al sistema DataLayer una richiesta di inserimento del nuovo account, che comprende tutti quei dati immessi in fase di registrazione|
+|Richiesta|Esito inserimento|Il componente attende dal sistema DataLayer l'esito dell'inserimento del nuovo account|
 
-Interfaccia richiesta – pubblicita e modelli.
-Prende dal database le nuove pubblicità e foto di modelli dell’azienda.
+***Interfacce interne***
 
-Interfaccia fornita – pubblicita è modelli.
-Mostra all’utente la pubblicità.
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Email|Il componente fornisce a "Gestione invio email" l'email di avvenuta registrazione da inviare al nuovo cliente|
 
+### Login
 
+***Coesione*** Funzionale
 
+***Descrizione***
+Questo componente si occupa della funzione di login e rappresenta in sintesi l'interfaccia utente per il componente "Autenticazione"
 
+***Interfacce relative all'Utente Anonimo***
 
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Richiesta Login|Il componente attende dall'Utente Anonimo la richiesta di login, che comprende indirizzo email e password|
+|Fornita|Esito Login|Il componente inoltra all'Utente Anonimo l'esito della richiesta di login ottenuta dal comp. "Autenticazione"|
 
-4.2.5 Gestione impianti acquistati e acquisto impianti
+***Interfacce interne***
 
-Descrizione:
-Il componente si occupa della gestione di tutto riguardante gli impianti di un utente. E lui che interfaccia con altri componenti per gestire sia l’acquisto di nuovi impianti che la visualizzazione di impianti individuali e i loro sensori.
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Richiesta Login|Il componente inoltra al comp. "Autenticazione" la richiesta di login ricevuta dall'utente anonimo|
+|Richiesta|Esito Login|Il componente attende dal comp. "Autenticazione" l'esito della richiesta di login|
 
-Interfaccia richiesta – autenticazione del cliente.
-Riceve da 4.2.3 l’identita del cliente autenticato in questione.
+### Autenticazione
 
-Interfaccia richiesta – richiesta visualizzazione singolo impianto.
-Permette la selezione di un singolo impianto. Una volta selezionato la richiesta verra trasmessa a un altro componente (4.2.8).
+***Coesione*** Funzionale
 
-Interfaccia richiesta – richiesta acquisto impianto.
-Permette la selezione di un modello da acquistare. Una volta selezionato il componente verifichera la disponibilità. Se disponibile la richiesta vera trasmessa a un altro componente(4.2.6).
+***Descrizione***
+Questo componente si occupa dell'autenticazione, interfacciandosi col sistema DataLayer. Inoltre è utilizzato dagli altri componenti per verificare lo stato di autenticazione.
 
-Interfaccia richiesta – conferma disponibilità.
-Riceve conferma della disponibilità di un impianto per potere procedere con un acquisto.
+***Interfacce interne***
 
-Interfaccia richiesta – conferma acquisto impianto.
-Riceve conferma del successo dell’acquisto incluso i dati necessari per aggiornare la lista degli impianti di cui è proprietario l’utente.
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Richiesta Login|[Comp. "Login"](#login)|
+|Fornita|Esito Login|[Comp. "Login"](#login)|
+|Fornita|Check Auth|Il componente fornisce agli altri componenti lo stato corrente dell'autenticazione, che comprende anche -- se il login ha avuto esito positivo-- id utente ed email|
 
+***Interfacce relative ad Ardeeno DataLayer***
 
-Interfaccia fornita – selezione impianto.
-Trasmette al componente 4.2.8 la richiesta fatta dall’utente di visualizzare un certo impianto in particolare.
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Richiesta Verifica Credenziali|Il componente fornisce al sistema DataLayer la richiesta di verifica delle credenziali, che comprende email e password|
+|Richiesta|Esito Verifica|Il componente attende dal sistema DataLayer l'esito della verifica delle credenziali. L'esito è positivo se l'email è associata a un account esistente e non dimesso, e se la password è corretta|
 
-Interfaccia fornita – richiesta conferma disponibilità.
-Richiesta di conferma della disponibilità di un particolare modello di sensore trasmessa al componente 4.2.7, necessaria prima di approvare un acquisto.
+### Gestione Account
 
-Interfaccia fornita – inizio transazione.
-Se l’utente ha richiesto un acquisto e la sua disponibilità è confermata, le informazioni necessarie al acquisto sono trasmesse al componente 4.2.6
+***Coesione*** Funzionale
 
+***Descrizione***
+Questo componente si occupa della gestione dell'account di un utente autenticato; ovvero permette a un Utente Autenticato di visualizzare e modificare i propri dati. Interagisce col comp. "Autenticazione". Inoltre, interagisce anche col comp. "Conferma email" nel caso in cui l'Utente modifichi la propria email.
 
+***Interfacce interne***
 
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Check auth|[Comp. "Autenticazione"](#autenticazione)|
+|Fornita|Richiesta generazione codice conferma|Il componente fornisce al comp. "Conferma indirizzo email" l'account per cui generare un nuovo codice di conferma|
 
+***Interfacce relative all'Utente Autenticato ***
 
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Dati Account|Il componente fornisce all'Utente Autenticato i dati del proprio account.|
+|Richiesta|Richiesta modifica|Il componente attende dall'Utente Autenticato la richiesta di modifica del proprio account, che comprende come parametri il tipo di dato e il nuovo dato|
+|Fornita|Esito modifica|Il componente fornisce all'Utente Autenticato l'esito della modifica dell'account|
 
-4.2.6 Gestione Paypal
+***Interfacce relative ad Ardeeno DataLayer***
 
-Descrizione:
-Il componente si occupa di interfacciare con paypal riguardo acquisti di impianti.
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Richiesta dati|Il componente fornisce al sistema DataLayer l'account di cui ottenere i dati|
+|Richiesta|Dati|Il componente attende dal sistema DataLayer i dati dell'account prima fornito|
+|Fornita|Richiesta modifica|Il componente fornisce al sistema DataLayer i dati da modificare relativamente a un certo account|
+|Richiesta|Esito modifica| Il componente attende dal sistema DataLayer l'esito della modifica|
 
-Interfaccia richiesta – inizio transazione.
-Riceve informazioni riguardanti un acquisto da gestire.
+### Gestione pagamento
 
-Interfaccia richiesta – verifica disponibilità.
-Verifica che la disponibilità del conto e permette la transazione.
+***Coesione*** Funzionale
 
-Interfaccia fornita – invio acquisto.
-Procede a richiedere a paypal di gestire l’acquisto.
+***Descrizione***
+Questo componente si occupa di gestire i pagamenti tramite PayPal.
 
-Interfaccia fornita – Conferma acquisto.
-Una volta completato un acquisto, l’informazione del successo deve essere trasmessa al componente 4.2.7.
+***Interfacce interne***
 
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Richiesta pagamento|Il componente attende dal comp. "Acquisto Impianto" una richiesta di pagamento, che comprende: id account, id ordine|
+|Fornita|Conferma pagamento|Il componente fornisce al comp. "Acquisto Impianto" l'esito della richiesta di pagamento per un certo ordine; l'esito può essere negativo o positivo|
 
+***Interfacce relative a PayPal***
 
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Purchase unit|Il componente fornisce a PayPal una richiesta di pagamento, che comprende: id ordine, id cliente, api token, valuta, costo... e altri parametri. In seguito alla richiesta il Cliente dialogherà direttamente con PayPal|
+|Richiesta|Purchase response|Il componente attende da PayPal l'esito del pagamento, che comprende vari parametri|
 
+### Acquisto impianto
 
+***Coesione*** Funzionale
 
+***Descrizione***
+Questo componente si occupa di gestire il processo di acquisto di un impianto da parte di un Cliente.
 
+***Interfacce interne***
 
-4.2.7 Storehouse impianti
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Richiesta acquisto impianto|Il componente attende dal comp. "Vetrina" una richiesta di acquisto, che comprende il modello selezionato.|
+|Richiesta|Check auth.|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione. L'acquisto può procedere solo se l'Utente è Autenticato ed è un Cliente.|
+|Fornita|Richiesta pagamento|[Comp. "Gestione Pagamento"](#gestione-pagamento)|
+|Richiesta|Esito pagamento|[Comp. "Gestione Pagamento"](#gestione-pagamento)|
+|Fornita|ID Ordine|Il componente fornisce l'ID dell'ordine correttamente concluso ai comp. "Gestione codice prod.review" (che genera un nuovo codice prod.review) ed "Gestione installazioni e manutenzioni" (che genera inserisce un nuovo intervento di installazione)|
+|Richiesta|Codice prod.review|Il componenete attende da "Gestione codice prod.review" il codice generato|
+|Fornita|Email|Il componente fornisce al comp."Gestione invio email" un'email contenente il codice prod.review, da inviare al Cliente che ha correttamente concluso l'acquisto|
 
-Descrizione:
-Il componente si occupa di interfacciare con il database rispetto agli impianti in magazzino.
+***Interfacce relative ad Ardeeno DataLayer***
 
-Interfaccia richiesta – richiesta conferma disponibilità.
-Riceve da 4.2.5 richieste di confermare disponibilità di modelli in magazzino.
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Richiesta inserimento impianto|Il componente fornisce al sistema DataLayer il nuovo impianto da inserire ed assume che non vi siano errori|
 
-Interfaccia richiesta – Conferma acquisto
-riceve da 4.2.6 conferma che un dato impianto è stato acquistato.
+***Interfacce relative all'Utente Anonimo/Cliente***
 
-Interfaccia richiesta – scarica/aggiorna impianti in magazzino
-Quando troppo tempo e passato dall’ultima volta il componente si aggiorna con il database per potere registrare l’arrivo di nuovi impianti disponibili.
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Esito acquisto|Il componente fornisce all'Utente l'esito dell'acquisto|
 
-Interfaccia fornita – conferma disponibilita
-Trasmette conferma della disponibilità di un impianto da acquistare e metterà l’impianto in questione in uno stato prenotato finche riceverà la conferma dell’acquisto o sara scaduto il tempo della prenotazione.
+### Gestione codice prod.reviews
 
-Interfaccia fornita – conferma acquisto impianto
-Quando un acquisto è stato confermato il componente invierà la conferma dell’acquisto e i dati dello impianto in questione al componente 4.2.5.
+***Coesione*** Funzionale
 
-Interfaccia fornita – registra impianto acquistato
-Trasmette al database le informazione riguardo l’acquisto. Per potere registrare anche lì che non e piu disponibile.
+***Descrizione***
+Questo componente si occupa di richiedere e ricevere da TrustPilot i codici prod.reviews.
 
+***Interfacce interne***
 
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|ID Ordine|Il componente attende l'ID Ordine per cui generare il codice prod.review|
 
+***Interfacce relative a TrustPilot***
 
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Richiesta codice prod.review|Il componente fornisce a TrustPilot la richiesta di un nuovo codice prod.review, che comprende: id cliente, id ordine, API token|
+|Richiesta|Codice prod.review|Il componente attende da TrustPilot il nuovo codice prod.review|
 
+### Gestione installazioni e manutenzioni
 
-4.2.8 Gestione singolo impianto e i suoi sensori
+***Coesione*** Funzionale
 
-Descrizione:
-Il componente si occupa di gestire l’interfaccia con l’utente riguardo i dati di un singolo impianto e i suoi sensori.
+***Descrizione***
+Questo componente si occupa di inserire automaticamente le richieste di interventi di installazione (all'acquisto di un impianto) e di manutenzione (periodicamente).
 
-Interfaccia richiesta – selezione impianto.
-Riceve da 4.2.5 l’impianto selezionato da un utente.
+***Interfacce interne***
 
-Interfaccia richiesta – richiedi riparazione.
-Il componente permette di riempire un form richiedendo un qualche tipo di intervento su l’impianto selezionato.
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|ID Ordine|Il componente attende dal comp. "Acquisto impianto" l'id dell ordine completato e per cui aggiungere un intervento di installazione|
 
-Interfaccia fornita – storico interventi.
-Il componente mostra uno storico di tutti gli interventi conclusi sull’impianto (installazione/riparazione/disinstallazione).
+***Interfacce relative ad Ardeeno DataLayer***
 
-Interfaccia fornita – visualizza misurazioni.
-Permette la visualizzazione di tutti i dati generati dai sensori del impianto e statistiche su di essi.
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Richiesta impianti attivi|Il componente fornisce al sistema DataLayer la richiesta degli impianti al momento attivi|
+|Richiesta|Impianti attivi|Il componente attende dal sistema DataLayer la lista deli impianti al momento attivi|
+|Fornita|Richiesta inserimento interventi|Il componente fornisce al sistema DataLayer il nuovo intervento -- manutenzione o installazione -- da inserire, sulla base degli impianti attivi precedentemente ricevuti o sulla base dell'id ordine|
 
-Interfaccia fornita – richiesta riparazione.
-Inoltra la richiesta di riparazione inserita dall’utente a un supervisore.
+### Vetrina
+
+***Coesione***
+
+***Descrizione***
+Questo componente
+
+***Interfacce relative ad ***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+
+### Gestione product reviews
+
+***Coesione***
+
+***Descrizione***
+Questo componente
+
+***Interfacce relative ad ***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+
 
 ## Diagramma dei componenti
+Alla pagina successiva si trova il diagramma leggibile.
+<!--concatenare il pdf!-->
 
-![](./.media/diagrammacomp.drawio.png){width=12cm fig-pos=H}
+![Anteprima diagramma dei componenti](./.media/diagrammacomp.drawio.png){fig-pos=H}
