@@ -49,7 +49,7 @@ gantt
 |Spec ReqF               |A,E,M|24/10|Active|
 |Spec ReqNF              |A|24/10|Done|
 |Diagramma di Contesto   |A|30/10|Done|
-|Diagramma dei Componenti|A,M|9/11|Active|
+|Diagramma dei Componenti|A,M|9/11|Done|
 |Class Diagrams          |A,E,M|23/11||
 |OCL                     |TBA|||
 |BPMN                    ||||
