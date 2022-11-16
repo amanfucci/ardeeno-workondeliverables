@@ -913,7 +913,7 @@ Il DB del DataLayer è gestito da cloud.mongodb.com .
 <!-- Componente s.m. -->
 \pagebreak
 # Analisi dei Componenti
-Nel seguente capitolo analizzeremo una prima architettura a componenti del sistema da realizzare, cercando di minimizzare l'accoppiamento (connessioni inter-componenti) e massimizzare la coesione (connessioni intra-componente). Descriveremo ogni singolo componente nel suo scopo, nelle sue interfacce e nel suo livello di coesione. Il risultato sarà sintetizzato in un Diagramma dei Componenti UML.
+Nel seguente capitolo analizzeremo una prima architettura a componenti del sistema da realizzare, cercando di minimizzare l'accoppiamento (connessioni inter-componenti) e massimizzare la coesione (connessioni intra-componente). Descriveremo ogni singolo componente nel suo scopo e nelle sue interfacce, seguendo il flusso di utilizzo del sistema. Il risultato sarà sintetizzato in un Diagramma dei Componenti UML.
 
 
 <!--
@@ -1267,6 +1267,312 @@ Questo componente si occupa di reperire da TrustPilot le prod.reviews.
 |Fornita|Richiesta prod.reviews|Il componente fornisce a TrustPilot una richiesta che comprende: API token, ID prodotto, numero di prod.reviews|
 |Richiesta|Prod.reviews|Il componente attende che TrustPilot fornisca le prod.reviews|
 
+### Impianti acquistati
+
+***Descrizione***
+Questo componente permette ad un Utente Anonimo di visualizzare e selezionare gli impianti acquistati. Interagisce quindi con il sistema Ardeeno DataLayer.
+
+***Interfacce relative al Cliente***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Richiesta impianti|Il componente attende che il Cliente fornisca una richiesta di visualizzazione degli impianti.|
+|Fornita|Impianti|Il componente fornisce al Cliente gli impianti da lui acquistati, secondo un certo formato stabilito.|
+|Richiesta|Selezione impianto|Il componente attende che il Cliente selezioni un impianto|
+
+***Interfacce interne***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione, che comprende anche l'ID Cliente e l'indirizzo email|
+|Fornita|ID impianto selezionato|Il componente fornisce internamente l'ID dell'impianto selezionato dal Cliente|
+
+***Interfacce relative ad Ardeeno DataLayer***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Richiesta impianti|Il componente fornisce al sistema DataLayer l'ID Cliente -- ottenuto da Check auth -- di cui raccogliere gli impianti acquistati|
+|Richiesta|Impianto|Il componente attende dal sistema DataLayer la lista degli impianti acquistati|
+
+### Misurazioni
+
+***Descrizione***
+Questo componente si occupa di reperire dal DataLayer le misurazioni di un certo impianto, inoltrarle ad altri componenti e mostrarle al Cliente/Tecnico in forma tabulare. 
+
+***Interfacce interne***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Richiesta misurazioni|Il componente attende dagli altri componenti la richiesta di reperire le misurazioni di un certo impianto, che comprende: parametri, periodo temporale|
+|Fornita|Misurazioni|Il componente fornisce agli altri componenti le misurazioni raccolte dal DataLayer|
+|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione; procede nel compiere le sue funzioni solo se si è in uno stato autenticato e se l'ID cliente/tecnico ha accesso al determinato ID impianto|
+|Richiesta|ID Impianto|Il componente ottiene dal comp. "Impianti acquistati" (o dal comp. "Pagina interventi Tecnico") l'ID dell'impianto di cui raccogliere le misurazioni|
+
+***Interfacce relative ad Ardeeno DataLayer***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Richiesta misurazioni|Il componente fornisce al sistema DataLayer la richiesta di reperire misurazioni, che comprende: ID impianto, ID cliente/tecnico, parametri, periodo temporale|
+|Richiesta|Misurazioni|Il componente attende che sistema DataLayer fornisca le misurazioni richieste|
+
+***Interfacce relative al Cliente/Tecnico***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Richiesta tabella|Il componente attende che il Cliente/Tecnico fornisca la richiesta di reperire le misurazioni in forma tabulare|
+
+### Heatmap
+
+***Descrizione***
+Questo componente si occupa di costruire la Heatmap e fornirla al Cliente, utilizzando le mappe fornite da OpenStreetMap e le misurazioni fornite dal comp. "Misurazioni". Inoltre, il Cliente interagisce con Il componente fornendo parametri e snapshot di interesse. 
+
+***Interfacce relative ad OpenStreetMap ***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Richiesta mappe|Il componente fornisce al sistema OSM una richiesta delle mappe, che comprende: API Token, la tipologia della mappa|
+|Richiesta|Mappe|Le mappe fornite da OpenStreetMap, su cui saranno poste le misurazioni dell'impianto|
+
+Nota: per scelta architetturale entrambi i componenti ["Heatmap"](#heatmap) ed ["Pagina presentazione"](#pagina-presentazione) sono intrisecamente dipendenti da OpenStreetMap.
+
+***Interfacce relative al Cliente***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Richiesta heatmap|Il componente attende che il Cliente fornisca una richiesta della heatmap, che comprende: timestamp dello snapshot, parametri|
+|Fornita|Heatmap|Il componente costruisce e fornsice al Cliente la Heatmap|
+
+***Interfacce interne***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione; procede nel compiere le sue funzioni solo se si è in uno stato autenticato e se l'ID cliente ha accesso al determinato ID impianto|
+|Richiesta|ID impianto|Il componente ottiene dal comp. "Impianti acquistati" l'ID dell'impianto selezionato|
+
+### Pagina interventi Cliente
+
+***Descrizione***
+Questo componente fornisce al Cliente gli interventi relativi ad un impianto e permette al Cliente di inserire una richiesta di riparazione.
+
+***Interfacce relative al Cliente***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Richiesta interventi|Il componente attende che il Cliente fornisca una richiesta degli interventi|
+|Fornita|Interventi|Il componente fornisce al Cliente gli interventi di un certo impianto|
+|Richiesta|Richiesta riparazione|Il componente attende che il Cliente fornisca una richiesta di riparazione, che comprende la motivazione della riparazione|
+
+***Interfacce interne***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione; procede nel compiere le sue funzioni solo se si è in uno stato autenticato e se l'ID cliente ha accesso al determinato ID impianto|
+|Richiesta|ID impianto|Il componente ottiene dal comp. "Impianti acquistati" l'ID dell'impianto selezionato|
+
+***Interfacce relative ad Ardeeno DataLayer***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Richiesta interventi|Il componente fornisce al sistema DataLayer la richiesta di reperire gli interventi, che comprende: ID impianto, ID cliente|
+|Richiesta|Interventi|Il componente attende dal sistema DataLayer gli interventi relativi all'impianto|
+|Fornita|Richiesta riparazione|Il componente fornisce al sistema DataLayer la richiesta di riparazione fornita dal Cliente, che comprende: ID impianto, ID cliente, motivazione riparazione|
+
+Nota: Il controllo sull'esistenza della coppia (ID impianto, ID cliente) è implicito nella richiesta inoltrata al DataLayer; una risposta vuota -- sia dal DataLayer che verso il Cliente -- puà essere interpretata come coppia (ID impianto, ID cliente) non esistente. Similmente per richieste al DataLayer nei componenti definiti precedentemente e successivamente.
+
+### Pagina interventi Tecnico
+
+***Descrizione***
+Questo componente si occupa di raccogliere dal DataLayer gli interventi assegnati ad un certo Tecnico e fornirli al Tecnico.
+
+***Interfacce relative al Tecnico ***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Richiesta interventi|Il componente attende che il Tecnico fornisca la richiesta degli interventi|
+|Fornita|Interventi|Il componente fornisce al Tecnico gli interventi raccolti|
+|Richiesta|Selezione intervento|Il componente ottiene dal Tecnico l'intervento selezionato|
+
+***Interfacce interne***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione; procede nel compiere le sue funzioni solo se si è in uno stato autenticato|
+|Fornita|ID impianto selezionato|Il componente fornisce al comp. "Misurazioni" l'ID dell'impianto selezionato, ricavato dalla selezione dell'intervento|
+|Fornita|ID intervento selezionato|Il componente fornisce al comp. "Operazioni intervento" l'ID dell'intervento selezionato dal Tecnico|
+
+***Interfacce relative ad Ardeeno DataLayer ***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Richiesta interventi|Il componente fornisce al sistema DataLayer la richiesta di reperire gli interventi assegnati, che comprende l'ID Tecnico|
+|Richiesta|Interventi|Il componente attende dal sistema DataLayer gli intervento assegnati al Tecnico|
+
+Nota: per scelta architetturale molti componenti sono intrisecamente dipendenti anche ad Ardeeno DataLayer; sarà il sistema esterno paritario ad assicurarsi di mantenere un certo formato standard interno per richieste/risposte, anche al variare delle tecnologie e servizi utilizzati.
+Si osservi che per i rimanenti sistemi esterni (GPS, Gmail, TrustPilot), si utilizzano componenti *cuscinetto* per assicurare il formato standard interno in richieste/risposte.
+
+### Gestione GPS
+
+***Descrizione***
+Questo componente interagisce col sistema GPS e fornisce internamente le coordinate GPS reperite.
+
+***Interfacce relative al GPS***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Richiesta coordinate|Il componente fornisce al sistema GPS la richiesta delle coordinate, che comprende anche il formato delle coordinate|
+|Richiesta|Risposta coordinate|Il componente attende dal sistema GPS le coordinate o un codice di errore|
+
+***Interfacce interne***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Richiesta coordinate|Il componente attende che qualche altro compoenente fornisca una richiesta delle coordinate|
+|Fornita||Il componente fornisce agli altri componenti le coordinate nel formato standard interno, o un codice di errore|
+
+### Operazioni intervento
+
+***Descrizione***
+Questo componente gestisce le interazioni tra il Tecnico e l'intervento assegnato selezionato: aggiunta/rimozione sensore, conclusione intervento.
+
+***Interfacce interne***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|ID intervento selezionato|Il componente ottiene dal comp. "Pagina interventi Tecnico" l'ID dell'intervento in corso selezionato; l'ID dell'intervento in corso comprende l'ID del relativo impianto|
+|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione; procede nel compiere le sue funzioni solo se si è in uno stato autenticato e se l'ID Tecnico ha accesso al determinato ID intervento|
+|Fornita|Richiesta coordinate|[Comp. "Gestioen GPS"](#gestione-gps)|
+|Richiesta|Risposta cordinate|[Comp. "Gestioen GPS"](#gestione-gps)|
+
+***Interfacce relative al Tecnico ***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Richiesta|Il componente attende che il Tecnico fornisca una richiesta di rimozione/aggiunta di un sensore. Per la rimozione la richiesta comprende il solo ID sensore. Per l'aggiunta la richiesta comprende o il solo ID sensore (e le coordinate sono reperite dal GPS) o ID sensore e coordinate|
+|Fornita|Esito richiesta|Il componente fornisce al Tecnico l'esito della richiesta di rimozione/aggiunta. Per la rimozione l'esito è negativo se l'ID sensore non è associato all'ID dell'impianto|
+|Richiesta|Conclusione con resoconto|Il componente attende che il Tecnico fornisca una richiesta di conclusione dell'intervento, che comprende un resoconto testuale|
+
+***Interfacce relative ad Ardeeno DataLayer***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Richiesta rimozione/aggiunta sensore|Il componente fornisce al DataLayer la richiesta di rimozione/aggiunta sensore, che comprende: ID Tecnico, ID intervento, ID impianto, ID sensore, coordinate|
+|Richiesta|Esito richiesta|Il componente attende dal sistema DataLayer l'esito della richiesta di rimozione/aggiunta|
+|Fornita|Con|Il componente fornisce al sistema DataLayer la richiesta di conclusione dell'intervento, che comprende: ID Tecnico, ID intervento, ID impianto, resoconto. Il componente assume che la richiesta abbia esito positivo; l'esito negativo è implicito nella visualizzazione dello stato degli interventi nel comp. "Pagina interventi Tecnico"|
+
+### Pagina interventi Supervisore
+
+***Descrizione***
+Questo componente si occupa di raccogliere dal DataLayer tutti gli interventi fornirli al Supervisore.
+
+***Interfacce relative al Supervisore***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Richiesta interventi|Il componente attende che il Supervisore fornisca la richiesta degli interventi|
+|Fornita|Intervento|Il componente fornisce al Supervisore tutti gli interventi|
+|Richiesta|Selezione intervento|Il componente ottiene dal Supervisore l'intervento selezionato|
+
+***Interfacce interne***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione; procede nel compiere le sue funzioni solo se si è in uno stato autenticato|
+|Fornita|ID intervento selezionato|Il componente fornisce al comp. "Assegnazione interventi" l'ID dell'intervento richiesto selezionato dal Supervisore|
+
+***Interfacce relative ad Ardeeno DataLayer***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Richiesta interventi|Il componente fornisce al sistema DataLayer la richiesta degli interventi|
+|Richiesta|Interventi|Il componente attende dal sistema DataLayer tutti gli interventi raccolti dalla base di dati|
+
+### Assegnazione interventi
+
+***Descrizione***
+Questo gestisce l'assegnazione da parte di un Supervisore di un intervento richiesto a un certo Tecnico.
+
+***Interfacce interne***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione; procede nel compiere le sue funzioni solo se si è in uno stato autenticato|
+|Richiesta|ID intervento selezionato|[Comp. "Pagina interventi Supervisore"](#pagina-interventi-supervisore)|
+|Fornita|Email|Il componente fornisce al comp. "Gestione invio email" l'email da inviare al Tecnico, che contiene la data, l'impianto e il tipo di intervento assegnato|
+
+***Interfacce relative al Supervisore***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Richiesta tecnici|Il componente attende che il Supervisore fornisca la richiesta dei tecnici disponibili in una certa data|
+|Fornita|Tecnici|Il componente fornisce al Supervisore i Tecnici liberi nella certa data|
+|Richiesta|Richiesta assegnazione|Il componente attende che il Supervisore fornisca una richiesta di assegnazione, che comprende: ID intervento richiesto, ID tecnico, data|
+|Fornita|Esito richiesta|Il componente fornisce al Supervisore l'esito della richiesta di assegnazione. L'esito è negativo se nel tempo di interazione con il DataLayer il Tecnico è diventato non disponibile|
+
+***Interfacce relative ad Ardeeno DataLayer***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Richiesta tecnici|Il componente fornisce al sistema DataLayer la richiesta dei tecnici disponibili in una certa data|
+|Richiesta|Tecnici|Il componente attende dal sistema DataLayer i tecnici disponibile nella certa data. Il componente assume che la richiesta abbia esito positivo|
+|Fornita|Richiesta assegnazione|Il componente fornisce al sistema DataLayer la richiesta di assegnazione, che comprende: ID intervento, ID Tecnico, data|
+|Richiesta|Esito richiesta|Il componente attende dal sistema DataLayer l'esito della richiesta di assegnazione|
+
+### Gestione Dipendenti
+
+***Descrizione***
+Questo componente gestisce la registrazione e la modifica degli account di Dipendenti da parte dell'Amministratore. Interagisce con molti altri componenti interni.
+
+***Interfacce interne***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione; procede nel compiere le sue funzioni solo se si è in uno stato autenticato|
+|Fornita|Email|Il componente fornisce al comp. "Gestione invio email" un'email da inviare al Dipendente registrato/modificato contenente i dati dell'account|
+|Fornita|Richiesta generazione codice di conferma|Il componente fornisce al comp. "Gestione conferma email" una richiesta di generazione di codice di conferma; questo avviene se si registra un Dipendente o se si modifica l'indirizzo email di un Dipendente|
+|Fornita|Richiesta generazione codice recupero|Il componente fornisce al comp. "Gestione recupero password" una richiesta di generazione di codice di recupero. Questo avviene alla registrazione di un nuovo Dipendente secondo il [RF23](#a)|
+
+***Interfacce relative all'Amministratore ***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Richiesta Dipendenti|Il componente attende che l'Amministratore fornisca la richiesta di reperire i Dipendenti|
+|Fornita|Dipendenti|Il componente fornisce all'Amministratore i Dipendenti reperiti dal sistema DataLayer|
+|Richiesta|Richiesta registrazione/modifica Dipendente|Il componente attende che l'Amministratore fornisca la richiesta di modifica di un Dipendente (che comprende solo quei dati modificati) o di registrazione di un Dipendente (che comprende tutti quei dati discussi nel [RF23](#a))|
+|Fornita|Esito richiesta|Il componente fornisce all'Amministratore l'esito della richiesta di registrazione/modifica. L'esito è negativo se un'indirizzo email o un CF inserito è gia associato a qualche account|
+
+***Interfacce relative ad Ardeeno DataLayer***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Richiesta Dipendenti|Il componente fornisce al sistema DataLayer la richiesta dei Dipendenti|
+|Richiesta||Il componente attende dal sistema DataLayer i Dipendenti raccolti dalla base di dati|
+|Fornita|Richiesta registrazione/modifica Dipendente|Il componente fornisce al sistema DataLayer la richiesta di registrazione/modifica|
+|Richiesta||Il componente attende dal sistema DataLayer l'esito della richiesta di registrazione/modifica|
+
+### Statistiche
+
+***Descrizione***
+Questo componente si occupa di raccogliere dati da Ardeeno DataLayer, aggregarli e fornire grafici interattivi all'Amministratore
+
+***Interfacce interne***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione; procede nel compiere le sue funzioni solo se si è in uno stato autenticato|
+
+***Interfacce relative all'Amministratore***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Richiesta grafico|Il componente attende che l'Amministratore fornisca una richiesta grafic, che comprende: tipo di grafico, periodo da considerare, parametri di interesse|
+|Fornita|Grafic|Il componente costruisce e fornisce all'Amministratore il grafico interattivo|
+
+***Interfacce relative ad Ardeeno DataLayer***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Richiesta dati|Il componente fornisce al sistema DataLayer la richiesta di dati, i cui parametri dipendono dalla richiesta grafico fornita dall'Amministratore|
+|Richiesta|Dati|Il componente attende che il sistema DataLayer fornisca i dati. Il componente assume che la richiesta abbia esito positivo|
 
 ## Diagramma dei componenti
 Alla pagina successiva si trova il diagramma leggibile.

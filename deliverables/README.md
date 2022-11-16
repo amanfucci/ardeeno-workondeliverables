@@ -43,6 +43,11 @@ quarto render my-pretty-file.qmd
 ### Quick Cheatsheet
 [MarkDown](https://www.markdownguide.org/basic-syntax)  
 [Quarto](https://quarto.org/docs/authoring/figures.html)
+
+#### Underlined text
+```rmd
+Cannot find a way
+```
 #### Unnumbered Sections
 ```rmd
 {-}
@@ -66,6 +71,6 @@ scale=(%)
 fig-cap-location=(top, bottom, margin)
 ```
 #### Concatenate pdf files
-```
+```bash
 pdftk Documento-di-Specifica.pdf diagrammacomp.pdf cat output D2-T41.pdf
 ```
