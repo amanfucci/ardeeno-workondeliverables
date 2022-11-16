@@ -8,9 +8,9 @@ subtitle: |
 
   D2-Documento di Specifica
 
-  v0.9
+  v1.0
 author: [alessandro.manfucci@studenti.unitn.it, enrico.cescato@studenti.unitn.it ,m.sottocornola-1@studenti.unitn.it]
-date: "15-11-2022"
+date: "16-11-2022"
 lang: it
 format:
   pdf:
@@ -56,6 +56,12 @@ versione=(" ", "0", "1", "2", ...) // Hardware differente
 # Requisiti funzionali
 Questo capitolo presenta i requisiti funzionali del sistema, raggruppati per ruolo. Vengono utilizzati i diagrammi UML Use Case (descrivendo nel dettaglio ogni singolo Use Case) e, per i requisiti funzionali più complessi, anche i Sequence Diagrams, gli Activity Diagrams e gli State Diagrams.
 
+Si evidenzia la seguente gerarchia disgiunta di Attori:
+
+![Gerarchia Attori](.media/gerarchia.png){width=10cm fig-pos=H}
+
+Il punto di vista è sempre quello del sistema; dunque un utente, anche se registrato, verrà considerato come Utente Anonimo fino al momento del Login.
+
 <!--FORM
 1. Il <attore> inserisce X [Exception 1]
 2. Il <attore> invia il form premendo il bottone "<bottone>" [Exception 2]
@@ -80,7 +86,7 @@ Exceptions
 
 ## Utente anonimo
 
-![RF1, RF2, RF2.1, RF3](.media/utente_anonimo1.drawio.png){width=10cm fig-pos=H}
+![RF1, RF2, RF2.1, RF3](.media/anonimo1.png){width=10cm fig-pos=H}
 
 ### UseCase Visualizzazione presentazione {-}
 
@@ -140,7 +146,7 @@ Questo use case descrive la visualizzazione da parte di un utente anonimo delle 
 
 2. Non ci sono *service reviews*; compare la scritta "TrustScore non disponibile".
 
-![RF4, RF5, RF6, RF7](.media/utente_anonimo2.drawio.png){width=10cm fig-pos=H}
+![RF4, RF5, RF6, RF7](.media/anonimo2.png){width=10cm fig-pos=H}
 
 ### UseCase Registrazione cliente {-}
 ***Summary***
@@ -161,7 +167,7 @@ Questo use case descrive come l'utente anonimo effettua la registrazione come cl
 
 5. L'utente anonimo invia il form premendo il bottone "Registrati". [Exception 6] [Exception 7]
 
-6. Il sistema -- tramite Gmail -- invia l'email contenente il codice per confermare l'indirizzo email.
+6. Il sistema -- tramite Gmail -- invia due email: una contenente il codice per confermare l'indirizzo email, l'altra con i dati di registrazione e un messaggio di benvenuto.
 
 7. La registrazione è stata correttamente effettuata, appare la scritta "Registrazione completata".
 
@@ -267,7 +273,7 @@ Questo use case descrive come avviene il recupero -- ovvero il cambio -- della p
 
 ## Utente autenticato
 
-![RF5.1, RF8, RF9](./.media/autenticato.drawio.png){width=12cm fig-pos=H}
+![RF5.1, RF8, RF9](.media/autenticato.png){width=12cm fig-pos=H}
 
 ### UseCase Logout {-}
 
@@ -309,7 +315,7 @@ Questo use case descrive come l'utente autenticato modifica i propri dati person
 
 3. L'utente invia il form premendo il tasto "Modifica dati". [Exception 2] [Exception 3]
 
-4. Il sistema aggiorna solo quei campi riempiti.
+4. Il sistema aggiorna solo quei campi riempiti ed invia un'email di notifica tramite Gmail.
 
 ***Exceptions***
 
@@ -325,7 +331,7 @@ Questo use case descrive come l'utente autenticato modifica i propri dati person
 
 ## Cliente
 
-![RF10, RF16](.media/cliente1.drawio.png){width=10cm fig-pos=H}
+![RF10, RF16](.media/cliente1.png){width=10cm fig-pos=H}
 
 ### UseCase Acquisto impianto {-}
   
@@ -345,7 +351,7 @@ Questo use case descrive come il cliente effettua l'acquisto dell'impianto prece
 
 5. L'acquisto è concluso, nella pagina di acquisto appare in verde la scritta "Acquisto concluso!".
 
-6. L'acquisto è concluso, il sistema inserisce un intervento di installazione per il nuovo impianto ed -- tramite Gmail -- invia una richiesta di recensione per email.
+6. L'acquisto è concluso, il sistema inserisce un intervento di installazione per il nuovo impianto ed -- tramite Gmail -- invia una richiesta di recensione e un messaggio di avvenuto acquisto.
 
 ***Exceptions***
 
@@ -359,7 +365,7 @@ Questo use case descrive come il cliente effettua l'acquisto dell'impianto prece
 
 ***Sequence Diagram***
 
-![Sequence Diagram](.media/cliente1seq.drawio.png){width=7cm fig-pos=H}
+![Sequence Diagram](.media/cliente1seq.png){width=7cm fig-pos=H}
 
 ### UseCase Pagamento {-}  
 
@@ -395,7 +401,7 @@ Questo use case descrive come avviene la richiesta e l'inserimento di una recens
 
 4. TrustPilot riporta che la recensione è stata correttamente inserita.
 
-![RF11, RF12, RF13](.media/cliente2.drawio.png){width=12cm fig-pos=H}
+![RF11, RF12, RF13](.media/cliente2.png){width=12cm fig-pos=H}
 
 ### UseCase Visualizzazione Impianti Acquistati {-}  
 
@@ -469,7 +475,7 @@ Questo use case descrive come un cliente visualizza le misurazioni di uno specif
 
 2. Lo snapshot attuale è il più recente in assoluto, viene visualizzata con pop-up la scritta "Nessuno snapshot successivo".
 
-![RF14, RF15](.media/cliente3.drawio.png){width=10cm fig-pos=H}
+![RF14, RF15](.media/cliente3.png){width=10cm fig-pos=H}
 
 ### UseCase Visualizzazione interventi {-}  
 
@@ -553,7 +559,7 @@ Questo use case descrive come un supervisore assegna l'intervento precedentement
 
 4. Il supervisore seleziona un tecnico dalla lista ed il sistema controlla nuovamente la disponibilità e lo considera *Prenotato*. [Exception 2]
 
-5. Appare il bottone "Assegna" ed il supervisore lo preme. [Exception 3]
+5. Appare il bottone "Assegna" ed il supervisore lo preme. Ad assegnazione conclusa viene inviata un'email di notifica al dato tecnico. [Exception 3]
 
 ***Exceptions***
 
@@ -565,7 +571,7 @@ Questo use case descrive come un supervisore assegna l'intervento precedentement
 
 ***Activity Diagram***
 
-![Activity Diagram](./.media/supactivity.drawio.png){width=10cm fig-pos=H}
+![Activity Diagram](.media/supervisore1activity.png){width=10cm fig-pos=H}
 
 ## Tecnico
 
@@ -693,7 +699,7 @@ Questo use case descrive come avviene la registrazione di un dipendente da parte
 
 10. L'indirizzo email è automaticamente confermato.
 
-11. La registrazione è stata correttamente effettuata, appare la scritta "Registrazione completata".
+11. La registrazione è stata correttamente effettuata, appare la scritta "Registrazione completata" ed il sistema -- tramite Gmail -- invia al Dipendente una notifica di avvenuta registrazione.
 
 ***Exceptions***
 
@@ -743,7 +749,7 @@ Questo use case descrive come un amministratore modifica i dati di un dipendente
 
 1. L'amministratore compila almeno uno dei campi descritti nella [Registrazione dipendente](#usecase-registrazione-dipendente). [Extension 1]
 
-3. L'amministratore invia il form premendo il bottone "Modifica dati". [Exception 1]
+3. L'amministratore invia il form premendo il bottone "Modifica dati". Ad avvenuta modifica il sistema -- tramite Gmail -- invia un'email di notifica al Dipendente. [Exception 1]
 
 ***Exceptions***
 
@@ -824,9 +830,9 @@ Un software proprietario effettua in sequenza 10 test di prestazione sulla rete 
 |---|----|-----------|
 |Prestazioni acquisto|La funzione di acquisto [RF10](#a) deve essere eseguita dal sistema in al più 10 secondi|Un software proprietario effettua in sequenza 10 test di prestazione sulla rete intranet di Ardeeno con browser compatibile Chrome su Windows; per ogni test la misurazione parte da quando il form è inviato a quando appare la scritta "Acquisto concluso" (si utilizza una procedura di pagamento fittizia ed istantanea); il sistema soddisfa il RNF se almeno 7 test hanno durata di al più 10 secondi|
 ||||
-|Prestazioni heatmap|La funzione del cliente [RF12](#a) deve essere eseguita dal sistema in al più 3 secondi|Un software proprietario effettua in sequenza 10 test di prestazione sulla rete intranet di Ardeeno con browser compatibile Chrome su Windows; per ogni test la misurazione parte da quando si richiede al sistema la heatmap dell'impianto a quando la pagina è completamente caricata dal browser (si utilizza un account cliente con un solo impianto modello AQ50A -- 50 sensori, 5 parametri misurati -- con 100 snapshot); il sistema soddisfa il RNF se almeno 7 test hanno durata di al più 5 secondi|
+|Prestazioni heatmap|La funzione del cliente [RF12](#a) deve essere eseguita dal sistema in al più 5 secondi|Un software proprietario effettua in sequenza 10 test di prestazione sulla rete intranet di Ardeeno con browser compatibile Chrome su Windows; per ogni test la misurazione parte da quando si richiede al sistema la heatmap dell'impianto a quando la pagina è completamente caricata dal browser (si utilizza un account cliente con un solo impianto modello AQ50A -- 50 sensori, 5 parametri misurati -- con 100 snapshot); il sistema soddisfa il RNF se almeno 7 test hanno durata di al più 5 secondi|
 ||||
-|Prestazioni tecnici|Le funzioni dei tecnici [RF.Tecnico](#tecnico) devono essere eseguite in al più 3 secondi|Un software proprietario effettua in sequenza 10 test di prestazione sulla rete intranet di Ardeeno con browser compatibile Chrome su Windows; ogni test ha 3 sottotest; per il primo sottotest la misurazione parte da quando si richiede al sistema la pagina [RF20](#a) a quando la pagina è completamente caricata dal browser; per il secondo sottotest la misurazione parte da quando si seleziona un intervento dalla lista a quando appare la scritta "Sensore aggiunto"; per il terzo sottotest la misurazione parte da quando si seleziona un intervento dalla lista a quando appare "Intervento concluso"; il sistema soddisfa il RNF se almeno 7 test hanno ogni sottotest con durata di al più 3 secondi (si utilizza un account tecnico con 10 interventi assegnati in corso su 10 impianti)|
+|Prestazioni tecnici|Le funzioni dei tecnici [RF.Tecnico](#tecnico) devono essere eseguite in al più 5 secondi|Un software proprietario effettua in sequenza 10 test di prestazione sulla rete intranet di Ardeeno con browser compatibile Chrome su Windows; ogni test ha 3 sottotest; per il primo sottotest la misurazione parte da quando si richiede al sistema la pagina [RF20](#a) a quando la pagina è completamente caricata dal browser; per il secondo sottotest la misurazione parte da quando si seleziona un intervento dalla lista a quando appare la scritta "Sensore aggiunto"; per il terzo sottotest la misurazione parte da quando si seleziona un intervento dalla lista a quando appare "Intervento concluso"; il sistema soddisfa il RNF se almeno 7 test hanno ogni sottotest con durata di al più 5 secondi (si utilizza un account tecnico con 10 interventi assegnati in corso su 10 impianti)|
 
 \pagebreak
 ### RNF5 Facilità d'uso {-}
@@ -839,7 +845,7 @@ Per 10 dipendenti di Ardeeno sarà organizzato un breve corso di formazione spec
 
 |Proprietà|Descrizione|Misura|
 |---|----|-----------|
-|Facilità d'uso utente anonimo|Un utente anonimo deve essere in grado di registrarsi e portare a termine un acquisto ([RF2](#a), [RF4](#a), [RF10](#a)) senza alcun addestramento, imparando in autonomia in meno di 5 minuti|A 10 dipendenti di Ardeeno sarà fornito: un dispositivo compatibile con Ardeeno WebApp (di cui 4 smartphones Android, 4 pc Windows, 2 tablet Android), l'URL della WebApp (ardeeno.it), un account email, un account PayPal; saranno quindi date le seguenti istruzioni: "Registrarsi e concludere un acquisto"; la misurazione parte dal momento in cui si forniscono le istruzioni e si conclude quando, successivamente al pagamento, appare la scritta "Acquisto concluso"; il sistema soddisfa il RNF se almeno 7 dipendenti concludono il test in al più 10 minuti|
+|Facilità d'uso utente anonimo|Un utente anonimo deve essere in grado di registrarsi e portare a termine un acquisto ([RF2](#a), [RF4](#a), [RF10](#a)) senza alcun addestramento, imparando in autonomia in meno di 10 minuti|A 10 dipendenti di Ardeeno sarà fornito: un dispositivo compatibile con Ardeeno WebApp (di cui 4 smartphones Android, 4 pc Windows, 2 tablet Android), l'URL della WebApp (ardeeno.it), un account email, un account PayPal; saranno quindi date le seguenti istruzioni: "Registrarsi e concludere un acquisto"; la misurazione parte dal momento in cui si forniscono le istruzioni e si conclude quando, successivamente al pagamento, appare la scritta "Acquisto concluso"; il sistema soddisfa il RNF se almeno 7 dipendenti concludono il test in al più 10 minuti|
 ||||
 |Facilità d'uso supervisore|I supervisori devono imparare ad usare le funzioni [RF17](#a), [RF18](#a), [RF19](#a) con un corso di formazione specifica di al più 15 minuti.|Per 10 supervisori di Ardeeno sarà organizzato un breve corso di formazione specifica di 15 minuti. Successivamente, verrà fatto un test.  Ai 10 supervisori di Ardeeno sarà fornito: un dispositivo compatibile con Ardeeno WebApp (di cui 4 smartphones Android, 4 pc Windows, 2 tablet Android), l'URL della WebApp (ardeeno.it), un account di Ardeeno WebApp; saranno quindi date le seguenti istruzioni: "Visualizzare gli interventi, selezionare il più recente intervento di riparazione richiesto ed assegnarlo ad un tecnico qualsiasi in un giorno qualsiasi"; la misurazione parte dal momento in cui si forniscono le istruzioni e si conclude quando, successivamente all'assegnazione, appare la scritta "Intervento assegnato"; il sistema soddisfa il RNF se almeno 7 supervisori concludono il test in al più 5 minuti.|
 ||||
@@ -908,7 +914,7 @@ Il DB del DataLayer è gestito da cloud.mongodb.com .
 
 ## Diagramma di contesto
 
-![Diagramma di contesto](./.media/contesto.png){fig-pos=H}
+![Diagramma di contesto](.media/contesto.png){width=16cm fig-pos=H}
 
 <!-- Componente s.m. -->
 \pagebreak
@@ -933,14 +939,14 @@ Il componente fornisce al comp. "Gestione invio email" l'email da inviare (che c
 ### Pagina presentazione
 
 ***Descrizione***
-Questo componente si occupa della funzione di visualizzazione della presentazione dell'azienda, che comprende descrizione testuale e mappa con sedi dell'azienda. La mappa è reperita da OpenStreetMap.
+Questo componente si occupa della funzione di visualizzazione della presentazione dell'azienda ([RF1](#a), [RF3](#a)), che comprende: descrizione testuale, mappa con sedi dell'azienda, service reviews. La mappa è reperita da OpenStreetMap.
 
 ***Interfacce relative ad OpenStreetMap***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
 |Fornita|Richiesta mappe|Il componente fornisce al sistema OSM una richiesta delle mappe, che comprende: API Token, la tipologia della mappa|
-|Richiesta|Mappe|Le mappe fornite da OpenStreetMap, su cui saranno poste le sedi dell'azienda|
+|Richiesta|Mappe|Il componente attende dal sistema OSM le mappe su cui saranno poste le sedi dell'azienda|
 
 ***Interfacce relative all'Utente Anonimo***
 
@@ -958,76 +964,76 @@ Questo componente si occupa della funzione di visualizzazione della presentazion
 ### Gestione service reviews
 
 ***Descrizione***
-Questo componente si occupa di reperire le service reviews dal sistema esterno TrustPilot, e fornirle al componente "Pagina Presentazione".
+Questo componente si occupa di reperire le service reviews dal sistema esterno TrustPilot, e fornirle al componente "Pagina Presentazione", come da [RF3](#a).
 
 ***Interfacce relative a TrustPilot ***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
 |Fornita|Richiesta service reviews|Il componente fornisce al sistema TrustPilot la richiesta delle service reviews, che comprende: API Token, minimo numero di stelle, minima data di invio delle recensioni, numero di service reviews richieste|
-|Richiesta|Service Reviews|Il componente attende da TrustPilot la lista di service reviews|
+|Richiesta|Service Reviews|Il componente attende da TrustPilot la lista di service reviews e il TrustScore. Il componente assume che la richiesta abbia esito positivo|
 
 ***Interfacce interne***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Fornita|Service reviews|Il componente fornisce le service reviews ottenute da TrustPilot e trasformate in un formato comprensibile agli altri componenti|
+|Fornita|Service reviews|Il componente fornisce il TrustScore e le service reviews ottenute da TrustPilot e trasformate in un formato standard interno|
 
 ### Gestione invio email
 
 ***Descrizione***
-Questo componente si occupa di interagire col sistema esterno Gmail, a cui richiede di inviare le email fornite dalle altre componenti.
+Questo componente si occupa di interagire col sistema esterno Gmail, a cui richiede di inviare le email fornite dalle altre componenti (per i requisiti funzionali [RF4](#a), [RF6](#a), [RF7](#a), [RF9](#a), [RF10](#a), [RF19](#a) [RF23](#a)).
 
 ***Interfacce interne***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Richiesta|Email|Il componente attende dagli altri componenti una email da inviare. L'email è composta da destinatari, oggetto, corpo e file allegati|
+|Richiesta|Email|Il componente attende dagli altri componenti una email da inviare, in un formato standard interno. L'email è composta da destinatari, oggetto, corpo e file allegati|
 
 ***Interfacce relative a Gmail***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Fornita|Richiesta invio email|Il componenete fornisce al sistema Gmail l'API Token e l'email da inviare|
+|Fornita|Richiesta invio email|Il componente fornisce al sistema Gmail l'API Token e l'email da inviare (secondo il formato dato dalla Gmail API)|
 
 ### Conferma indirizzo email
 
 ***Descrizione***
-Questo componente si occupa dell'intero processo di conferma dell'indirizzo email: generazione del codice di conferma, invio dell'email con il codice di conferma e verifica del codice di conferma fornito dall'Utente Anonimo.
+Questo componente si occupa dell'intero processo di conferma dell'indirizzo email ([RF6](#a)): generazione del codice di conferma, invio dell'email con il codice di conferma e verifica del codice di conferma fornito dall'Utente Anonimo. Ad ogni inserimento -- effettuato dagli altri componenti -- di una nuova email nella base di dati, l'email è segnata come non confermata e i codici di conferma esistenti eliminati; sotto richiesta viene generato un codice di conferma e viene inserito nella base di dati (associandolo all'ID Utente e specificando il timestamp corrente). L'Utente Anonimo può confermare l'indirizzo email col solo inserimento del codice di conferma (contenuto nel link inviato).
 
 ***Interfacce interne***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
 |Richiesta|Richiesta generazione codice conferma|Il componente attende dagli altri componenti la richiesta -- relativa ad un Utente -- di generare ed inviare un nuovo codice di conferma|
-|Fornita|Email|Il componenete fornisce al comp. "Gestione invio email" l'email da inviare (che contiene il codice di conferma generato)|
+|Fornita|Email|Il componente fornisce al comp. "Gestione invio email" l'email da inviare (che contiene il codice di conferma generato)|
 
 ***Interfacce relative ad Ardeeno DataLayer***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Fornita|Richiesta inserimento codice|Il componente fornisce al DataLayer una richiesta di inserimento del codice di conferma generato; la richiesta comprende il codice di conferma e l'email da confermare|
+|Fornita|Richiesta inserimento codice|Il componente fornisce al DataLayer una richiesta di inserimento del codice di conferma generato; la richiesta comprende il codice di conferma, l'ID Utente  e il timestamp corrente|
 |Fornita|Richiesta verifica codice|Il componente fornisce ad Ardeeno DataLayer un codice di conferma (inserito dall'Utente Anonimo) da verificare|
-|Richiesta|Esito Verifica|Il componente ottiene da Ardeeno DataLayer l'esito della verifica del codice di conferma|
+|Richiesta|Esito Verifica|Il componente ottiene da Ardeeno DataLayer l'esito della verifica del codice di conferma. L'esito è positivo se il codice è esistente e non scaduto; con esito positivo il codice è eliminato e l'email segnata come confermata|
 
 ***Interfacce relative all'Utente Anonimo***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
 |Richiesta|Richiesta conferma|Il componente attende dall'Utente Anonimo un codice di conferma da verificare|
-|Fornita|Esito conferma|Il componente fornisce all'utente anonimo l'esito della conferma; se il codice è non esistente o scaduto l'esito è negativo, altrimenti l'email è confermata|
+|Fornita|Esito conferma|Il componente fornisce all'utente anonimo l'esito della conferma|
 
 ### Recupero password
 
 ***Descrizione***
-Questo componente si occupa dell'intero processo di recupero della password: generazione del codice di recupero, invio dell'email con il codice di recupero, verifica del codice di conferma fornito dall'utente anonimo e inserimento della nuova password.
+Questo componente si occupa dell'intero processo di recupero della password ([RF7](#a)): generazione del codice di recupero, invio dell'email con il codice di recupero, verifica del codice di conferma fornito dall'utente anonimo e inserimento della nuova password.
 
 
-***Interfacce relative all'Utente Anonimo***
+***Interfacce relative all'Utente Anonimo/Interne***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Richiesta|Richiesta generazione codice recupero|Il componente attende dall'Utente Anonimo una richiesta di generazione del codice di recupero. La richiesta comprende un indirizzo email|
+|Richiesta|Richiesta generazione codice recupero|Il componente attende dall'Utente Anonimo -- o dalle altre componenti -- una richiesta di generazione del codice di recupero. La richiesta comprende un indirizzo email o l'ID Utente|
 |Richiesta|Richiesta recupero|Il componente aspetta dall'Utente Anonimo una richiesta di recupero, che comprende un codice di recupero e una nuova password|
 |Fornita|Esito recupero|Il componente fornisce all'Utente Anonimo l'esito della richiesta di recupero. L'esito è positivo se il codice è esistente e non scaduto|
 
@@ -1049,7 +1055,7 @@ Questo componente si occupa dell'intero processo di recupero della password: gen
 ### Registrazione Cliente
 
 ***Descrizione***
-Questo componente gestisce il processo di registrazione di un cliente nel sistema.
+Questo componente gestisce il processo di registrazione di un cliente nel sistema ([RF4](#a)).
 
 ***Interfacce relative all'Utente Anonimo***
 
@@ -1074,14 +1080,15 @@ Questo componente gestisce il processo di registrazione di un cliente nel sistem
 ### Login
 
 ***Descrizione***
-Questo componente si occupa della funzione di login. In sintesi, si tratta di un componente cuscinetto tra l'Utente Anonimo ed il componente "Autenticazione".
+Questo componente si occupa della funzione di login e logout ([RF5](#a), [RF5.1](#a)). In sintesi, si tratta di un componente cuscinetto tra l'Utente Anonimo ed il componente "Autenticazione".
 
-***Interfacce relative all'Utente Anonimo***
+***Interfacce relative all'Utente Anonimo/Autenticato***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
 |Richiesta|Richiesta login|Il componente attende dall'Utente Anonimo la richiesta di Login, che comprende indirizzo email e password|
 |Fornita|Esito login|Il componente fornisce all'Utente Anonimo l'esito della richiesta di login ottenuta dal comp. "Autenticazione"|
+|Richiesta|Richiesta logout|Il componente attende che l'Utente Autenticato fornisca una richiesta di logout|
 
 ***Interfacce interne***
 
@@ -1089,11 +1096,12 @@ Questo componente si occupa della funzione di login. In sintesi, si tratta di un
 |---|---|---------------------|
 |Richiesta|Richiesta login|Il componente fornisce al comp. "Autenticazione" la richiesta di login ricevuta dall'utente anonimo|
 |Richiesta|Esito login|Il componente attende dal comp. "Autenticazione" l'esito della richiesta di login|
+|Fornita|Richiesta logout|Il componente fornisce al comp. "Autenticazione" una richiesta di logout|
 
 ### Autenticazione
 
 ***Descrizione***
-Questo componente si occupa dell'autenticazione e comunica col sistema DataLayer. Inoltre è utilizzato dagli altri componenti per verificare lo stato di autenticazione.
+Questo componente si occupa dell'autenticazione ([RF5](#a), [RF5.1](#a)) e comunica col sistema DataLayer. Inoltre è utilizzato dagli altri componenti per verificare lo stato di autenticazione.
 
 ***Interfacce interne***
 
@@ -1102,6 +1110,8 @@ Questo componente si occupa dell'autenticazione e comunica col sistema DataLayer
 |Richiesta|Richiesta login|[Comp. "Login"](#login)|
 |Fornita|Esito login|[Comp. "Login"](#login)|
 |Fornita|Check auth|Il componente fornisce agli altri componenti lo stato corrente di autenticazione, che comprende -- se il login ha avuto esito positivo -- ID utente ed indirizzo email|
+|Fornita|Conferma indirizzo email|Il componente -- se l'email fornita dal comp. "Login" è non confermata -- fornisce al comp. "Conferma indirizzo email" una richiesta di generazione codice di conferma, come descritto nello [UseCase Autenticazione](#usecase-autenticazione)|
+|Richiesta|Richiesta logout|Il componente attende dal comp. "Login" una richiesta di logout; lo stato viene riportato a "Non autenticato"|
 
 ***Interfacce relative ad Ardeeno DataLayer***
 
@@ -1113,7 +1123,7 @@ Questo componente si occupa dell'autenticazione e comunica col sistema DataLayer
 ### Gestione Account
 
 ***Descrizione***
-Questo componente si occupa della gestione dell'account di un Utente Autenticato; ovvero permette a un Utente Autenticato di visualizzare e modificare i propri dati. Interagisce col comp. "Autenticazione". Inoltre, interagisce anche col comp. "Conferma email" nel caso in cui l'Utente modifichi il proprio indirizzo email.
+Questo componente si occupa della gestione dell'account di un Utente Autenticato ([RF8](#a), [RF9](#a)); ovvero permette a un Utente Autenticato di visualizzare e modificare i propri dati. Interagisce col comp. "Autenticazione". Inoltre, interagisce anche col comp. "Conferma email" nel caso in cui l'Utente modifichi il proprio indirizzo email e col comp. "Gestione invio email" nel caso in cui si modifichino i propri dati.
 
 ***Interfacce interne***
 
@@ -1121,6 +1131,7 @@ Questo componente si occupa della gestione dell'account di un Utente Autenticato
 |---|---|---------------------|
 |Richiesta|Check auth|[Comp. "Autenticazione"](#autenticazione)|
 |Fornita|Richiesta generazione codice conferma|Il componente fornisce al comp. "Conferma indirizzo email" l'account per cui generare un nuovo codice di conferma|
+|Fornita|Email|Il componente fornisce al comp. "Gestione invio email" un'email da inviare all'Utente, che contiene i dati modificati|
 
 ***Interfacce relative all'Utente Autenticato ***
 
@@ -1142,7 +1153,7 @@ Questo componente si occupa della gestione dell'account di un Utente Autenticato
 ### Gestione pagamento
 
 ***Descrizione***
-Questo componente si occupa di gestire i pagamenti tramite PayPal.
+Questo componente si occupa di gestire i pagamenti tramite PayPal (sottofunzione del [RF10](#a)).
 
 ***Interfacce interne***
 
@@ -1161,7 +1172,7 @@ Questo componente si occupa di gestire i pagamenti tramite PayPal.
 ### Acquisto impianto
 
 ***Descrizione***
-Questo componente si occupa di gestire il processo di acquisto di un impianto da parte di un Cliente.
+Questo componente si occupa di gestire il processo di acquisto di un impianto da parte di un Cliente ([RF10](#a), [RF16](#a)).
 
 ***Interfacce interne***
 
@@ -1172,8 +1183,8 @@ Questo componente si occupa di gestire il processo di acquisto di un impianto da
 |Fornita|Richiesta pagamento|[Comp. "Gestione Pagamento"](#gestione-pagamento)|
 |Richiesta|Esito pagamento|[Comp. "Gestione Pagamento"](#gestione-pagamento)|
 |Fornita|ID ordine|Il componente fornisce l'ID dell'ordine correttamente concluso al comp. "Gestione codice prod.review" (che genera un nuovo codice prod.review) ed al comp. "Gestione installazioni e manutenzioni" (che genera e inserisce un nuovo intervento di installazione)|
-|Richiesta|Codice prod.review|Il componenete attende dal comp. "Gestione codice prod.review" il codice generato|
-|Fornita|Email|Il componente fornisce al comp. "Gestione invio email" un'email contenente il codice prod.review, da inviare al Cliente che ha correttamente concluso l'acquisto|
+|Richiesta|Codice prod.review|Il componente attende dal comp. "Gestione codice prod.review" il codice generato|
+|Fornita|Email|Il componente fornisce al comp. "Gestione invio email" un'email contenente il codice prod.review ed un messaggio di avvenuto acquisto, da inviare al Cliente che ha correttamente concluso l'acquisto|
 
 ***Interfacce relative ad Ardeeno DataLayer***
 
@@ -1190,7 +1201,7 @@ Questo componente si occupa di gestire il processo di acquisto di un impianto da
 ### Gestione codice prod.reviews
 
 ***Descrizione***
-Questo componente si occupa di richiedere e ricevere da TrustPilot i codici prod.reviews.
+Questo componente si occupa di richiedere e ricevere da TrustPilot i codici prod.reviews([RF16](#a)).
 
 ***Interfacce interne***
 
@@ -1202,19 +1213,19 @@ Questo componente si occupa di richiedere e ricevere da TrustPilot i codici prod
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Fornita|Richiesta codice prod.review|Il componente fornisce a TrustPilot la richiesta di un nuovo codice prod.review, che comprende: ID cliente, ID ordine, API token|
+|Fornita|Richiesta codice prod.review|Il componente fornisce a TrustPilot la richiesta di un nuovo codice prod.review, che comprende: ID cliente, ID ordine, ID prodotto, API token|
 |Richiesta|Codice prod.review|Il componente attende da TrustPilot il nuovo codice prod.review|
 
 ### Gestione installazioni e manutenzioni
 
 ***Descrizione***
-Questo componente si occupa di inserire automaticamente le richieste di intervento di installazione (all'acquisto di un impianto) e di manutenzione (periodicamente).
+Questo componente si occupa di inserire automaticamente le richieste di intervento di installazione (all'acquisto di un impianto) e di manutenzione (periodicamente) ([RF10](#a)).
 
 ***Interfacce interne***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Richiesta|ID ordine|Il componente attende dal comp. "Acquisto impianto" l'ID dell ordine completato e per cui aggiungere un intervento di installazione|
+|Richiesta|ID ordine|Il componente attende dal comp. "Acquisto impianto" l'ID dell' ordine completato e per cui aggiungere un intervento di installazione|
 
 ***Interfacce relative ad Ardeeno DataLayer***
 
@@ -1227,7 +1238,7 @@ Questo componente si occupa di inserire automaticamente le richieste di interven
 ### Vetrina
 
 ***Descrizione***
-Questo componente si occupa di gestire la visualizzazione da parte dell'utente anonimo dei modelli di impianto in vendita e delle prod.reviews; questo componente si occupa inoltre di inoltrare la richiesta di acquisto al comp. "Acquisto impianto".
+Questo componente si occupa di gestire la visualizzazione da parte dell'utente anonimo dei modelli di impianto in vendita e delle prod.reviews; questo componente si occupa inoltre di inoltrare la richiesta di acquisto al comp. "Acquisto impianto". ([RF2](#a))
 
 ***Interfacce relative all'Utente Anonimo ***
 
@@ -1235,7 +1246,7 @@ Questo componente si occupa di gestire la visualizzazione da parte dell'utente a
 |---|---|---------------------|
 |Richiesta|Richiesta modelli|Il componente attende che l'utente anonimo richieda i modelli di impianto in vendita|
 |Fornita|Modelli|Il componente fornisce all'Utente Anonimo i modelli di impianto in vendita|
-|Richiesta|Selezione modello|Il componenete attende che l'Utente Anonimo fornisca l'impianto selezionato|
+|Richiesta|Selezione modello|Il componente attende che l'Utente Anonimo fornisca l'impianto selezionato|
 |Fornita|Product reviews|Il componente fornisce all'Utente Anonimo le prod.reviews relative all'impianto selezionato|
 |Richiesta|Richiesta acquisto impianto|Il componente attende che l'Utente Anonimo fornisca una richiesta di acquisto riguardo all'impianto selezionato|
 
@@ -1250,7 +1261,7 @@ Questo componente si occupa di gestire la visualizzazione da parte dell'utente a
 ### Gestione product reviews
 
 ***Descrizione***
-Questo componente si occupa di reperire da TrustPilot le prod.reviews.
+Questo componente si occupa di reperire da TrustPilot le prod.reviews ([RF16](#a)).
 
 ***Interfacce interne***
 
@@ -1258,7 +1269,6 @@ Questo componente si occupa di reperire da TrustPilot le prod.reviews.
 |---|---|---------------------|
 |Richiesta|Richiesta prod.reviews|[Comp. "Vetrina"](#vetrina)|
 |Fornita|Richiesta acquisto impianto|[Comp. "Vetrina"](#vetrina)|
-
 
 ***Interfacce relative a TrustPilot ***
 
@@ -1270,7 +1280,7 @@ Questo componente si occupa di reperire da TrustPilot le prod.reviews.
 ### Impianti acquistati
 
 ***Descrizione***
-Questo componente permette ad un Utente Anonimo di visualizzare e selezionare gli impianti acquistati. Interagisce quindi con il sistema Ardeeno DataLayer.
+Questo componente permette ad un Utente Anonimo di visualizzare e selezionare gli impianti acquistati. Interagisce quindi con il sistema Ardeeno DataLayer. ([RF11](#a), [RF11.1](#a))
 
 ***Interfacce relative al Cliente***
 
@@ -1284,7 +1294,7 @@ Questo componente permette ad un Utente Anonimo di visualizzare e selezionare gl
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione, che comprende anche l'ID Cliente e l'indirizzo email|
+|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione, che comprende anche l'ID Utente e l'indirizzo email. Risponde alle richieste dell'Utente se si è in uno stato autenticato e se l'ID Utente e di tipo Cliente|
 |Fornita|ID impianto selezionato|Il componente fornisce internamente l'ID dell'impianto selezionato dal Cliente|
 
 ***Interfacce relative ad Ardeeno DataLayer***
@@ -1297,7 +1307,7 @@ Questo componente permette ad un Utente Anonimo di visualizzare e selezionare gl
 ### Misurazioni
 
 ***Descrizione***
-Questo componente si occupa di reperire dal DataLayer le misurazioni di un certo impianto, inoltrarle ad altri componenti e mostrarle al Cliente/Tecnico in forma tabulare. 
+Questo componente si occupa di reperire dal DataLayer le misurazioni di un certo impianto, inoltrarle ad altri componenti e mostrarle al Cliente/Tecnico in forma tabulare. ([RF13](#a))
 
 ***Interfacce interne***
 
@@ -1305,7 +1315,7 @@ Questo componente si occupa di reperire dal DataLayer le misurazioni di un certo
 |---|---|---------------------|
 |Richiesta|Richiesta misurazioni|Il componente attende dagli altri componenti la richiesta di reperire le misurazioni di un certo impianto, che comprende: parametri, periodo temporale|
 |Fornita|Misurazioni|Il componente fornisce agli altri componenti le misurazioni raccolte dal DataLayer|
-|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione; procede nel compiere le sue funzioni solo se si è in uno stato autenticato e se l'ID cliente/tecnico ha accesso al determinato ID impianto|
+|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione; procede nel compiere le sue funzioni solo se si è in uno stato autenticato e se l'ID Utente è di tipo cliente/tecnico ed ha accesso al determinato ID impianto|
 |Richiesta|ID Impianto|Il componente ottiene dal comp. "Impianti acquistati" (o dal comp. "Pagina interventi Tecnico") l'ID dell'impianto di cui raccogliere le misurazioni|
 
 ***Interfacce relative ad Ardeeno DataLayer***
@@ -1313,7 +1323,7 @@ Questo componente si occupa di reperire dal DataLayer le misurazioni di un certo
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
 |Fornita|Richiesta misurazioni|Il componente fornisce al sistema DataLayer la richiesta di reperire misurazioni, che comprende: ID impianto, ID cliente/tecnico, parametri, periodo temporale|
-|Richiesta|Misurazioni|Il componente attende che sistema DataLayer fornisca le misurazioni richieste|
+|Richiesta|Misurazioni|Il componente attende che il sistema DataLayer fornisca le misurazioni richieste|
 
 ***Interfacce relative al Cliente/Tecnico***
 
@@ -1324,7 +1334,7 @@ Questo componente si occupa di reperire dal DataLayer le misurazioni di un certo
 ### Heatmap
 
 ***Descrizione***
-Questo componente si occupa di costruire la Heatmap e fornirla al Cliente, utilizzando le mappe fornite da OpenStreetMap e le misurazioni fornite dal comp. "Misurazioni". Inoltre, il Cliente interagisce con Il componente fornendo parametri e snapshot di interesse. 
+Questo componente si occupa di costruire la Heatmap e fornirla al Cliente, utilizzando le mappe fornite da OpenStreetMap e le misurazioni fornite dal comp. "Misurazioni". Inoltre, il Cliente interagisce con Il componente fornendo parametri e snapshot di interesse. ([RF12](#a))
 
 ***Interfacce relative ad OpenStreetMap ***
 
@@ -1333,14 +1343,14 @@ Questo componente si occupa di costruire la Heatmap e fornirla al Cliente, utili
 |Fornita|Richiesta mappe|Il componente fornisce al sistema OSM una richiesta delle mappe, che comprende: API Token, la tipologia della mappa|
 |Richiesta|Mappe|Le mappe fornite da OpenStreetMap, su cui saranno poste le misurazioni dell'impianto|
 
-Nota: per scelta architetturale entrambi i componenti ["Heatmap"](#heatmap) ed ["Pagina presentazione"](#pagina-presentazione) sono intrisecamente dipendenti da OpenStreetMap.
+Nota: per scelta architetturale entrambi i componenti ["Heatmap"](#heatmap) e ["Pagina presentazione"](#pagina-presentazione) sono dipendenti ad OpenStreetMap.
 
 ***Interfacce relative al Cliente***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
 |Richiesta|Richiesta heatmap|Il componente attende che il Cliente fornisca una richiesta della heatmap, che comprende: timestamp dello snapshot, parametri|
-|Fornita|Heatmap|Il componente costruisce e fornsice al Cliente la Heatmap|
+|Fornita|Heatmap|Il componente costruisce e fornisce al Cliente la Heatmap|
 
 ***Interfacce interne***
 
@@ -1352,7 +1362,7 @@ Nota: per scelta architetturale entrambi i componenti ["Heatmap"](#heatmap) ed [
 ### Pagina interventi Cliente
 
 ***Descrizione***
-Questo componente fornisce al Cliente gli interventi relativi ad un impianto e permette al Cliente di inserire una richiesta di riparazione.
+Questo componente fornisce al Cliente gli interventi relativi ad un impianto e permette al Cliente di inserire una richiesta di riparazione.([RF14](#a), [RF15](#a))
 
 ***Interfacce relative al Cliente***
 
@@ -1366,7 +1376,7 @@ Questo componente fornisce al Cliente gli interventi relativi ad un impianto e p
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione; procede nel compiere le sue funzioni solo se si è in uno stato autenticato e se l'ID cliente ha accesso al determinato ID impianto|
+|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione; procede nel compiere le sue funzioni solo se si è in uno stato autenticato e se l'ID Utente è di tipo Cliente ed ha accesso al determinato ID impianto|
 |Richiesta|ID impianto|Il componente ottiene dal comp. "Impianti acquistati" l'ID dell'impianto selezionato|
 
 ***Interfacce relative ad Ardeeno DataLayer***
@@ -1377,12 +1387,13 @@ Questo componente fornisce al Cliente gli interventi relativi ad un impianto e p
 |Richiesta|Interventi|Il componente attende dal sistema DataLayer gli interventi relativi all'impianto|
 |Fornita|Richiesta riparazione|Il componente fornisce al sistema DataLayer la richiesta di riparazione fornita dal Cliente, che comprende: ID impianto, ID cliente, motivazione riparazione|
 
-Nota: Il controllo sull'esistenza della coppia (ID impianto, ID cliente) è implicito nella richiesta inoltrata al DataLayer; una risposta vuota -- sia dal DataLayer che verso il Cliente -- puà essere interpretata come coppia (ID impianto, ID cliente) non esistente. Similmente per richieste al DataLayer nei componenti definiti precedentemente e successivamente.
+Nota: Il controllo sull'esistenza della coppia (ID impianto, ID cliente) è implicito nella richiesta inoltrata al DataLayer; una risposta vuota -- sia dal DataLayer che verso il Cliente -- può essere interpretata come coppia (ID impianto, ID cliente) non esistente. Similmente per richieste al DataLayer nei componenti definiti precedentemente e successivamente.
+Diversamente, quando si specifica *Esito* si sottintende un codice di errore esplicito.
 
 ### Pagina interventi Tecnico
 
 ***Descrizione***
-Questo componente si occupa di raccogliere dal DataLayer gli interventi assegnati ad un certo Tecnico e fornirli al Tecnico.
+Questo componente si occupa di raccogliere dal DataLayer gli interventi assegnati ad un certo Tecnico e fornirli al Tecnico. ([RF20](#a))
 
 ***Interfacce relative al Tecnico ***
 
@@ -1396,7 +1407,7 @@ Questo componente si occupa di raccogliere dal DataLayer gli interventi assegnat
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione; procede nel compiere le sue funzioni solo se si è in uno stato autenticato|
+|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione; procede nel compiere le sue funzioni solo se si è in uno stato autenticato e se l'ID Utente è di tipo ID Tecnico|
 |Fornita|ID impianto selezionato|Il componente fornisce al comp. "Misurazioni" l'ID dell'impianto selezionato, ricavato dalla selezione dell'intervento|
 |Fornita|ID intervento selezionato|Il componente fornisce al comp. "Operazioni intervento" l'ID dell'intervento selezionato dal Tecnico|
 
@@ -1407,13 +1418,13 @@ Questo componente si occupa di raccogliere dal DataLayer gli interventi assegnat
 |Fornita|Richiesta interventi|Il componente fornisce al sistema DataLayer la richiesta di reperire gli interventi assegnati, che comprende l'ID Tecnico|
 |Richiesta|Interventi|Il componente attende dal sistema DataLayer gli intervento assegnati al Tecnico|
 
-Nota: per scelta architetturale molti componenti sono intrisecamente dipendenti anche ad Ardeeno DataLayer; sarà il sistema esterno paritario ad assicurarsi di mantenere un certo formato standard interno per richieste/risposte, anche al variare delle tecnologie e servizi utilizzati.
+Nota: per scelta architetturale molti componenti sono dipendenti anche ad Ardeeno DataLayer; sarà il sistema esterno paritario ad assicurarsi di mantenere un certo formato standard interno per richieste/risposte, anche al variare delle tecnologie e servizi utilizzati.
 Si osservi che per i rimanenti sistemi esterni (GPS, Gmail, TrustPilot), si utilizzano componenti *cuscinetto* per assicurare il formato standard interno in richieste/risposte.
 
 ### Gestione GPS
 
 ***Descrizione***
-Questo componente interagisce col sistema GPS e fornisce internamente le coordinate GPS reperite.
+Questo componente interagisce col sistema GPS e fornisce internamente le coordinate GPS reperite.([RNF5](#a))
 
 ***Interfacce relative al GPS***
 
@@ -1432,16 +1443,16 @@ Questo componente interagisce col sistema GPS e fornisce internamente le coordin
 ### Operazioni intervento
 
 ***Descrizione***
-Questo componente gestisce le interazioni tra il Tecnico e l'intervento assegnato selezionato: aggiunta/rimozione sensore, conclusione intervento.
+Questo componente gestisce le interazioni tra il Tecnico e l'intervento assegnato selezionato: aggiunta/rimozione sensore, conclusione intervento.([RF21](#a), [RF22](#a))
 
 ***Interfacce interne***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
 |Richiesta|ID intervento selezionato|Il componente ottiene dal comp. "Pagina interventi Tecnico" l'ID dell'intervento in corso selezionato; l'ID dell'intervento in corso comprende l'ID del relativo impianto|
-|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione; procede nel compiere le sue funzioni solo se si è in uno stato autenticato e se l'ID Tecnico ha accesso al determinato ID intervento|
-|Fornita|Richiesta coordinate|[Comp. "Gestioen GPS"](#gestione-gps)|
-|Richiesta|Risposta cordinate|[Comp. "Gestioen GPS"](#gestione-gps)|
+|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione; procede nel compiere le sue funzioni solo se si è in uno stato autenticato e se l'ID Utente è di tipo Tecnico ed ha accesso al determinato ID intervento|
+|Fornita|Richiesta coordinate|[Comp. "Gestione GPS"](#gestione-gps)|
+|Richiesta|Risposta coordinate|[Comp. "Gestione GPS"](#gestione-gps)|
 
 ***Interfacce relative al Tecnico ***
 
@@ -1462,7 +1473,7 @@ Questo componente gestisce le interazioni tra il Tecnico e l'intervento assegnat
 ### Pagina interventi Supervisore
 
 ***Descrizione***
-Questo componente si occupa di raccogliere dal DataLayer tutti gli interventi fornirli al Supervisore.
+Questo componente si occupa di raccogliere dal DataLayer tutti gli interventi e fornirli al Supervisore. ([RF17](#a))
 
 ***Interfacce relative al Supervisore***
 
@@ -1489,13 +1500,13 @@ Questo componente si occupa di raccogliere dal DataLayer tutti gli interventi fo
 ### Assegnazione interventi
 
 ***Descrizione***
-Questo gestisce l'assegnazione da parte di un Supervisore di un intervento richiesto a un certo Tecnico.
+Questo componente gestisce l'assegnazione, da parte di un Supervisore, di un intervento a un certo Tecnico.([RF18](#a), [RF19](#a))
 
 ***Interfacce interne***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione; procede nel compiere le sue funzioni solo se si è in uno stato autenticato|
+|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione; procede nel compiere le sue funzioni solo se si è in uno stato autenticato e l'ID Utente è di tipo ID Supervisore|
 |Richiesta|ID intervento selezionato|[Comp. "Pagina interventi Supervisore"](#pagina-interventi-supervisore)|
 |Fornita|Email|Il componente fornisce al comp. "Gestione invio email" l'email da inviare al Tecnico, che contiene la data, l'impianto e il tipo di intervento assegnato|
 
@@ -1505,6 +1516,7 @@ Questo gestisce l'assegnazione da parte di un Supervisore di un intervento richi
 |---|---|---------------------|
 |Richiesta|Richiesta tecnici|Il componente attende che il Supervisore fornisca la richiesta dei tecnici disponibili in una certa data|
 |Fornita|Tecnici|Il componente fornisce al Supervisore i Tecnici liberi nella certa data|
+|Richiesta|Prenotazione|Il componente attende che il Supervisore fornisca una Prenotazione; la prenotazione blocca la selezione del Tecnico in una certa data da parte di altri Supervisori, ma è precedente all'assegnazione nella base di dati|
 |Richiesta|Richiesta assegnazione|Il componente attende che il Supervisore fornisca una richiesta di assegnazione, che comprende: ID intervento richiesto, ID tecnico, data|
 |Fornita|Esito richiesta|Il componente fornisce al Supervisore l'esito della richiesta di assegnazione. L'esito è negativo se nel tempo di interazione con il DataLayer il Tecnico è diventato non disponibile|
 
@@ -1520,15 +1532,14 @@ Questo gestisce l'assegnazione da parte di un Supervisore di un intervento richi
 ### Gestione Dipendenti
 
 ***Descrizione***
-Questo componente gestisce la registrazione e la modifica degli account di Dipendenti da parte dell'Amministratore. Interagisce con molti altri componenti interni.
+Questo componente gestisce la registrazione e la modifica degli account di Dipendenti da parte dell'Amministratore. Interagisce con molti altri componenti interni. ([RF23](#a), [RF24](#a), [RF25](#a))
 
 ***Interfacce interne***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione; procede nel compiere le sue funzioni solo se si è in uno stato autenticato|
-|Fornita|Email|Il componente fornisce al comp. "Gestione invio email" un'email da inviare al Dipendente registrato/modificato contenente i dati dell'account|
-|Fornita|Richiesta generazione codice di conferma|Il componente fornisce al comp. "Gestione conferma email" una richiesta di generazione di codice di conferma; questo avviene se si registra un Dipendente o se si modifica l'indirizzo email di un Dipendente|
+|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione; procede nel compiere le sue funzioni solo se si è in uno stato autenticato e se l'ID Utente è di tipo ID Amministratore|
+|Fornita|Email|Il componente fornisce al comp. "Gestione invio email" un'email di notifica da inviare al Dipendente registrato/modificato contenente i dati dell'account|
 |Fornita|Richiesta generazione codice recupero|Il componente fornisce al comp. "Gestione recupero password" una richiesta di generazione di codice di recupero. Questo avviene alla registrazione di un nuovo Dipendente secondo il [RF23](#a)|
 
 ***Interfacce relative all'Amministratore ***
@@ -1538,7 +1549,7 @@ Questo componente gestisce la registrazione e la modifica degli account di Dipen
 |Richiesta|Richiesta Dipendenti|Il componente attende che l'Amministratore fornisca la richiesta di reperire i Dipendenti|
 |Fornita|Dipendenti|Il componente fornisce all'Amministratore i Dipendenti reperiti dal sistema DataLayer|
 |Richiesta|Richiesta registrazione/modifica Dipendente|Il componente attende che l'Amministratore fornisca la richiesta di modifica di un Dipendente (che comprende solo quei dati modificati) o di registrazione di un Dipendente (che comprende tutti quei dati discussi nel [RF23](#a))|
-|Fornita|Esito richiesta|Il componente fornisce all'Amministratore l'esito della richiesta di registrazione/modifica. L'esito è negativo se un'indirizzo email o un CF inserito è gia associato a qualche account|
+|Fornita|Esito richiesta|Il componente fornisce all'Amministratore l'esito della richiesta di registrazione/modifica. L'esito è negativo se un indirizzo email o un CF inserito è già associato a qualche account|
 
 ***Interfacce relative ad Ardeeno DataLayer***
 
@@ -1546,26 +1557,26 @@ Questo componente gestisce la registrazione e la modifica degli account di Dipen
 |---|---|---------------------|
 |Fornita|Richiesta Dipendenti|Il componente fornisce al sistema DataLayer la richiesta dei Dipendenti|
 |Richiesta||Il componente attende dal sistema DataLayer i Dipendenti raccolti dalla base di dati|
-|Fornita|Richiesta registrazione/modifica Dipendente|Il componente fornisce al sistema DataLayer la richiesta di registrazione/modifica|
+|Fornita|Richiesta registrazione/modifica Dipendente|Il componente fornisce al sistema DataLayer la richiesta di registrazione/modifica. A differenza del comp. "Registrazione Cliente", l'email è segnata come confermata, senza necessità della procedura di conferma.|
 |Richiesta||Il componente attende dal sistema DataLayer l'esito della richiesta di registrazione/modifica|
 
 ### Statistiche
 
 ***Descrizione***
-Questo componente si occupa di raccogliere dati da Ardeeno DataLayer, aggregarli e fornire grafici interattivi all'Amministratore
+Questo componente si occupa di raccogliere dati da Ardeeno DataLayer, aggregarli e fornire grafici interattivi all'Amministratore. ([RF26](#a), [RF27](#a))
 
 ***Interfacce interne***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione; procede nel compiere le sue funzioni solo se si è in uno stato autenticato|
+|Richiesta|Check auth|Il componente ottiene dal comp. "Autenticazione" lo stato di autenticazione; procede nel compiere le sue funzioni solo se si è in uno stato autenticato e se l'ID Utente è di tipo ID Amministratore|
 
 ***Interfacce relative all'Amministratore***
 
 |Tipo|Nome|Descrizione|
 |---|---|---------------------|
-|Richiesta|Richiesta grafico|Il componente attende che l'Amministratore fornisca una richiesta grafic, che comprende: tipo di grafico, periodo da considerare, parametri di interesse|
-|Fornita|Grafic|Il componente costruisce e fornisce all'Amministratore il grafico interattivo|
+|Richiesta|Richiesta grafico|Il componente attende che l'Amministratore fornisca una richiesta del grafico, che comprende: tipo di grafico, periodo da considerare, parametri di interesse|
+|Fornita|Grafico|Il componente costruisce e fornisce all'Amministratore il grafico interattivo|
 
 ***Interfacce relative ad Ardeeno DataLayer***
 
@@ -1578,4 +1589,4 @@ Questo componente si occupa di raccogliere dati da Ardeeno DataLayer, aggregarli
 Alla pagina successiva si trova il diagramma leggibile.
 <!--concatenare il pdf!-->
 
-![Anteprima diagramma dei componenti](./.media/diagrammacomp.drawio.png){fig-pos=H}
+![Anteprima diagramma dei componenti](.media/diagrammacomp.png){width=16cm fig-pos=H}

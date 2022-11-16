@@ -1,0 +1,82 @@
+<mxfile host="65bd71144e" scale="4" border="0">
+    <diagram id="2pkDhd71fD2mC2tWStdZ" name="Page-1">
+        <mxGraphModel dx="6113" dy="5630" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#FFFFFF" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="OmCYWnrhbO7qevd_RyAj-79" value="Cliente" style="shape=umlLifeline;participant=umlActor;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;spacingTop=36;outlineConnect=0;strokeColor=#000000;strokeWidth=1;fillColor=#FFFFFF;gradientColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="1090" y="20" width="20" height="300" as="geometry"/>
+                </mxCell>
+                <mxCell id="sVOuRwzDo-dUhApLFRC5-5" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;strokeColor=#000000;" parent="OmCYWnrhbO7qevd_RyAj-79" vertex="1">
+                    <mxGeometry x="5" y="80" width="10" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="OmCYWnrhbO7qevd_RyAj-80" value="PayPal" style="shape=umlLifeline;participant=umlActor;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;spacingTop=36;outlineConnect=0;strokeColor=#000000;strokeWidth=1;fillColor=#FFFFFF;gradientColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="1190" y="20" width="20" height="300" as="geometry"/>
+                </mxCell>
+                <mxCell id="sVOuRwzDo-dUhApLFRC5-2" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;strokeColor=#000000;" parent="OmCYWnrhbO7qevd_RyAj-80" vertex="1">
+                    <mxGeometry x="5" y="80" width="10" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="OmCYWnrhbO7qevd_RyAj-81" value="Gmail" style="shape=umlLifeline;participant=umlActor;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;spacingTop=36;outlineConnect=0;strokeColor=#000000;strokeWidth=1;fillColor=#FFFFFF;gradientColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="1290" y="20" width="20" height="300" as="geometry"/>
+                </mxCell>
+                <mxCell id="sVOuRwzDo-dUhApLFRC5-3" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;strokeColor=#000000;" parent="OmCYWnrhbO7qevd_RyAj-81" vertex="1">
+                    <mxGeometry x="5" y="130" width="10" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="OmCYWnrhbO7qevd_RyAj-82" value="TrustPilot" style="shape=umlLifeline;participant=umlActor;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;spacingTop=36;outlineConnect=0;strokeColor=#000000;strokeWidth=1;fillColor=#FFFFFF;gradientColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="1390" y="20" width="20" height="300" as="geometry"/>
+                </mxCell>
+                <mxCell id="sVOuRwzDo-dUhApLFRC5-4" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;strokeColor=#000000;" parent="OmCYWnrhbO7qevd_RyAj-82" vertex="1">
+                    <mxGeometry x="5" y="170" width="10" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="OmCYWnrhbO7qevd_RyAj-83" value="Pagamento" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;endSize=10;" parent="1" source="OmCYWnrhbO7qevd_RyAj-79" target="OmCYWnrhbO7qevd_RyAj-80" edge="1">
+                    <mxGeometry width="80" relative="1" as="geometry">
+                        <mxPoint x="1010" y="170" as="sourcePoint"/>
+                        <mxPoint x="1260" y="160" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1150" y="100"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="OmCYWnrhbO7qevd_RyAj-84" value="Conferma" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;" parent="1" source="OmCYWnrhbO7qevd_RyAj-80" target="OmCYWnrhbO7qevd_RyAj-79" edge="1">
+                    <mxGeometry x="-0.01" relative="1" as="geometry">
+                        <mxPoint x="1180" y="220" as="sourcePoint"/>
+                        <mxPoint x="1100" y="220" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1150" y="130"/>
+                        </Array>
+                        <mxPoint x="1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="OmCYWnrhbO7qevd_RyAj-85" value="Invio email" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;endSize=10;" parent="1" source="OmCYWnrhbO7qevd_RyAj-81" target="OmCYWnrhbO7qevd_RyAj-79" edge="1">
+                    <mxGeometry width="80" relative="1" as="geometry">
+                        <mxPoint x="1109.5" y="110" as="sourcePoint"/>
+                        <mxPoint x="1209.5" y="110" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1200" y="160"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="OmCYWnrhbO7qevd_RyAj-86" value="Inserimento recensione" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;endSize=10;" parent="1" source="OmCYWnrhbO7qevd_RyAj-79" target="OmCYWnrhbO7qevd_RyAj-82" edge="1">
+                    <mxGeometry x="0.0033" width="80" relative="1" as="geometry">
+                        <mxPoint x="1160" y="210" as="sourcePoint"/>
+                        <mxPoint x="1260" y="210" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1210" y="190"/>
+                        </Array>
+                        <mxPoint x="1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="OmCYWnrhbO7qevd_RyAj-87" value="Conferma" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;" parent="1" source="OmCYWnrhbO7qevd_RyAj-82" target="OmCYWnrhbO7qevd_RyAj-79" edge="1">
+                    <mxGeometry x="-0.0033" relative="1" as="geometry">
+                        <mxPoint x="1260" y="210" as="sourcePoint"/>
+                        <mxPoint x="1160" y="210" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1211" y="220"/>
+                        </Array>
+                        <mxPoint x="1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

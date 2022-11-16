@@ -8,9 +8,9 @@ subtitle: |
 
   D1-Documento di Progetto
 
-  v1.0
+  v1.1
 author: [alessandro.manfucci@studenti.unitn.it, enrico.cescato@studenti.unitn.it ,m.sottocornola-1@studenti.unitn.it]
-date: "10-10-2022"
+date: "16-11-2022"
 lang: it
 format:
   pdf:
@@ -102,7 +102,7 @@ Il sistema deve mostrare una lista delle dieci più recenti recensioni dell'azie
 Le recensioni sono sempre ordinate per data: da più recente a meno recente. Non vi è filtraggio.
 
 ### RF4 Registrazione cliente {-}
-Il sistema deve consentire ad un utente anonimo di registrarsi come cliente, compilando un form con campi: nome, cognome, indirizzo email, indirizzo, telefono e password (richiesta due volte al fine di evitare errori).
+Il sistema deve consentire ad un utente anonimo di registrarsi come cliente, compilando un form con campi: nome, cognome, indirizzo email, indirizzo, telefono e password (richiesta due volte al fine di evitare errori). A registrazione completata verrà inviata un'email con un messaggio di benvenuto.
 
 ### RF5 Autenticazione {-}
 Il sistema deve permettere ad un utente anonimo di autenticarsi tramite un form, inserendo indirizzo email e password.
@@ -122,12 +122,12 @@ Il sistema deve permettere ad un utente autenticato di effettuare il logout.
 Il sistema deve consentire la visualizzazione dei dati immessi in fase di registrazione ([RF4](#rf4-registrazione-cliente) o [RF24](#rf24-registrazione-dipendenti)) sotto forma di lista. Per [RNF2 Sicurezza](#rnf2-sicurezza), la password non viene visualizzata.
 
 ### RF9 Modifica dati personali {-}
-Il sistema deve consentire attraverso un form -- raggiungibile da [RF8](#rf8-visualizzazione-dati-personali) o [RF25](#rf25-modifica-dati-dipendente) -- la modifica dei dati immessi in fase di registrazione ([RF4](#rf4-registrazione-cliente) o [RF23](#rf23-registrazione-dipendenti)). In tale form, ogni campo è inizialmente vuoto ed è possibile assegnargli un valore; una volta che il form è inviato, verranno modificati solo i campi non vuoti. La password viene richiesta due volte.
+Il sistema deve consentire attraverso un form -- raggiungibile da [RF8](#rf8-visualizzazione-dati-personali) o [RF25](#rf25-modifica-dati-dipendente) -- la modifica dei dati immessi in fase di registrazione ([RF4](#rf4-registrazione-cliente) o [RF23](#rf23-registrazione-dipendenti)). In tale form, ogni campo è inizialmente vuoto ed è possibile assegnargli un valore; una volta che il form è inviato, verranno modificati solo i campi non vuoti. La password viene richiesta due volte. Ad ogni modifica si invia una notifica per email.
 
 ## Cliente
 
 ### RF10 Acquisto impianto {-}
-Il sistema -- attraverso la selezione effettuata in [RF2](#rf2-visualizzazione-vetrina) -- deve permettere di effettuare l'acquisto dell'impianto selezionato, specificando indirizzo di installazione e superficie (in $m^2$) attraverso un form. All'invio del form verrà richiesto il pagamento tramite PayPal. L'acquisto è considerato concluso quando il pagamento con PayPal è concluso. Ad acquisto concluso il sistema inserisce una richiesta di installazione per l'impianto acquistato.
+Il sistema -- attraverso la selezione effettuata in [RF2](#rf2-visualizzazione-vetrina) -- deve permettere di effettuare l'acquisto dell'impianto selezionato, specificando indirizzo di installazione e superficie (in $m^2$) attraverso un form. All'invio del form verrà richiesto il pagamento tramite PayPal. L'acquisto è considerato concluso quando il pagamento con PayPal è concluso. Ad acquisto concluso il sistema inserisce una richiesta di installazione per l'impianto acquistato ed invia un'email di avvenuto acquisto.
 
 ### RF11 Visualizzazione impianti acquistati {-}
 Il sistema deve consentire ad un cliente di visualizzare una lista di tutti gli impianti acquistati (attivi e dismessi), dove per ognuno si mostra: id, superficie (in $m^2$), indirizzo, stato (attivo o dismesso), data di acquisto e modello. Tra gli impianti visualizzati, il sistema deve permettere di selezionarne uno.
@@ -190,6 +190,8 @@ Se l'intervento selezionato è in stato richiesto, il sistema -- tramite la pagi
 
 I tecnici sono sempre ordinati per (cognome, nome) in ordine alfabetico. Non vi è filtraggio.
 
+Ad assegnazione effettuata verrà inviata un'email con le relative informazioni al dato tecnico.
+
 ## Tecnico
 
 ### RF20 Visualizzazione interventi -- tecnico {-}
@@ -213,14 +215,14 @@ Il sistema -- tramite la pagina mostrata da [RF21](#rf21-visualizzazzione-e-modi
 ## Amministratore
 
 ### RF23 Registrazione dipendenti {-}
-Il sistema deve permettere ad un amministratore di registrare nel sistema i dipendenti tramite un form, nel quale sono presenti i campi: nome, cognome, indirizzo email, telefono, indirizzo, CF, ruolo (selezionato da una lista contenente tecnico, supervisore, amministratore). Alla registrazione viene inviata un'email contenente la password generata automaticamente dal sistema, ed un'altra email per sollecitare il cambio della password ([RF7](#rf7-recupero-della-password)).
+Il sistema deve permettere ad un amministratore di registrare nel sistema i dipendenti tramite un form, nel quale sono presenti i campi: nome, cognome, indirizzo email, telefono, indirizzo, CF, ruolo (selezionato da una lista contenente tecnico, supervisore, amministratore). Alla registrazione viene inviata un'email contenente la password generata automaticamente dal sistema, una seconda email per sollecitare il cambio della password ([RF7](#rf7-recupero-della-password)) ed una terza email con i dati di registrazione ed un messaggio di benvenuto.
 
 ### RF24 Visualizzazione lista dipendenti {-}
 Il sistema deve far visualizzare una lista di tutti i dipendenti, dove per ognuno si mostra: nome, cognome, indirizzo email, telefono, indirizzo, CF, password, ruolo. Il sistema deve permettere di selezionare un dipendente dalla lista.
 Il sistema deve permettere di filtrare la lista dei dipendenti per: ruolo, stato (attivo, dimesso). I dipendenti sono sempre ordinati per (cognome, nome) in ordine alfabetico.
 
 ### RF25 Modifica dati dipendente {-}
-Il sistema -- attraverso la selezione di un dipendente effettuata in [RF24](#rf24-visualizzazione-lista-dipendenti) -- deve permettere all'amministratore di accedere alla stessa funzione [RF9](#rf9-modifica-dati-personali) cui ha accesso il dipendente. In aggiunta il sistema deve permettere all'amministratore di segnare il dipendente come attivo o dimesso.
+Il sistema -- attraverso la selezione di un dipendente effettuata in [RF24](#rf24-visualizzazione-lista-dipendenti) -- deve permettere all'amministratore di accedere alla stessa funzione [RF9](#rf9-modifica-dati-personali) cui ha accesso il dipendente. In aggiunta il sistema deve permettere all'amministratore di segnare il dipendente come attivo o dimesso. Ad ogni modifica si invia una notifica per email.
 
 ### RF26 Visualizzazione grafico vendite {-}
 Il sistema deve far visualizzare un grafico dove si mostra in funzione del tempo -- con granularità mensile -- il numero di acquisti effettuati dai clienti.
@@ -271,7 +273,7 @@ Le funzioni [RF.Tecnico](#tecnico), [RF.Supervisore](#supervisore), [RF.Amminist
 ### RNF4 Prestazioni {-}
 - La funzione di acquisto [RF10](#rf10-acquisto-impianto) deve essere eseguita dal sistema in al più 10 secondi.
 - La funzione del cliente [RF12](#rf12-visualizzazione-misurazioni-su-heatmap) deve essere eseguita dal sistema in al più 5 secondi
-- Le funzioni dei tecnici [RF.Tecnico](#tecnico) devono essere eseguite in al più 3 secondi
+- Le funzioni dei tecnici [RF.Tecnico](#tecnico) devono essere eseguite in al più 5 secondi
 
 Per i RF con form la misurazione avviene da quando il form è inviato a quando si ha la conferma di ricezione; per i RF di visualizzazione la misurazione avviene dall'immissione dell'URL al caricamento completo della pagina. La misurazione è effettuata sulla rete intranet di Ardeeno, con il sistema installato nei server locali di Ardeeno ed il dispositivo da cui si accede al sistema connesso alla stessa rete locale.
 
@@ -345,7 +347,7 @@ Il sistema da sviluppare interagisce con più sistemi esterni attraverso delle A
 
 - **PayPal**: Sistema tramite cui il cliente che utilizza Ardeeno WebApp invia le richieste di pagamento per acquistare un impianto in vendita. PayPal invierà una conferma di avvenuto pagamento, e solo dopo questa conferma Ardeeno WebApp considererà l'acquisto come avvenuto. Questo sistema è usato da [RF10](#rf10-acquisto-impianto).
 
-- **Gmail**: Sistema tramite cui si inviano messaggi email contenenti link per confermare l'indirizzo email di un utente, per cambiare la password di un utente o per sollecitare una recensione dopo avvenuto acquisto. Questo sistema è usato da [RF6](#rf6-conferma-indirizzo-email), [RF7](#rf7-recupero-della-password), [RF9](#rf9-modifica-dei-dati-personali), [RF25](#rf25-modifica-dati-dipendente), [RF10](#rf10-acquisto-impianto).
+- **Gmail**: Sistema tramite cui si inviano messaggi email contenenti link per confermare l'indirizzo email di un utente, per cambiare la password di un utente o per sollecitare una recensione dopo avvenuto acquisto. Questo sistema è usato da [RF4](#rf4-registrazione-cliente), [RF6](#rf6-conferma-indirizzo-email), [RF7](#rf7-recupero-della-password), [RF9](#rf9-modifica-dei-dati-personali), [RF10](#rf10-acquisto-impianto), [RF19](#rf19-assegnazione-intervento), [RF23](#rf23-registrazione-dipendenti), [RF25](#rf25-modifica-dati-dipendente).
 
 - **TrustPilot**: Sistema tramite cui Ardeeno WebApp reperirà le recensioni fatte dagli utenti e che permetterà agli utenti di inserire una nuova recensione tramite un link. Questo sistema è usato da [RF16](#rf16-richiesta-recensione)
 
