@@ -1,0 +1,45 @@
+---
+title: | 
+  ![](../../.common-media/logo-unitn-ardeeno-512.png){width=10cm}
+
+  Ardeeno WebApp
+subtitle: |
+  T41-SE22
+
+  D5-Report Finale
+
+  v0.1
+author: [alessandro.manfucci@studenti.unitn.it, enrico.cescato@studenti.unitn.it ,m.sottocornola-1@studenti.unitn.it]
+date: "24-11-2022"
+lang: it
+format:
+  pdf:
+    include-in-header:
+      text: |
+        \usepackage{graphicx}
+        \usepackage{wrapfig}
+    documentclass: article
+    classoption: titlepage
+    toc: true
+    toc-title: Indice
+    papersize: a4
+    number-sections: true
+    geometry:
+    - top=1in
+    - bottom=1in
+    - right=1in
+    - left=1in
+---
+
+\pagebreak
+# Abstract {.unlisted .unnumbered}
+
+# Organizzazione del lavoro
+
+# Ruoli e attività
+
+# Carico e distribuzione del lavoro
+
+# Criticità
+
+# Autovalutazione
