@@ -23,7 +23,7 @@ gantt
 
     section Progettazione Architettura
     Class Diagrams :active, pa0, after sm, 12d
-    OCL :pa1, after pa0, 7d
+    OCL :active, pa1, after pa0, 8d
     Documento di Architettura :milestone, pam, 02-12, 0d
 
     section Sviluppo e Deployment
@@ -46,13 +46,12 @@ gantt
 |Definizione Requisiti   |A,E|10/10|Done|
 |Mock-Up FrontEnd        |A,M|10/10|Done|
 |Schema BackEnd          |A|10/10|Done|
-|Spec ReqF               |A,E,M|24/10|Active|
+|Spec ReqF               |A,E,M|24/10|Done|
 |Spec ReqNF              |A|24/10|Done|
 |Diagramma di Contesto   |A|30/10|Done|
 |Diagramma dei Componenti|A,M|9/11|Done|
-|Class Diagrams          |A,E,M|23/11||
-|OCL                     |TBA|||
-|BPMN                    ||||
+|Class Diagrams          |A,E|23/11|Active|
+|OCL                     |A,E|02/12|Active|
 |FrontEnd                ||||
 |BackEnd                 ||||
 |Deployment              ||||

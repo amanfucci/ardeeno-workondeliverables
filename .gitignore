@@ -1,0 +1,9 @@
+/deliverables/**/*.pdf
+/deliverables/**/*.html
+/deliverables/**/*.log
+/deliverables/**/*.aux
+/deliverables/**/*.tex
+/.stfolder/**/*
+**.ignore
+**.bkp
+**.log

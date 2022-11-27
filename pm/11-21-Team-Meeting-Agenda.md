@@ -2,7 +2,7 @@
 
 **Project Name:** Ardeeno WebApp
 
-**Meeting Date:** 11/21/2022 08:30
+**Meeting Date:** 11/21/2022 10:20
 
 **Invited:** Alessandro Manfucci, Enrico Cescato, Matteo Sottocornola
 
