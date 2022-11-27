@@ -34,10 +34,29 @@ format:
 \pagebreak
 # Abstract {.unlisted .unnumbered}
 
-Questo documento 
+Questo documento descrive, a partire dalle componenti precedentemente definite, l'architettura in Classi del progetto da realizzare. Lo scopo è dare al team di sviluppo una seconda -- e più dettagliata -- architettura del software che dovranno operativamente realizzare. 
+Si utilizza il diagramma delle Classi UML e successivamente il linguaggio OCL (Object Constraint Language).
 
 # Diagramma delle classi
+Nel seguente capitolo vedremo il diagramma delle Classi UML del progetto. Inoltre, descriveremo le singole Classi nel loro scopo e contesto, raggruppandole secondo una certa correlazione logica.
+Per quanto riguarda la cardinalità delle associazioni, useremo la notazione look-ahead.
+
+## Some classes
+A description
+
+## Diagramma delle classi complessivo
+Alla pagina successiva si trova il diagramma leggibile.
+<!--concatenare il pdf!-->
+
+![Diagramma delle classi complessivo](./.media/classi.png){width=16cm fig-pos=H}
+
 
 # Codice in Object Costraint Language
+Nel seguente capitolo vedremo particolari proprietà sugli attributi e sulle operazioni delle varie Classi (invarianti, pre-condizioni e post-condizioni). Come nel capitolo precedente, raggrupperemo le classi secondo una certa correlazione logica.
+Useremo il linguaggio OCL, che fa parte dello standard UML.
 
-# Diagramma delle classi con codice OCL
+## Diagramma delle classi complessivo con codice OCL
+Alla pagina successiva si trova il diagramma leggibile.
+<!--concatenare il pdf!-->
+
+![Diagramma delle classi complessivo con codice OCL](./.media/classi_ocl.png){width=16cm fig-pos=H}

@@ -1343,7 +1343,7 @@ Questo componente si occupa di costruire la Heatmap e fornirla al Cliente, utili
 |Fornita|Richiesta mappe|Il componente fornisce al sistema OSM una richiesta delle mappe, che comprende: API Token, la tipologia della mappa|
 |Richiesta|Mappe|Le mappe fornite da OpenStreetMap, su cui saranno poste le misurazioni dell'impianto|
 
-Nota: per scelta architetturale entrambi i componenti ["Heatmap"](#heatmap) e ["Pagina presentazione"](#pagina-presentazione) sono dipendenti ad OpenStreetMap.
+<!--Nota: per scelta architetturale entrambi i componenti ["Heatmap"](#heatmap) e ["Pagina presentazione"](#pagina-presentazione) sono dipendenti ad OpenStreetMap.-->
 
 ***Interfacce relative al Cliente***
 
@@ -1387,8 +1387,8 @@ Questo componente fornisce al Cliente gli interventi relativi ad un impianto e p
 |Richiesta|Interventi|Il componente attende dal sistema DataLayer gli interventi relativi all'impianto|
 |Fornita|Richiesta riparazione|Il componente fornisce al sistema DataLayer la richiesta di riparazione fornita dal Cliente, che comprende: ID impianto, ID cliente, motivazione riparazione|
 
-Nota: Il controllo sull'esistenza della coppia (ID impianto, ID cliente) è implicito nella richiesta inoltrata al DataLayer; una risposta vuota -- sia dal DataLayer che verso il Cliente -- può essere interpretata come coppia (ID impianto, ID cliente) non esistente. Similmente per richieste al DataLayer nei componenti definiti precedentemente e successivamente.
-Diversamente, quando si specifica *Esito* si sottintende un codice di errore esplicito.
+<!--Nota: Il controllo sull'esistenza della coppia (ID impianto, ID cliente) è implicito nella richiesta inoltrata al DataLayer; una risposta vuota -- sia dal DataLayer che verso il Cliente -- può essere interpretata come coppia (ID impianto, ID cliente) non esistente. Similmente per richieste al DataLayer nei componenti definiti precedentemente e successivamente.
+Diversamente, quando si specifica *Esito* si sottintende un codice di errore esplicito.-->
 
 ### Pagina interventi Tecnico
 
@@ -1418,8 +1418,8 @@ Questo componente si occupa di raccogliere dal DataLayer gli interventi assegnat
 |Fornita|Richiesta interventi|Il componente fornisce al sistema DataLayer la richiesta di reperire gli interventi assegnati, che comprende l'ID Tecnico|
 |Richiesta|Interventi|Il componente attende dal sistema DataLayer gli intervento assegnati al Tecnico|
 
-Nota: per scelta architetturale molti componenti sono dipendenti anche ad Ardeeno DataLayer; sarà il sistema esterno paritario ad assicurarsi di mantenere un certo formato standard interno per richieste/risposte, anche al variare delle tecnologie e servizi utilizzati.
-Si osservi che per i rimanenti sistemi esterni (GPS, Gmail, TrustPilot), si utilizzano componenti *cuscinetto* per assicurare il formato standard interno in richieste/risposte.
+<!--Nota: per scelta architetturale molti componenti sono dipendenti anche ad Ardeeno DataLayer; sarà il sistema esterno paritario ad assicurarsi di mantenere un certo formato standard interno per richieste/risposte, anche al variare delle tecnologie e servizi utilizzati.
+Si osservi che per i rimanenti sistemi esterni (GPS, Gmail, TrustPilot), si utilizzano componenti *cuscinetto* per assicurare il formato standard interno in richieste/risposte.-->
 
 ### Gestione GPS
 
