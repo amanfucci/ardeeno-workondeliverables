@@ -34,29 +34,115 @@ format:
 \pagebreak
 # Abstract {.unlisted .unnumbered}
 
-Questo documento descrive, a partire dalle componenti precedentemente definite, l'architettura in Classi del progetto da realizzare. Lo scopo è dare al team di sviluppo una seconda -- e più dettagliata -- architettura del software che dovranno operativamente realizzare. 
-Si utilizza il diagramma delle Classi UML e successivamente il linguaggio OCL (Object Constraint Language).
+Questo documento descrive l'architettura in classi del sistema a partire dalle componenti definite nel precedente documento; l'obbiettivo è fornire al team di sviluppo una seconda -- e più dettagliata -- architettura del software da realizzare. Vengono utilizzati il diagramma delle classi UML e il linguaggio OCL (*Object Constraint Language*).
 
 # Diagramma delle classi
-Nel seguente capitolo vedremo il diagramma delle Classi UML del progetto. Inoltre, descriveremo le singole Classi nel loro scopo e contesto, raggruppandole secondo una certa correlazione logica.
-Per quanto riguarda la cardinalità delle associazioni, useremo la notazione look-ahead.
+Questo capitolo presenta il diagramma delle classi UML del sistema; in particolare, le classi sono descritte e raggruppate secondo certe correlazioni logiche.  
+Per la cardinalità delle associazioni viene utilizzata la notazione *look-ahead*.
 
-## Some classes
-A description
+## Utente
+Un utente autenticato può essere un dipendente dell'azienda, ovvero un tecnico, un supervisore o un amministratore, ed è identificato da una lista di attributi. In particolare, l'attributo *emailConfermata* (di tipo *bool*) indica se l'indirizzo email inserito dall'utente in fase di registrazione è stato confermato o meno; le email inviate agli utenti sono specificate da destinatario, oggetto e corpo.  
+Un tecnico può visualizzare gli interventi a lui assegnati attraverso il metodo *getInterventiAssegnati()*. Ogni intervento è associato ad una lista di attributi; il valore dell'attributo *tipo* può essere modificato da assegnato in corso ad assegnato concluso attraverso il metodo *concludi()*, che richiede come parametro il resoconto dell'intervento.  
+Un supervisore può assegnare un intervento ad un tecnico attraverso il metodo *assegnaIntervento()*.  
+Un amministratore può svolgere le azioni di un supervisore. In aggiunta, un amministratore può dimettere dipendenti e visualizzare grafici relativi a vendite e interventi attraverso il metodo *getStatsGrafico()*; la classe *Grafico* ha un metodo *selRange()* che permette di specificare i dati di interesse tramite l'individuazione di un intervallo di tempo specifico.  
+La classe dipendente ha un attributo *isAttivo* che indica lo stato del dipendente: attivo o dimesso.
+
+<!--anche gli amministratori e i supervisori sono dipendenti dell'azienda;
+inserire il diagramma contenente le classi: utente, dipendente, tecnico, intervento, supervisore, amministratore, heatmap, email e grafico-->
+
+## Cliente
+Un utente autenticato può essere un cliente; questo può visualizzare gli impianti acquistati, richiedere un intervento per quelli attivi e acquistarne altri. Ogni impianto è identificato da un id e, attraverso i metodi *getSensori()* e *getSnapshot()*, è possibile visualizzare i sensori di quel specifico impianto e le relative misurazioni.  
+I sensori sono associati ad una lista di attributi: tra questi, l'attributo *coord* indica le coordinate posizionali del sensore; per installare un nuovo sensore si utilizza il metodo *installa()*, che richiede di specificare le coordinate del sensore e l'impianto di riferimento.  
+La classe *Coord* presenta gli attributi *lat* e *long* che indicano rispettivamente la latitudine e la longitudine della posizione di interesse; attraverso i metodi *getDM()* e *getDEG()* è possibile ottenere la misura delle coordinate in diversi formati. Inoltre, la misura delle coordinate può essere ottenuta attraverso il metodo *getCoord()* della classe *GPS*.  
+Ogni sensore effettua misurazioni; queste sono identificate da una lista di attributi e, in base al valore dell'attributo *timeStamp*, vengono raggruppate in uno specifico snapshot.  
+Le misurazioni possono essere visualizzate sotto forma di heatmap; ogni heatmap ha un attributo *selParam* che specifica il parametro di cui visualizzare le misurazioni. I metodi *prevSnapshot()* e *nextSnapshot()* permettono di selezionare lo snapshot di interesse.
+
+<!--inserire il diagramma contenente le classi: utente, cliente, impianto, sensore, snapShot, misurazione, heatmap, coord e gps-->
+
+## Vetrina e pagina di presentazione
+La vetrina mostra i modelli di impianto in vendita e le relative *product reviews*. Ad ogni modello è associata una lista di attributi; in particolare, l'attributo *parametri* specifica i parametri misurati dai sensori di quel specifico modello di impianto. Il costo dell'impianto è indicato dall'attributo *costo*, che comprende unità, centesimi e valuta della moneta.  
+Ogni *product review* è identificata da una lista di attributi; l'attributo *productId* permette di associare la recensione scritta dal cliente al relativo modello di impianto.  
+La pagina di presentazione mostra invece le *service reviews*, specificate dagli attributi *stars*, *title* e *description*.
+
+<!--l'attributo productId è da inserire anche nella classe modello;
+inserire il diagramma contenente le classi: vetrina, modello, productReview, paginaPresentazione, serviceReview e costo-->
+
+## Sistemi esterni
+Le classi *GmailAPI*, *TrustPilotAPI*, *DataLayerAPI* e *PayPalAPI* permettono al sistema di interfacciarsi con i sistemi esterni.
+
+<!--inserire il diagramma contenente le classi: gmailAPI, trustpilotAPI, datalayerAPI e paypalAPI-->
 
 ## Diagramma delle classi complessivo
-Alla pagina successiva si trova il diagramma leggibile.
+In questa sezione viene mostrato il diagramma delle classi UML nella sua totalità.
+
 <!--concatenare il pdf!-->
 
 ![Diagramma delle classi complessivo](./.media/classi.png){width=16cm fig-pos=H}
 
 
-# Codice in Object Costraint Language
-Nel seguente capitolo vedremo particolari proprietà sugli attributi e sulle operazioni delle varie Classi (invarianti, pre-condizioni e post-condizioni). Come nel capitolo precedente, raggrupperemo le classi secondo una certa correlazione logica.
-Useremo il linguaggio OCL, che fa parte dello standard UML.
+# Codice in OCL
+Questo capitolo presenta particolari proprietà di attributi e metodi delle classi (invarianti, pre-condizioni e post-condizioni). Ancora una volta, le classi sono raggruppate secondo certe correllazioni logiche.  
+Viene utilizzato il linguaggio OCL, facente parte dello standard UML.
+
+## Autenticazione utente e dimissione dipendente dell'azienda
+Un utente può effettuare l'autenticazione attraverso il metodo *login()* solo se l'indirizzo email inserito in fase di registrazione è stato confermato: l'attributo *emailConfermata* deve avere come valore *true*; altrimenti, l'autenticazione non è consentita.
+
+<!--codice ocl dell'utente-->
+
+Un dipendente dell'azienda può effettuare l'autenticazione attraverso il metodo *login()* solo se lo stato del dipendente è attivo: l'attributo *isAttivo* deve avere come valore *true*; altrimenti, l'autenticazione non è consentita.
+
+<!--codice ocl del dipendente-->
+
+Un amministratore può dimettere un dipendente dell'azienda se:
+
+- pre-condizione: il dipendente è in stato attivo e quindi l'attributo *isAttivo* ha come valore *true*;
+- post-condiozione: il dipendente è in stato dimesso e quindi l'attributo *isAttivo* ha come valore *false*.
+
+<!--codice ocl dell'amministratore-->
+
+## Installazione e dismissione sensore
+Un sensore può essere installato su un impianto se:
+
+- pre-condizione: il sensore non appartiene a nessun impianto e non ha associato coordinate;
+- post-condizione: il sensore appartiene ad un determinato impianto e ha associato le coordinate di installazione del sensore.
+
+<!--codice ocl di installazione sensore-->
+
+Un sensore può essere dismesso da un impianto se:
+
+- pre-condizione: il sensore è in stato attivo e quindi l'attributo *dateDismissione* ha come valore *null*;
+- post-condizione: il sensore è in stato dismesso e quindi l'attributo *dateDismissione* ha come valore la data di dismissione del sensore.
+
+<!--codice ocl di dismissione sensore-->
+
+## Data e conclusione intervento
+La data di richiesta di un interveto deve essere antecedente alla data di conclusione.
+
+<!--codice ocl data intervento-->
+
+Un intervento può essere concluso se:
+
+- pre-condizione: l'intervento non ha associato la data di conclusione e il resoconto;
+- post-condizione: l'intervento ha associato la data di conclusione (giorno in cui il metodo *concludi()* viene eseguito) e il resoconto.
+
+<!--codice ocl di concludi()-->
+
+## Modello, costo e numero di sedi
+Gli attributi *costo*, *superficie*, *numSensori* e il numero di *parametri* di un modello di impianto devono avere un valore maggiore di zero.
+
+<!--codice ocl del modello-->
+
+Un costo deve essere maggiore di zero: gli attributi *unit* o *cent* (o entrambi) devono essere maggiori di zero.
+
+<!--modificare il codice ocl: posso avere 0 come valore di unit e N come valore di cent; quindi mettere OR al posto di AND;
+inserire il codice ocl del costo-->
+
+L'azienda deve avere almeno una sede.
+
+<!--codice ocl sedi-->
 
 ## Diagramma delle classi complessivo con codice OCL
-Alla pagina successiva si trova il diagramma leggibile.
+In questa sezione viene mostrato il diagramma delle classi UML nella sua totalità e relativo codice OCL.
 <!--concatenare il pdf!-->
 
 ![Diagramma delle classi complessivo con codice OCL](./.media/classi_ocl.png){width=16cm fig-pos=H}
