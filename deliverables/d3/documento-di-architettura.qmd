@@ -8,9 +8,9 @@ subtitle: |
 
   D3-Documento di Architettura
 
-  v0.1
+  v1.0
 author: [alessandro.manfucci@studenti.unitn.it, enrico.cescato@studenti.unitn.it ,m.sottocornola-1@studenti.unitn.it]
-date: "16-11-2022"
+date: "06-12-2022"
 lang: it
 format:
   pdf:
@@ -34,55 +34,76 @@ format:
 \pagebreak
 # Abstract {.unlisted .unnumbered}
 
-Questo documento descrive l'architettura in classi del sistema a partire dalle componenti definite nel precedente documento; l'obbiettivo è fornire al team di sviluppo una seconda -- e più dettagliata -- architettura del software da realizzare. Vengono utilizzati il diagramma delle classi UML e il linguaggio OCL (*Object Constraint Language*).
+Questo documento, a partire dalle componenti precedentemente definite, descrive l'architettura in classi del sistema da realizzare. L'obiettivo è fornire al team di sviluppo una seconda -- e più dettagliata -- architettura del software da sviluppare. Si utilizza il diagramma delle classi UML e il linguaggio OCL (*Object Constraint Language*).
 
 # Diagramma delle classi
-Questo capitolo presenta il diagramma delle classi UML del sistema; in particolare, le classi sono descritte e raggruppate secondo certe correlazioni logiche.  
-Per la cardinalità delle associazioni viene utilizzata la notazione *look-ahead*.
+Questo capitolo presenta il diagramma delle classi UML del sistema. In particolare si descrivono le singole classi nel loro scopo e contesto, raggruppandole secondo una certa correlazione logica.  
+Per la cardinalità delle associazioni si utilizza la notazione *look-ahead*.
 
 ## Utente
-Un utente autenticato può essere un dipendente dell'azienda, ovvero un tecnico, un supervisore o un amministratore, ed è identificato da una lista di attributi. In particolare, l'attributo *emailConfermata* (di tipo *bool*) indica se l'indirizzo email inserito dall'utente in fase di registrazione è stato confermato o meno; le email inviate agli utenti sono specificate da destinatario, oggetto e corpo.  
-Un tecnico può visualizzare gli interventi a lui assegnati attraverso il metodo *getInterventiAssegnati()*. Ogni intervento è associato ad una lista di attributi; il valore dell'attributo *tipo* può essere modificato da assegnato in corso ad assegnato concluso attraverso il metodo *concludi()*, che richiede come parametro il resoconto dell'intervento.  
-Un supervisore può assegnare un intervento ad un tecnico attraverso il metodo *assegnaIntervento()*.  
-Un amministratore può svolgere le azioni di un supervisore. In aggiunta, un amministratore può dimettere dipendenti e visualizzare grafici relativi a vendite e interventi attraverso il metodo *getStatsGrafico()*; la classe *Grafico* ha un metodo *selRange()* che permette di specificare i dati di interesse tramite l'individuazione di un intervallo di tempo specifico.  
-La classe dipendente ha un attributo *isAttivo* che indica lo stato del dipendente: attivo o dimesso.
+L'Utente, oltre ad essere un attore, è anche un'importante risorsa del sistema da realizzare.
 
-<!--anche gli amministratori e i supervisori sono dipendenti dell'azienda;
-inserire il diagramma contenente le classi: utente, dipendente, tecnico, intervento, supervisore, amministratore, heatmap, email e grafico-->
+![Utente](./.media/utente.png){width=16cm fig-pos=H}
 
-## Cliente
-Un utente autenticato può essere un cliente; questo può visualizzare gli impianti acquistati, richiedere un intervento per quelli attivi e acquistarne altri. Ogni impianto è identificato da un id e, attraverso i metodi *getSensori()* e *getSnapshot()*, è possibile visualizzare i sensori di quel specifico impianto e le relative misurazioni.  
-I sensori sono associati ad una lista di attributi: tra questi, l'attributo *coord* indica le coordinate posizionali del sensore; per installare un nuovo sensore si utilizza il metodo *installa()*, che richiede di specificare le coordinate del sensore e l'impianto di riferimento.  
-La classe *Coord* presenta gli attributi *lat* e *long* che indicano rispettivamente la latitudine e la longitudine della posizione di interesse; attraverso i metodi *getDM()* e *getDEG()* è possibile ottenere la misura delle coordinate in diversi formati. Inoltre, la misura delle coordinate può essere ottenuta attraverso il metodo *getCoord()* della classe *GPS*.  
-Ogni sensore effettua misurazioni; queste sono identificate da una lista di attributi e, in base al valore dell'attributo *timeStamp*, vengono raggruppate in uno specifico snapshot.  
-Le misurazioni possono essere visualizzate sotto forma di heatmap; ogni heatmap ha un attributo *selParam* che specifica il parametro di cui visualizzare le misurazioni. I metodi *prevSnapshot()* e *nextSnapshot()* permettono di selezionare lo snapshot di interesse.
+## Impianto
 
-<!--inserire il diagramma contenente le classi: utente, cliente, impianto, sensore, snapShot, misurazione, heatmap, coord e gps-->
+![Impianto](./.media/impianto.png){width=9cm fig-pos=H}
 
-## Vetrina e pagina di presentazione
-La vetrina mostra i modelli di impianto in vendita e le relative *product reviews*. Ad ogni modello è associata una lista di attributi; in particolare, l'attributo *parametri* specifica i parametri misurati dai sensori di quel specifico modello di impianto. Il costo dell'impianto è indicato dall'attributo *costo*, che comprende unità, centesimi e valuta della moneta.  
-Ogni *product review* è identificata da una lista di attributi; l'attributo *productId* permette di associare la recensione scritta dal cliente al relativo modello di impianto.  
-La pagina di presentazione mostra invece le *service reviews*, specificate dagli attributi *stars*, *title* e *description*.
+## Dipendente
 
-<!--l'attributo productId è da inserire anche nella classe modello;
-inserire il diagramma contenente le classi: vetrina, modello, productReview, paginaPresentazione, serviceReview e costo-->
+![Dipendente](./.media/dipendente.png){width=16cm fig-pos=H}
 
-## Sistemi esterni
-Le classi *GmailAPI*, *TrustPilotAPI*, *DataLayerAPI* e *PayPalAPI* permettono al sistema di interfacciarsi con i sistemi esterni.
+## Heatmap
 
-<!--inserire il diagramma contenente le classi: gmailAPI, trustpilotAPI, datalayerAPI e paypalAPI-->
+![Heatmap](./.media/heatmap.png){width=4cm fig-pos=H}
+
+## Modello
+
+![Modello](./.media/modello.png){width=12cm fig-pos=H}
+
+## Classi *tipi*
+
+![Classi tipi](./.media/tipi.png){width=16cm fig-pos=H}
+
+## Classi *Managers*
+
+![Classi Managers](./.media/managers.png){width=12cm fig-pos=H}
 
 ## Diagramma delle classi complessivo
-In questa sezione viene mostrato il diagramma delle classi UML nella sua totalità.
+Alla pagina successiva si trova il diagramma leggibile.
 
 <!--concatenare il pdf!-->
 
-![Diagramma delle classi complessivo](./.media/classi.png){width=16cm fig-pos=H}
+![Anteprima diagramma delle classi complessivo](./.media/complessivo.png){width=16cm fig-pos=H}
 
-
+\pagebreak
 # Codice in OCL
-Questo capitolo presenta particolari proprietà di attributi e metodi delle classi (invarianti, pre-condizioni e post-condizioni). Ancora una volta, le classi sono raggruppate secondo certe correllazioni logiche.  
-Viene utilizzato il linguaggio OCL, facente parte dello standard UML.
+Questo capitolo presenta particolari proprietà sugli attributi e sulle operazioni delle varie classi (invarianti, pre-condizioni e post-condizioni). Come nel capitolo precedente, le classi sono raggruppate secondo una certa correlazione logica.  
+Si utilizza il linguaggio OCL, che estende lo standard UML.
+
+## Utente
+
+![Utente](./.media/utente_ocl.png){width=16cm fig-pos=H}
+
+## Impianto
+
+![Impianto](./.media/impianto_ocl.png){width=16cm fig-pos=H}
+
+## Dipendente
+
+![Dipendente](./.media/dipendente_ocl.png){width=16cm fig-pos=H}
+
+## Heatmap
+
+![Heatmap](./.media/heatmap_ocl.png){width=8cm fig-pos=H}
+
+## Modello
+
+![Modello](./.media/modello_ocl.png){width=16cm fig-pos=H}
+
+## Classi *tipi*
+
+![Classi tipi](./.media/tipi_ocl.png){width=8cm fig-pos=H}
 
 ## Autenticazione utente e dimissione dipendente dell'azienda
 Un utente può effettuare l'autenticazione attraverso il metodo *login()* solo se l'indirizzo email inserito in fase di registrazione è stato confermato: l'attributo *emailConfermata* deve avere come valore *true*; altrimenti, l'autenticazione non è consentita.
@@ -142,7 +163,8 @@ L'azienda deve avere almeno una sede.
 <!--codice ocl sedi-->
 
 ## Diagramma delle classi complessivo con codice OCL
-In questa sezione viene mostrato il diagramma delle classi UML nella sua totalità e relativo codice OCL.
+Alla pagina successiva si trova il diagramma leggibile.
+
 <!--concatenare il pdf!-->
 
-![Diagramma delle classi complessivo con codice OCL](./.media/classi_ocl.png){width=16cm fig-pos=H}
+![Anteprima diagramma delle classi complessivo con codice OCL](./.media/complessivo_ocl.png){width=16cm fig-pos=H}
