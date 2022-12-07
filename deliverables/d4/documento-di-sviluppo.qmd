@@ -34,12 +34,28 @@ format:
 \pagebreak
 # Abstract {.unlisted .unnumbered}
 
-# Specifica delle API
+# User Flows
 
-# Implementazione e Documentazione delle API
+# Sviluppo e Documentazione dell'applicazione
 
-# Testing delle API
+## Struttura
 
-# Implementazione del FrontEnd
+## Dipendenze
+
+## Database
+
+## APIs
+
+### Resources Extraction from the Class Diagram
+
+### Resources Models
+
+## Sviluppo APIs
+
+# Documentazione APIs
+
+# Sviluppo FrontEnd
 
 # Deployment
+
+# Testing
