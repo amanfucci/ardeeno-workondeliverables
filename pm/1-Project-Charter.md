@@ -6,7 +6,7 @@
 
 **Customer:** Ardeeno
 
-**Start:** 23/09/2022 **Finish:** 25/12/2022
+**Start:** 23/09/2022 **Finish:** 22/12/2022
 
 **Known Critical Constraints:** [ X ] Time [ ] Money [ X ] People
 

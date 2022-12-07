@@ -27,13 +27,13 @@ gantt
     Documento di Architettura :milestone, pam, 02-12, 0d
 
     section Sviluppo e Deployment
-    FrontEnd :d0, after pam, 21-12
-    BackEnd :d1, after pam, 21-12
-    Deployment :d2, after d1, 22-12
+    BackEnd :active, d0, after pam, 12-12
+    FrontEnd :d1, after pam, 22-12
+    Deployment :d2, after pam, 22-12
     Documento di Sviluppo :milestone, dm, 22-12, 0d
 
     section Report
-    Closing meeting :i0, 21-12, 22-12
+    Closing meeting :i0, 12-12, 1d
     Report Finale :milestone, fm, 22-12, 0d
 
 ```
@@ -52,6 +52,6 @@ gantt
 |Diagramma dei Componenti|A,M|9/11|Done|
 |Class Diagrams          |A,E|23/11|Active|
 |OCL                     |A,E|02/12|Active|
-|FrontEnd                ||||
-|BackEnd                 ||||
-|Deployment              ||||
+|BackEnd                 |A,E,M||Active|
+|FrontEnd                |A|||
+|Deployment              |A|||
