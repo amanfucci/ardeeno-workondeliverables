@@ -8,9 +8,9 @@ subtitle: |
 
   D2-Documento di Specifica
 
-  v1.0
+  v1.1
 author: [alessandro.manfucci@studenti.unitn.it, enrico.cescato@studenti.unitn.it ,m.sottocornola-1@studenti.unitn.it]
-date: "16-11-2022"
+date: "09-12-2022"
 lang: it
 format:
   pdf:

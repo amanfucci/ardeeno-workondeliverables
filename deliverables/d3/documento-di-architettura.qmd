@@ -8,9 +8,9 @@ subtitle: |
 
   D3-Documento di Architettura
 
-  v1.0
+  v0.3
 author: [alessandro.manfucci@studenti.unitn.it, enrico.cescato@studenti.unitn.it ,m.sottocornola-1@studenti.unitn.it]
-date: "06-12-2022"
+date: "09-12-2022"
 lang: it
 format:
   pdf:
@@ -29,6 +29,9 @@ format:
     - bottom=1in
     - right=1in
     - left=1in
+syntax-definitions: 
+  - .ocl.xml
+syntax-highlight: github
 ---
 
 \pagebreak
@@ -41,33 +44,17 @@ Questo capitolo presenta il diagramma delle classi UML del sistema. In particola
 Per la cardinalità delle associazioni si utilizza la notazione *look-ahead*.
 
 ## Utente
-L'Utente, oltre ad essere un attore, è anche un'importante risorsa del sistema da realizzare.
-
 ![Utente](./.media/utente.png){width=16cm fig-pos=H}
 
+
+## Vetrina
+![Vetrina](./.media/vetrina.png){width=16cm fig-pos=H}
+
 ## Impianto
+![Impianto](./.media/impianto.png){width=16cm fig-pos=H}
 
-![Impianto](./.media/impianto.png){width=9cm fig-pos=H}
-
-## Dipendente
-
-![Dipendente](./.media/dipendente.png){width=16cm fig-pos=H}
-
-## Heatmap
-
-![Heatmap](./.media/heatmap.png){width=4cm fig-pos=H}
-
-## Modello
-
-![Modello](./.media/modello.png){width=12cm fig-pos=H}
-
-## Classi *tipi*
-
-![Classi tipi](./.media/tipi.png){width=16cm fig-pos=H}
-
-## Classi *Managers*
-
-![Classi Managers](./.media/managers.png){width=12cm fig-pos=H}
+## Dipendenti
+![Dipendenti](./.media/dipendenti.png){width=16cm fig-pos=H}
 
 ## Diagramma delle classi complessivo
 Alla pagina successiva si trova il diagramma leggibile.
@@ -82,44 +69,257 @@ Questo capitolo presenta particolari proprietà sugli attributi e sulle operazio
 Si utilizza il linguaggio OCL, che estende lo standard UML.
 
 ## Utente
+![Utente](./.media/utente-ocl.png){width=16cm fig-pos=H}
 
-![Utente](./.media/utente_ocl.png){width=16cm fig-pos=H}
+### Utente
+```ocl
+context Utente::newCodiceConferma()
+pre: NOT isEmailConfermata
+```
+```ocl
+context Utente::login(email, pw)
+pre: isEmailConfermata = true
+```
+
+### Dipendente
+```ocl
+context Dipendente inv:
+isEmailConfermata = true
+```
+```ocl
+context Dipendente::login(email, pw)
+pre: NOT isDimesso
+```
+```ocl
+context Dipendente::dimetti()
+pre: NOT isDimesso
+post: isDimesso
+```
+
+### Cliente
+```ocl
+context Cliente::selezionaImpianto()
+post: seleImpianto <> null
+```
+```ocl
+context Cliente::getMisurazioniImp()
+pre: seleImpianto <> null
+```
+```ocl
+context Cliente::getHeatmapImp()
+pre: seleImpianto <> null
+```
+```ocl
+context Cliente::richiediRiparazioneImp(mot)
+pre: seleImpianto <> null AND 
+	NOT seleImpianto.isDismesso
+```
+
+## Vetrina
+![Vetrina](./.media/vetrina-ocl.png){width=16cm fig-pos=H}
+
+### Modello
+```ocl
+context Modello inv:
+superficie > 0 AND
+numSensori > 0
+```
+
+### ProductReview
+```ocl
+context ProductReview inv:
+stars >= 1 AND stars <= 5
+```
+
+```ocl
+context ProductReview inv:
+stars >= 1 AND stars <= 5
+```
+
+### ServiceReview
+```ocl
+context ServiceReview inv:
+stars >= 1 AND stars <= 5
+```
+
+### Costo
+```ocl
+context Costo inv:
+getCosto() > 0
+```
+
+### Vetrina
+```ocl
+context Vetrina::selezionaModello()
+post: seleModello <> null AND
+       inVendita->includes(seleModello)
+```
+
+```ocl
+context Vetrina::getProdReviewsModello()
+pre: seleModello <> null
+```
+
+```ocl
+context Vetrina::filtraProdReviews(stelle, data)
+pre: seleModello <> null
+```
 
 ## Impianto
+![Impianto](./.media/impianto-ocl.png){width=16cm fig-pos=H}
 
-![Impianto](./.media/impianto_ocl.png){width=16cm fig-pos=H}
+### Impianto
+```ocl
+context Impianto inv:
+(isDismesso IIF dataDismissione = null) AND superficie > 0 AND
+dataAcquisto <> null AND
+(isDismesso IMPLIES dataDismissione >= 	dataAcquisto)
+```
 
-## Dipendente
+```ocl
+context Impianto::dismetti()
+pre: NOT isDismesso
 
-![Dipendente](./.media/dipendente_ocl.png){width=16cm fig-pos=H}
+post: isDismesso AND
+	dataDismissione = now()
+```
 
-## Heatmap
+```ocl
+context Impianto::addSensore
+(sensore, coord)
+pre: NOT self.isDismesso AND
+	NOT sensore.isDismesso AND
+	sensore.impianto = null
 
-![Heatmap](./.media/heatmap_ocl.png){width=8cm fig-pos=H}
+post: sensore.impianto = self AND
+	sensore.coord = coord
+```
 
-## Modello
+```ocl
+context Impianto::dismettiSensore(sensore)
+pre: NOT self.isDismesso AND
+	NOT sensore.isDismesso AND
+	sensore.impianto = self
 
-![Modello](./.media/modello_ocl.png){width=16cm fig-pos=H}
+post: sensore.isDismesso AND
+	sensore.dataDismissione = now()
+```
 
-## Classi *tipi*
+```ocl
+context Impianto::richiediIntervento
+(tipo, mot)
+pre: NOT isDismesso
+```
 
-![Classi tipi](./.media/tipi_ocl.png){width=8cm fig-pos=H}
+### Sensore
+```ocl
+context Sensore inv:
+(impianto = null IIF coord = null) AND
+(isDismesso IIF dataDismissione <> null) AND
+(impianto = null IMPLIES NOT isDismesso)
+```
 
+```ocl
+context Sensore::installa
+(impianto, coord)
+pre: NOT isDismesso AND
+	self.impianto = null
+
+post: self.impianto = impianto AND
+	self.coord = coord
+```
+
+```ocl
+context Sensore::dismetti()
+pre: NOT isDismesso
+
+post: isDismesso AND
+	dataDismissione = now()
+```
+
+### Heatmap
+```ocl
+context Heatmap inv:
+snapshots->includes(currSnapshot)
+```
+
+## Dipendenti
+![Dipendenti](./.media/dipendenti-ocl.png){width=16cm fig-pos=H}
+
+### Intervento
+```ocl
+context Intervento inv:
+dataRichiesta <> null AND
+(motivazione <> null IIF tipo = riparazione)
+(tecnico = null IIF dataAssegnazione = null) AND
+(isConcluso IIF resoconto <> null) AND
+(dataAssegnazione <> null IMPLIES 	dataAssegnazione >= dataRichiesta)
+```
+
+```ocl
+context Intervento::assegna(tecnico, data)
+pre: self.tecnico = null AND
+	self.dataAssegnazione = null
+
+post: self.tecnico = tecnico AND
+	self.dataAssegnazione = data
+```
+
+```ocl
+context Intervento::concludi(resoconto)
+pre: NOT isConcluso
+
+post: self.resoconto = resoconto AND
+	isConcluso
+```
+
+### Tecnico
+```ocl
+context Tecnico inv:
+interventiAssegnati->includes(seleIntervento) AND
+interventiAssegnati->forAll( i | i.tecnico = self)
+```
+
+```ocl
+context Tecnico::concludiIntervento(res)
+pre: seleIntervento <> null AND
+	NOT seleIntervento.isConcluso
+
+post: seleIntervento.resoconto = res AND
+	seleIntervento.isConcluso
+```
+
+### Supervisore
+```ocl
+context Supervisore::assegnaIntervento
+(tec, data)
+pre: seleIntervento <> null AND
+	seleIntervento.tecnico = null AND
+	(tec.interventiAssegnati->forAll( i |
+		i.dataAssegnazione <> data))
+
+post: seleIntervento.tecnico = tec AND
+	seleIntervento.dataAssegnazione = now()
+```
+
+## Diagramma delle classi complessivo con codice OCL
+Alla pagina successiva si trova il diagramma leggibile.
+
+<!--concatenare il pdf!-->
+
+![Anteprima diagramma delle classi complessivo con codice OCL](./.media/complessivo-ocl.png){width=16cm fig-pos=H}
+
+
+<!--
 ## Autenticazione utente e dimissione dipendente dell'azienda
 Un utente può effettuare l'autenticazione attraverso il metodo *login()* solo se l'indirizzo email inserito in fase di registrazione è stato confermato: l'attributo *emailConfermata* deve avere come valore *true*; altrimenti, l'autenticazione non è consentita.
 
-<!--codice ocl dell'utente-->
-
 Un dipendente dell'azienda può effettuare l'autenticazione attraverso il metodo *login()* solo se lo stato del dipendente è attivo: l'attributo *isAttivo* deve avere come valore *true*; altrimenti, l'autenticazione non è consentita.
-
-<!--codice ocl del dipendente-->
 
 Un amministratore può dimettere un dipendente dell'azienda se:
 
 - pre-condizione: il dipendente è in stato attivo e quindi l'attributo *isAttivo* ha come valore *true*;
 - post-condiozione: il dipendente è in stato dimesso e quindi l'attributo *isAttivo* ha come valore *false*.
-
-<!--codice ocl dell'amministratore-->
 
 ## Installazione e dismissione sensore
 Un sensore può essere installato su un impianto se:
@@ -127,44 +327,29 @@ Un sensore può essere installato su un impianto se:
 - pre-condizione: il sensore non appartiene a nessun impianto e non ha associato coordinate;
 - post-condizione: il sensore appartiene ad un determinato impianto e ha associato le coordinate di installazione del sensore.
 
-<!--codice ocl di installazione sensore-->
-
 Un sensore può essere dismesso da un impianto se:
 
 - pre-condizione: il sensore è in stato attivo e quindi l'attributo *dateDismissione* ha come valore *null*;
 - post-condizione: il sensore è in stato dismesso e quindi l'attributo *dateDismissione* ha come valore la data di dismissione del sensore.
 
-<!--codice ocl di dismissione sensore-->
-
 ## Data e conclusione intervento
 La data di richiesta di un interveto deve essere antecedente alla data di conclusione.
-
-<!--codice ocl data intervento-->
 
 Un intervento può essere concluso se:
 
 - pre-condizione: l'intervento non ha associato la data di conclusione e il resoconto;
 - post-condizione: l'intervento ha associato la data di conclusione (giorno in cui il metodo *concludi()* viene eseguito) e il resoconto.
 
-<!--codice ocl di concludi()-->
-
 ## Modello, costo e numero di sedi
 Gli attributi *costo*, *superficie*, *numSensori* e il numero di *parametri* di un modello di impianto devono avere un valore maggiore di zero.
 
-<!--codice ocl del modello-->
-
 Un costo deve essere maggiore di zero: gli attributi *unit* o *cent* (o entrambi) devono essere maggiori di zero.
 
-<!--modificare il codice ocl: posso avere 0 come valore di unit e N come valore di cent; quindi mettere OR al posto di AND;
-inserire il codice ocl del costo-->
+modificare il codice ocl: posso avere 0 come valore di unit e N come valore di cent; quindi mettere OR al posto di AND;
+inserire il codice ocl del costo
 
 L'azienda deve avere almeno una sede.
 
-<!--codice ocl sedi-->
-
 ## Diagramma delle classi complessivo con codice OCL
 Alla pagina successiva si trova il diagramma leggibile.
-
-<!--concatenare il pdf!-->
-
-![Anteprima diagramma delle classi complessivo con codice OCL](./.media/complessivo_ocl.png){width=16cm fig-pos=H}
+-->

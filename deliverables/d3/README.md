@@ -10,23 +10,18 @@ img2pdf ./.media/classi_ocl.png > ./.media/classi_ocl.pdf
 declare -a names=(
   "complessivo"
   "utente"
+  "vetrina"
   "impianto"
-  "dipendente"
-  "heatmap"
-  "modello"
-  "tipi"
-  "managers"
-  "complessivo_ocl"
-  "utente_ocl"
-  "impianto_ocl"
-  "dipendente_ocl"
-  "heatmap_ocl"
-  "modello_ocl"
-  "tipi_ocl"
+  "dipendenti"
+  "complessivo-ocl"
+  "utente-ocl"
+  "vetrina-ocl"
+  "impianto-ocl"
+  "dipendenti-ocl"
 );
 
 declare -a index=(
-  0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+  0 1 2 3 4 5 6 7 8 9
 );
 
 for i in "${index[@]}"
@@ -37,11 +32,11 @@ for f in ./.media/*.png
 do convert "$f" -background white -alpha remove -alpha off "$f"
 done;
 
-drawio -x -s 1.1 -p 0 -f pdf -o ".media/complessivo_t.pdf" ".media/.drawio/classi.drawio" &&\
-  pdftk A=./.media/complessivo_t.pdf cat A1 output .media/complessivo.pdf &&\
-drawio -x -s 1.1 -f pdf -g 8..8 -o ".media/complessivo_ocl_t.pdf" ".media/.drawio/classi.drawio" &&\
-  pdftk A=./.media/complessivo_ocl_t.pdf cat A1 output .media/complessivo_ocl.pdf &&\
-rm .media/complessivo_t.pdf .media/complessivo_ocl_t.pdf;
+drawio -x -s 1.1 -p 0 -f pdf -o ".media/complessivo-t.pdf" ".media/.drawio/classi.drawio" &&\
+  pdftk A=./.media/complessivo-t.pdf cat A1 output .media/complessivo.pdf &&\
+drawio -x -s 1.1 -p 5 -f pdf -o ".media/complessivo-ocl-t.pdf" ".media/.drawio/classi.drawio" &&\
+  pdftk A=./.media/complessivo-ocl-t.pdf cat A1 output .media/complessivo-ocl.pdf &&\
+rm .media/complessivo-t.pdf .media/complessivo-ocl-t.pdf;
 
 ```
 
