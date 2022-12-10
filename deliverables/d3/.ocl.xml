@@ -23,6 +23,8 @@
       <item>excludes</item>
       <item>contains</item>
       <item>forAll</item>
+      <item>now</item>
+      <item>tomorrow</item>
     </list>
     <list name="constants">
       <item>true</item>

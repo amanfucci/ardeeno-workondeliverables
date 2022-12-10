@@ -169,6 +169,9 @@ Questa funzione deve essere elencata in [RF11.1](#rf11.1-visualizzazione-singolo
 ### RF15 Richiesta intervento di riparazione {-}
 Il sistema, se l'impianto selezionato in [RF11](#rf11-visualizzazione-impianti-acquistati) è attivo, deve consentire ad un cliente di richiedere un intervento di riparazione attraverso un form -- raggiungibile da [RF14](#rf14-visualizzazione-interventi-cliente) -- nel quale si dovrà inserire la motivazione della richiesta di intervento.
 
+### RF15.1 Richiesta intervento di manutenzione e dismissione {-}
+Il sistema, per ogni impianto acquistato non dismesso, deve richiedere un intervento di manutenzione in maniera automatizzata su base annuale. Trascorsi cinque anni di servizio, il sistema deve richiedere un intervento di dismissione.  
+
 ### RF16 Richiesta recensione {-}
 Il sistema, ad acquisto concluso, -- in aggiunta a quanto specificato in [RF10](#rf10-acquisto-impianto) -- deve inviare al cliente un'email contenente il link per inserire una nuova recensione (*product review*) su TrustPilot per lo specifico modello di impianto.
 
