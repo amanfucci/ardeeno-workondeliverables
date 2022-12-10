@@ -40,12 +40,33 @@ syntax-highlight: github
 Questo documento, a partire dalle componenti precedentemente definite, descrive l'architettura in classi del sistema da realizzare. L'obiettivo è fornire al team di sviluppo una seconda -- e più dettagliata -- architettura del software da sviluppare. Si utilizza il diagramma delle classi UML e il linguaggio OCL (*Object Constraint Language*).
 
 # Diagramma delle classi
-Questo capitolo presenta il diagramma delle classi UML del sistema. In particolare si descrivono le singole classi nel loro scopo e contesto, raggruppandole secondo una certa correlazione logica.  
-Per la cardinalità delle associazioni si utilizza la notazione *look-ahead*.
+Questo capitolo presenta il diagramma delle classi UML del sistema. In particolare si descrivono le singole classi nel loro scopo e contesto, raggruppandole secondo una certa correlazione logica. Le classi descritte rappresentano un'astrazione del codice che sarà eseguito sia lato client, che lato server -- omettendo tuttavia la logica di presentazione.
+
+A partire dal diagramma dei componenti si crea per ogni componente almeno una classe; dalle interfacce si derivano gli attributi e i metodi delle classi. Infine, si identificano le relazioni.
+
+Per quanto riguarda le classi, useremo gli stereotipi:
+
+- `<<static>>`: per classi accessibili senza essere instanziate, spesso da implementare solo lato server
+- `<<abstract class>>`: per classi non instanziabili ma con metodi concreti
+- `<<datatype>>`: per classi senza metodi (impliciti o espliciti)
+- `<<enum>>`: per definire nuovi tipi con un dominio limitato agli elementi elencati
+
+Per quanto riguarda gli attributi, si specifica il tipo solo quando vi è ambiguità o si vuole porre un ulteriore vincolo; per quanto riguarda i metodi, per lo stesso principio, ometteremo spesso valore di ritorno, argomenti e tipo degli argomenti. Ometteremo quindi anche la visibilità di metodi e attributi.
+Inoltre, si considerano impliciti i metodi getter/setter sugli attributi di ogni classe -- verrano resi espliciti per dare enfasi al dato attributo. Con il tipo `object` si intende un generico oggetto di cui non ci interessa al momento conoscere la classe.
+
+Per quanto riguarda le relazioni si specifica nome, molteplicità (con notazione *look-ahead*), ruolo e navigabilità solo quando è rilevante. Indicheremo la relazione di dipendenza solo quando non è evidente dal tipo degli attributi, dai parametri dei metodi o dalle altre relazioni -- o comunque per dare enfasi alla dipendenza.
+
+Diamo il postfisso `Manager` a tutte quelle classi che gestiscono le interazioni con i sistemi esterni.
 
 ## Utente
 ![Utente](./.media/utente.png){width=16cm fig-pos=H}
+Dal comp. "Gestione Autenticazione" si definisce la classe DataLayerManager, che gestisce le interazioni con il DataLayer. Comprende molti metodi volutamente lasciati impliciti, per non porre vincoli non necessari al team di sviluppo. Certamente vi sarà un metodo *setupConnection()* per stabilire la connessione con il DataLayer tramite una *connUri*. La maggior parte delle classi utilizza i suoi metodi -- ovvero ne è dipendente (ma queste relazioni sono omesse dal diagramma).
 
+Dal comp. "Gestione Autenticazione" si definisce la classe AuthManager, e dalle due interfacce fornite si hanno i corrispettivi metodi. Inoltre, vi è l'attributo *secret*, utilizzato in *genToken()* per avere la garanzia di autenticità del token. L'Utente invoca *AuthManager.genToken()* nel metodo *login()*, ed invoca *AuthManager.checkAuth()* nei metodi *getDati(), modificaDati()* -- dunque ne è dipendente.
+
+Dal comp. "Gestione Gmail" si definisce la classe EmailManager con il metodo *sendEmail(email).* L'Utente ne è dipendente.
+
+Dai corrispettivi componenti si definiscono le classi
 
 ## Vetrina
 ![Vetrina](./.media/vetrina.png){width=16cm fig-pos=H}
@@ -281,6 +302,30 @@ interventiAssegnati->forAll( i | i.tecnico = self)
 ```
 
 ```ocl
+context Tecnico::getMisurazioniImp()
+pre: seleIntervento <> null AND
+NOT seleIntervento.isConcluso
+```
+
+```ocl
+context Tecnico::getHeatmapImp()
+pre: seleIntervento <> null AND
+NOT seleIntervento.isConcluso
+```
+
+```ocl
+context Tecnico::getInterventiImp()
+pre: seleIntervento <> null AND
+NOT seleIntervento.isConcluso
+```
+
+```ocl
+context Tecnico::modificaImpianto()
+pre: seleIntervento <> null AND
+NOT seleIntervento.isConcluso
+```
+
+```ocl
 context Tecnico::concludiIntervento(res)
 pre: seleIntervento <> null AND
 	NOT seleIntervento.isConcluso
@@ -308,48 +353,3 @@ Alla pagina successiva si trova il diagramma leggibile.
 <!--concatenare il pdf!-->
 
 ![Anteprima diagramma delle classi complessivo con codice OCL](./.media/complessivo-ocl.png){width=16cm fig-pos=H}
-
-
-<!--
-## Autenticazione utente e dimissione dipendente dell'azienda
-Un utente può effettuare l'autenticazione attraverso il metodo *login()* solo se l'indirizzo email inserito in fase di registrazione è stato confermato: l'attributo *emailConfermata* deve avere come valore *true*; altrimenti, l'autenticazione non è consentita.
-
-Un dipendente dell'azienda può effettuare l'autenticazione attraverso il metodo *login()* solo se lo stato del dipendente è attivo: l'attributo *isAttivo* deve avere come valore *true*; altrimenti, l'autenticazione non è consentita.
-
-Un amministratore può dimettere un dipendente dell'azienda se:
-
-- pre-condizione: il dipendente è in stato attivo e quindi l'attributo *isAttivo* ha come valore *true*;
-- post-condiozione: il dipendente è in stato dimesso e quindi l'attributo *isAttivo* ha come valore *false*.
-
-## Installazione e dismissione sensore
-Un sensore può essere installato su un impianto se:
-
-- pre-condizione: il sensore non appartiene a nessun impianto e non ha associato coordinate;
-- post-condizione: il sensore appartiene ad un determinato impianto e ha associato le coordinate di installazione del sensore.
-
-Un sensore può essere dismesso da un impianto se:
-
-- pre-condizione: il sensore è in stato attivo e quindi l'attributo *dateDismissione* ha come valore *null*;
-- post-condizione: il sensore è in stato dismesso e quindi l'attributo *dateDismissione* ha come valore la data di dismissione del sensore.
-
-## Data e conclusione intervento
-La data di richiesta di un interveto deve essere antecedente alla data di conclusione.
-
-Un intervento può essere concluso se:
-
-- pre-condizione: l'intervento non ha associato la data di conclusione e il resoconto;
-- post-condizione: l'intervento ha associato la data di conclusione (giorno in cui il metodo *concludi()* viene eseguito) e il resoconto.
-
-## Modello, costo e numero di sedi
-Gli attributi *costo*, *superficie*, *numSensori* e il numero di *parametri* di un modello di impianto devono avere un valore maggiore di zero.
-
-Un costo deve essere maggiore di zero: gli attributi *unit* o *cent* (o entrambi) devono essere maggiori di zero.
-
-modificare il codice ocl: posso avere 0 come valore di unit e N come valore di cent; quindi mettere OR al posto di AND;
-inserire il codice ocl del costo
-
-L'azienda deve avere almeno una sede.
-
-## Diagramma delle classi complessivo con codice OCL
-Alla pagina successiva si trova il diagramma leggibile.
--->

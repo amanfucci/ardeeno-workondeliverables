@@ -1,12 +1,5 @@
 #### Bash exporting .drawio files
 ```bash
-drawio -x -s 2 -c -f png -o ".media" ".media/.drawio" &&
-for f in ./.media/*.png; do convert "$f" -background white -alpha remove -alpha off "$f"; done &&
-img2pdf ./.media/classi.png > ./.media/classi.pdf &&
-img2pdf ./.media/classi_ocl.png > ./.media/classi_ocl.pdf
-```
-
-```bash
 declare -a names=(
   "complessivo"
   "utente"

@@ -73,7 +73,6 @@ fig-cap-location=(top, bottom, margin)
 
 #### Grammar checking
 ```bash
-split -b 20000 "documento-di-specifica.qmd" &&\
-for f in xa*; do gramma check -m "$f" && rm "$f"; done;
-...
+split -b 20000 documento*.qmd &&\
+for f in xa*; do gramma check -m true "$f" && rm "$f"; done;
 ```
