@@ -34,12 +34,111 @@ format:
 \pagebreak
 # Abstract {.unlisted .unnumbered}
 
+# Scopo del documento
+
+Il presente documento riporta tutte le informazioni necessarie per lo sviluppo di una parte dell'applicazione ardeeno. Partendo dalla descrizione degli user flow legati al processo di registrazione e authorizazione, La visualizazione dei dati raccolti dal'impianto di un cliente e in fine l'aggiunta/rimozione di sensori da un tecnico. Il documento prosegue con la presentazione degli API necessari al nostro prototipo; illustrati tramite API model e il modello delle risorse. Per ogni API realizzata, oltre ad una descrizione delle funzionalità fornite, il documento presenta la sua documentazione e i test effettuati. Infine una sezione e’ dedicata alle informazioni del Git Repository e il deployment dell’applicazione stessa
+
+
+# User Flows
+In questa sezione del documento di sviluppo descriveremo gli user flow riguardanti le funzionalita del prototipo. 
+
+## User Flow 1
+In figura 1 illustriamo come un utente anonimo entrato nel applicazione possa registrarsi/authenticarsi. E come un amministratore possa creare l'account di un nuovo impiegato.
+
+![Authenticazione/registrazione](./.media/flow1.png)
+
+## User Flow 2
+In figura 2 illustramo come un utente authenticato come cliente possa visualizzare i dati dei suoi Sensori. e come utenti sia anonimi che clienti possano inserire una recenzione della compania.
+
+![Visualizzazione misurazioni sensori](./.media/flow2.png)
+
+\pagebreak  
+<!--
+Qui non so bene come rendere presentabile il documento. Senza il \pagebreak incolla le due immagini assieme, ma senza lascia una pagina a meta vuota. Immagino che si potrebbe fare piu piccole le immagini ma mi sembrano gia piccole.
+-->
+
+## User Flow 3
+In figura 3 illustriamo le diverse modalita in cui un utente authenticato come tecnico puo aggiungere/rimuovere sensori da un impianto nel prototipo.
+
+![Aggiunta/Rimozione sensori](./.media/flow3.png)
+
+# Application Implementation and Documentation.
+
+Nelle sezioni precedenti abbiamo identificato le varie features che devono essere implementate per il nostro prototipo con un’idea di come il nostro utente finale puo’ utilizzarle nel suo flusso applicativo. L’applicazione è stata sviluppata utilizzando NodeJS, Express e VueJS. Per la gestione dei dati abbiamo utilizzato MongoDB. Per il testing abbiamo usato Jester.
+
+# Project Structure
+
+Questo lasciamo vuoto per il momento, bisognera riempirlo una volta finiti gli API.
+
+# Project Dependencies
+
+Questo lasciamo vuoto per il momento, bisognera riempirlo una volta finiti gli API.
+
+
+# Project Data or Database
+
+Questo lasciamo vuoto per il momento, bisognera riempirlo una volta finiti gli API.
+
 # Specifica delle API
 
 # Implementazione e Documentazione delle API
 
 # Testing delle API
+Per il testing degli API abbiamo usato il framework javascript 'Jest'
 
 # Implementazione del FrontEnd
 
-# Deployment
+# Github and Deployment info
+
+Questo lasciamo vuoto per il momento, bisognera riempirlo una volta finiti gli API.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- questo e un commento!
+
+\pagebreak
+# Abstract {.unlisted .unnumbered}
+
+Questo documento descrive l'architettura in classi del sistema a partire dalle componenti definite nel precedente documento; l'obbiettivo è fornire al team di sviluppo una seconda -- e più dettagliata -- architettura del software da realizzare. Vengono utilizzati il diagramma delle classi UML e il linguaggio OCL (*Object Constraint Language*).
+
+# Diagramma delle classi
+Questo capitolo presenta il diagramma delle classi UML del sistema; in particolare, le classi sono descritte e raggruppate secondo certe correlazioni logiche.  
+Per la cardinalità delle associazioni viene utilizzata la notazione *look-ahead*.
+
+## Utente
+Un utente autenticato può essere un dipendente dell'azienda, ovvero un tecnico, un supervisore o un amministratore, ed è identificato da una lista di attributi. In particolare, l'attributo *emailConfermata* (di tipo *bool*) indica se l'indirizzo email inserito dall'utente in fase di registrazione è stato confermato o meno; le email inviate agli utenti sono specificate da destinatario, oggetto e corpo.  
+Un tecnico può visualizzare gli interventi a lui assegnati attraverso il metodo *getInterventiAssegnati()*. Ogni intervento è associato ad una lista di attributi; il valore dell'attributo *tipo* può essere modificato da assegnato in corso ad assegnato concluso attraverso il metodo *concludi()*, che richiede come parametro il resoconto dell'intervento.  
+Un supervisore può assegnare un intervento ad un tecnico attraverso il metodo *assegnaIntervento()*.  
+Un amministratore può svolgere le azioni di un supervisore. In aggiunta, un amministratore può dimettere dipendenti e visualizzare grafici relativi a vendite e interventi attraverso il metodo *getStatsGrafico()*; la classe *Grafico* ha un metodo *selRange()* che permette di specificare i dati di interesse tramite l'individuazione di un intervallo di tempo specifico.  
+La classe dipendente ha un attributo *isAttivo* che indica lo stato del dipendente: attivo o dimesso.
+
+anche gli amministratori e i supervisori sono dipendenti dell'azienda;
+inserire il diagramma contenente le classi: utente, dipendente, tecnico, intervento, supervisore, amministratore, heatmap, email e grafico
+
+## Cliente
+Un utente autenticato può essere un cliente; questo può visualizzare gli impianti acquistati, richiedere un intervento per quelli attivi e acquistarne altri. Ogni impianto è identificato da un id e, attraverso i metodi *getSensori()* e *getSnapshot()*, è possibile visualizzare i sensori di quel specifico impianto e le relative misurazioni.  
+I sensori sono associati ad una lista di attributi: tra questi, l'attributo *coord* indica le coordinate posizionali del sensore; per installare un nuovo sensore si utilizza il metodo *installa()*, che richiede di specificare le coordinate del sensore e l'impianto di riferimento.  
+La classe *Coord* presenta gli attributi *lat* e *long* che indicano rispettivamente la latitudine e la longitudine della posizione di interesse; attraverso i metodi *getDM()* e *getDEG()* è possibile ottenere la misura delle coordinate in diversi formati. Inoltre, la misura delle coordinate può essere ottenuta attraverso il metodo *getCoord()* della classe *GPS*.  
+Ogni sensore effettua misurazioni; queste sono identificate da una lista di attributi e, in base al valore dell'attributo *timeStamp*, vengono raggruppate in uno specifico snapshot.  
+Le misurazioni possono essere visualizzate sotto forma di heatmap; ogni heatmap ha un attributo *selParam* che specifica il parametro di cui visualizzare le misurazioni. I metodi *prevSnapshot()* e *nextSnapshot()* permettono di selezionare lo snapshot di interesse.
+
+inserire il diagramma contenente le classi: utente, cliente, impianto, sensore, snapShot, misurazione, heatmap, coord e gps-->
