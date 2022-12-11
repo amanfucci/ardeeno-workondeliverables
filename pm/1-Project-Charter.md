@@ -30,7 +30,7 @@
 | **Role**                    | **Name**            | **When needed**    |
 |---|---|---|
 | Analyst, Programmer         | Matteo Sottocornola |23/09/22 ~ 25/12/22 |
-| Analyst, Programmer | Alessandro Manfucci |23/09/22 ~ 25/12/22 |
+| Analyst, Programmer, PM | Alessandro Manfucci |23/09/22 ~ 25/12/22 |
 | Analyst, Programmer         | Enrico Cescato      |23/09/22 ~ 25/12/22 |
 
 
