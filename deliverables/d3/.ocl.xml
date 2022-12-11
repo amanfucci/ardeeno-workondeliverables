@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE language SYSTEM "language.dtd">
+
+<language name="ocl" section="Scripts" extensions="*.ocl" mimetype="text" casesensitive="0">
+  <highlighting>
+    <list name="keywords">
+      <item>context</item>
+      <item>pre</item>
+      <item>post</item>
+      <item>body</item>
+      <item>inv</item>
+    </list>
+    <list name="keywordsoperators">
+      <item>and</item>
+      <item>or</item>
+      <item>xor</item>
+      <item>not</item>
+      <item>implies</item>
+      <item>iif</item>
+    </list>
+    <list name="containerfunctions">
+      <item>includes</item>
+      <item>excludes</item>
+      <item>contains</item>
+      <item>forAll</item>
+      <item>now</item>
+      <item>tomorrow</item>
+    </list>
+    <list name="constants">
+      <item>true</item>
+      <item>false</item>
+      <item>null</item>
+      <item>undefined</item>
+    </list>
+   <contexts>
+      <context name="Normal Context" attribute="Normal" lineEndContext="#stay">
+
+        <keyword attribute="Keyword" context="#stay" String="keywords"/>
+        <keyword attribute="ContainerFunction" context="#stay" String="containerfunctions"/>
+        <keyword attribute="Constant" context="#stay" String="constants"/>
+        <keyword attribute="KeywordsOperator" context="#stay" String="keywordsoperators"/>
+
+        <AnyChar attribute="Operator" context="#stay" String="+-*/=&lt;&gt;|"/>
+        <Detect2Chars attribute="Operator" context="#stay" char="&lt;" char1="&gt;"/>
+        <Detect2Chars attribute="Operator" context="#stay" char="&lt;" char1="="/>
+        <Detect2Chars attribute="Operator" context="#stay" char="&gt;" char1="="/>
+
+        <DetectChar attribute="ScopeResolution" context="#stay" char=":"/>
+        <DetectChar attribute="ScopeResolution" context="#stay" char="."/>
+        <Detect2Chars attribute="ScopeResolution" context="#stay" char=":" char1=":"/>
+        <Detect2Chars attribute="ScopeResolution" context="#stay" char="-" char1="&gt;"/>
+        
+        <!-- strings -->
+        <AnyChar attribute="String" context="String Context" String="'&quot;"/>
+        
+        <!-- numbers -->
+        <Float attribute="Float" context="#stay"/>
+        <Int attribute="Int" context="#stay"/>
+      </context>
+      <context name="String Context" attribute="String" lineEndContext="#stay">
+        <AnyChar attribute="String" context="#pop" String="'&quot;"/>
+      </context>
+    </contexts>
+
+    <itemDatas>
+    
+      <itemData name="Keyword"           defStyleNum="dsVariable" spellChecking="false" bold="true"/>
+      <itemData name="KeywordsOperator"  defStyleNum="dsOperator" spellChecking="false"/>
+      <itemData name="ContainerFunction" defStyleNum="dsAttribute" spellChecking="false"/>      
+      
+      <itemData name="Operator"          defStyleNum="dsOperator" spellChecking="false"/>
+      <itemData name="ScopeResolution"  defStyleNum="dsOperator" spellChecking="false"/>
+
+      <itemData name="Constant"          defStyleNum="dsDecVal" spellChecking="false"/>
+      <itemData name="Int"           defStyleNum="dsDecVal" spellChecking="false"/>
+      <itemData name="Float"             defStyleNum="dsDecVal" spellChecking="false"/>
+
+      <itemData name="String"            defStyleNum="dsString"/>
+    </itemDatas>
+
+  </highlighting>
+  <general>
+    <keywords casesensitive="0"/>
+  </general>
+</language>

@@ -1,0 +1,394 @@
+---
+title: | 
+  ![](../../.common-media/logo-unitn-ardeeno-512.png){width=10cm}
+
+  Ardeeno WebApp
+subtitle: |
+  T41-SE22
+
+  D3-Documento di Architettura
+
+  v1.0
+author: [alessandro.manfucci@studenti.unitn.it, enrico.cescato@studenti.unitn.it ,m.sottocornola-1@studenti.unitn.it]
+date: "10-12-2022"
+lang: it
+format:
+  pdf:
+    include-in-header:
+      text: |
+        \usepackage{graphicx}
+        \usepackage{wrapfig}
+    documentclass: article
+    classoption: titlepage
+    toc: true
+    toc-title: Indice
+    papersize: a4
+    number-sections: true
+    geometry:
+    - top=1in
+    - bottom=1in
+    - right=1in
+    - left=1in
+syntax-definitions: 
+  - .ocl.xml
+syntax-highlight: github
+---
+
+\pagebreak
+# Abstract {.unlisted .unnumbered}
+
+Questo documento, a partire dalle componenti precedentemente definite, descrive l'architettura in classi del sistema da realizzare. L'obiettivo è fornire al team di sviluppo una seconda -- e più dettagliata -- architettura del software da sviluppare. Si utilizza il diagramma delle classi UML e il linguaggio OCL (*Object Constraint Language*).
+
+# Diagramma delle classi
+Questo capitolo presenta il diagramma delle classi UML del sistema. In particolare si descrivono le singole classi nel loro scopo e contesto, raggruppandole secondo una certa correlazione logica. Le classi descritte rappresentano un'astrazione del codice che sarà eseguito sia lato client, che lato server -- omettendo tuttavia la logica di presentazione.
+
+A partire dal diagramma dei componenti si crea per ogni componente almeno una classe; dalle interfacce si derivano gli attributi e i metodi delle classi. Infine, si identificano le relazioni.
+
+Per quanto riguarda le classi, useremo gli stereotipi:
+
+- `<<static>>`: per classi accessibili senza essere instanziate, spesso da implementare solo lato server
+- `<<abstract class>>`: per classi non instanziabili ma con metodi concreti
+- `<<datatype>>`: per classi senza metodi (impliciti o espliciti)
+- `<<enum>>`: per definire nuovi tipi con un dominio limitato agli elementi elencati
+
+Per quanto riguarda gli attributi, si specifica il tipo solo quando vi è ambiguità o si vuole porre un ulteriore vincolo; per quanto riguarda i metodi, per lo stesso principio, ometteremo spesso valore di ritorno, argomenti e tipo degli argomenti. Ometteremo quindi anche la visibilità di metodi e attributi.
+Inoltre, si considerano impliciti i metodi getter/setter sugli attributi di ogni classe -- verranno resi espliciti per dare enfasi al dato attributo. Con il tipo `object` si intende un generico oggetto di cui non ci interessa al momento conoscere la classe.
+
+Per quanto riguarda le relazioni si specifica nome, molteplicità (con notazione *look-ahead*), ruolo e navigabilità solo quando è rilevante. Indicheremo la relazione di dipendenza solo quando non è evidente dal tipo degli attributi, dai parametri dei metodi o dalle altre relazioni -- oppure per dare enfasi alla dipendenza.
+
+Diamo il postfisso `Manager` a tutte quelle classi che gestiscono le interazioni con i sistemi esterni.
+
+## Classi relative all'Utente
+![](./.media/utente.png){width=16cm fig-pos=H}
+
+Dal comp. "Gestione Autenticazione" si definisce la classe `DataLayerManager`, che gestisce le interazioni con il DataLayer. Comprende molti metodi volutamente lasciati impliciti, per non porre vincoli non necessari al team di sviluppo. Certamente vi sarà un metodo `setupConnection()` per stabilire la connessione con il DataLayer tramite una `connUri`. La maggior parte delle classi utilizza i suoi metodi -- ovvero ne è dipendente (ma queste relazioni sono omesse dal diagramma).
+
+Dal comp. "Gestione Autenticazione" si definisce la classe `AuthManager`, e dalle due interfacce fornite si hanno i corrispettivi metodi. Inoltre, vi è l'attributo `secret`, utilizzato in `genToken(email, pw)` per avere la garanzia di autenticità del token. L'`Utente` invoca `AuthManager.genToken(email, pw)` nel metodo `login()`, ed invoca `AuthManager.checkAuth(token)` nei metodi `getDati()`, `modificaDati()` -- dunque ne è dipendente. Anche le sottoclassi di `Utente` ne sono dipendenti -- in generale tutti i metodi che accedono ai dati dello specifico Utente invocano `AuthManager.checkAuth(token)`.
+
+Dal comp. "Gestione Gmail" si definisce la classe `EmailManager` con il metodo `sendEmail(email)`. L'Utente e le sue sottoclassi ne sono dipendenti. Come anticipato nel D2, si utilizza il &lt;&lt;datatype&gt;&gt; `Email` come formato standard utilizzato all'interno del nostro sistema. 
+
+Dal comp. "Gestione PayPal" si definisce la classe `PaymentManager`. Vi è un metodo `payment(clientID, productID) : object` di cui sappiamo che vi è un `object` come valore di ritorno, ma non la specifica classe.
+
+Il `Cliente` dipende dalla classe `ReviewManager` poiché la utilizza per ottenere il codice product review al momento di acquisto dell'impianto. Il metodo `selezionaImpianto()` fornisce la Dashboard dell'impianto come definita in [RF11.1](#a), da cui si accede alle funzioni espresse dai metodi successivi.
+
+## Classi relative alla Vetrina
+![](./.media/vetrina.png){width=12cm fig-pos=H}
+
+Dal comp. "Vetrina" si definiscono le classi `Vetrina`, `Modello`, `Costo`. È rilevante osservare che il `Modello` ha un attributo `parametri : string [1..n]` che specifica i parametri misurati dal modello di impianto e un attributo `costo : Costo`, dove `Costo` è una classe con ulteriori metodi.
+
+Dal comp. "Gestione TrustPilot" si definiscono le classi `ReviewManager`, `ProductReview`, `ServiceReview`. Il metodo `newProdReviewID(productID, clientID)` si interfaccia con TrustPilot e ritorna il codice product review; il `productID` è necessario per associare la product review al modello di impianto che è stato acquistato. Utilizzando questo processo ogni product review è associata ad un acquisto realmente effettuato.
+
+
+## Classi relative all'Impianto
+![](./.media/impianto.png){width=16cm fig-pos=H}
+
+Dal comp. "Gestione Impianto Acquistato" si definiscono le classi `Impianto`, `Snapshot`, `Misurazione`, `Sensore`, `Heatmap`, `GestioneManutenzione`. Queste classi rappresentano le risorse principali gestite dal sistema.
+
+La classe `Sensore` necessita di `dataDismissione` poiché la possibile alternativa -- che prevede la rimozione del Sensore dal DataLayer -- non permette di visualizzare sulla `Heatmap` le misurazioni di un `Sensore` dismesso (si osservi che non si avrebbero più le coordinate della misurazione).
+
+La classe `GestioneManutenzioni` inserisce nel DataLayer interventi di Manutenzione su ogni `Impianto` con periodicità annuale (come richiesto dai requisiti del sistema) ed esattamente quando sono trascorsi 5 anni dalla data di acquisto dell'`Impianto` richiede un intervento di Dismissione. È quindi dipendente da `Impianto.richiediIntervento(tipo, mot)`.
+
+## Classi relative ai Dipendenti
+![](./.media/dipendenti.png){width=16cm fig-pos=H}
+
+Queste classi rappresentano la parte operativa del sistema.
+Dal comp. "Gestione Supervisore" si definiscono le classi `Supervisore`, `GestioneInterventi`, `GestioneTecnici`. Anche se omesso dal diagramma, il `Supervisore` è dipendente dai metodi di `Intervento`. Le classi di `Gestione...` hanno lo scopo di alleggerire il `Supervisore` dalla logica di filtraggio e dalle interazioni con il DataLayer -- inoltre, è bene vedere gli `Interventi` come distaccati dal `Supervisore` e maggiormente legati al `Tecnico`.   
+
+Dal comp. "Gestione Tecnico" si definisce la classe `Tecnico`, `Intervento`, `TipoIntervento`. La classe `Tecnico` è dipendente dai metodi di `Intervento`.
+
+Dal comp. "Gestione GPS" si definiscono le classi `GPSManager`, `Coord`. Come anticipato nel D2, la classe `Coord` è uno standard semplificato interno per la rappresentazione delle coordinate. 
+
+Dal comp. "Gestione Amministratore" si definiscono le classi `Amministratore`, `GestioneDipendenti`, `Grafico`
+
+\pagebreak
+## Diagramma delle classi complessivo
+Alla fine del documento si trova il diagramma leggibile.
+<!--concatenare il pdf!-->
+
+![Anteprima diagramma delle classi complessivo](./.media/complessivo.png){width=16cm fig-pos=H}
+
+\pagebreak
+# Codice in OCL
+Questo capitolo presenta particolari proprietà sugli attributi e sulle operazioni delle varie classi (invarianti, pre-condizioni e post-condizioni). Come nel capitolo precedente, le classi sono raggruppate secondo una certa correlazione logica.  
+Si utilizza il linguaggio OCL 2.4, che estende lo standard UML.
+
+Per quanto riguarda le espressione booleane OCL, per attributi di tipo boolean ometteremo spesso `someBoolAttr = true` scrivendo semplicemente `someBoolAttr`. Si aggiunge l'operazione globale `now()` per indicare il valore `Date` che indica la data corrente e `tomorro()` per indicare il valore `Date` che indica il giorno successivo a `now()`. Inoltre estenderemo l'OCL con l'operatore binario IF-AND-ONLY-IF definito come `(a IIF b) = (a IMPLIES b) AND (b IMPLIES a)`.
+
+## Classi relative all'Utente
+![](./.media/utente-ocl.png){width=16cm fig-pos=H}
+
+### Utente
+L'`Utente` può richiedere un codice di conferma solo se l'email non è confermata. Questo vincolo è presente poiché `newCodiceConferma()` invia un'email tramite il sistema esterno Gmail -- con un certo costo.Non si pone vincoli su `confermaEmail(cod)` in quanto non vi è né questo né altri motivi, ed è buona prassi evitare vincoli non necessari. 
+```ocl
+context Utente::newCodiceConferma()
+pre: NOT isEmailConfermata
+```
+L'`Utente` può effettuare il login solo se l'email è confermata.
+```ocl
+context Utente::login(email, pw)
+pre: isEmailConfermata = true
+```
+
+### Dipendente
+Un `Dipendente` ha l'email confermata per default, senza necessità di effettuare il processo di conferma. Questo vincolo è accennato nel [RF](#a).
+```ocl
+context Dipendente inv:
+isEmailConfermata = true
+```
+Un `Dipendente` non può effettuare il login se è dimesso. Si osservi che per la gerarchia di sottoclasse, per il Dipendente valgono che le `context Utente::login()` ma sono sempre soddisfatte.
+```ocl
+context Dipendente::login(email, pw)
+pre: NOT isDimesso
+```
+Il metodo `dimetti()` opera sull'attributo `isDimesso`
+```ocl
+context Dipendente::dimetti()
+pre: NOT isDimesso
+post: isDimesso
+```
+
+### Cliente
+Il metodo `selezionaImpianto()` imposta `seleImpianto`
+```ocl
+context Cliente::selezionaImpianto()
+post: seleImpianto <> null
+```
+I metodi `getMisurazioniImp()`, `getHeatmapImp()`, `richiediRiparazioneImp(mot)` devono essere invocati successivamente a `selezionaImpianto()`
+```ocl
+context Cliente::getMisurazioniImp()
+pre: seleImpianto <> null
+```
+```ocl
+context Cliente::getHeatmapImp()
+pre: seleImpianto <> null
+```
+```ocl
+context Cliente::richiediRiparazioneImp(mot)
+pre: seleImpianto <> null AND 
+	NOT seleImpianto.isDismesso
+```
+Il metodo `richiediRiparazioneImp(mot)` può essere invocato solo su un impianto non dismesso
+
+## Classi relative alla Vetrina
+![](./.media/vetrina-ocl.png){width=16cm fig-pos=H}
+
+### Modello
+`numSensori` e `superficie` sono interi positivi
+```ocl
+context Modello inv:
+superficie > 0 AND
+numSensori > 0
+```
+
+### ProductReview
+`stars` è compreso tra 1 e 5
+```ocl
+context ProductReview inv:
+stars >= 1 AND stars <= 5
+```
+
+### ServiceReview
+`stars` è compreso tra 1 e 5
+```ocl
+context ServiceReview inv:
+stars >= 1 AND stars <= 5
+```
+
+### Costo
+Il `Costo` è sempre maggiore di zero -- non ci sono modelli gratuiti.
+```ocl
+context Costo inv:
+getCosto() > 0
+```
+
+### Vetrina
+`selezionaModello()` imposta `seleModello` con un valore in `inVendita`.
+```ocl
+context Vetrina::selezionaModello()
+post: seleModello <> null AND
+       inVendita->includes(seleModello)
+```
+I metodi `getProdReviewsModello()`, `filtraProdReviews(stelle, data)` devono essere invocati successivamente a `selezionaModello()`
+```ocl
+context Vetrina::getProdReviewsModello()
+pre: seleModello <> null
+```
+```ocl
+context Vetrina::filtraProdReviews(stelle, data)
+pre: seleModello <> null
+```
+
+## Classi relative all'Impianto
+![](./.media/impianto-ocl.png){width=16cm fig-pos=H}
+
+### Impianto
+`isDismesso` è un attributo booleano ridondante; `dataAcquisto` è sempre impostato; se l'impianto è dismesso, `dataDismissione` è impostato ed è più recente di `dataAcquisto`. Si comprendono casi di eccezione in cui l'impianto è dismesso prima dei 5 anni di servizio stabiliti.
+```ocl
+context Impianto inv:
+(isDismesso IIF dataDismissione = null) AND superficie > 0 AND
+dataAcquisto <> null AND
+(isDismesso IMPLIES dataDismissione >= 	dataAcquisto)
+```
+`dismetti()` imposta `isDismesso`, `dataDismissione`
+```ocl
+context Impianto::dismetti()
+pre: NOT isDismesso
+
+post: isDismesso AND
+	dataDismissione = now()
+```
+Il metodo `addSensore(sensore, coord)` imposta `sensore`, `coord` e opera su un impianto non dismesso e su un sensore non dismesso e non compreso in alcun impianto. 
+```ocl
+context Impianto::addSensore(sensore, coord)
+pre: NOT self.isDismesso AND
+	NOT sensore.isDismesso AND
+	sensore.impianto = null
+
+post: sensore.impianto = self AND
+	sensore.coord = coord
+```
+Il metodo `dismettiSensore(sensore)` imposta `sensore.isDismesso`, `sensore.dataDismissione` ed opera su un impianto non dismesso e su un sensore compreso nel dato impianto e non dismesso 
+```ocl
+context Impianto::dismettiSensore(sensore)
+pre: NOT self.isDismesso AND
+	NOT sensore.isDismesso AND
+	sensore.impianto = self
+
+post: sensore.isDismesso AND
+	sensore.dataDismissione = now()
+```
+Non è possibile richiedere un intervento su un impianto dismesso.
+```ocl
+context Impianto::richiediIntervento(tipo, mot)
+pre: NOT isDismesso
+```
+
+### Sensore
+Un `Sensore` è installato sempre a delle coordinate; `isDismesso` è un attributo booleano ridondante; un `Sensore` non può essere dismesso se non è mai installato.
+```ocl
+context Sensore inv:
+(impianto = null IIF coord = null) AND
+(isDismesso IIF dataDismissione <> null) AND
+(impianto = null IMPLIES NOT isDismesso)
+```
+Il metodo `installa(impianto, coord)` imposta `impianto`, `coord` ed opera su un `Sensore` non dismesso e non installato. 
+```ocl
+context Sensore::installa(impianto, coord)
+pre: NOT isDismesso AND
+	self.impianto = null
+
+post: self.impianto = impianto AND
+	self.coord = coord
+```
+Il metodo `dismetti()` imposta `isDismesso`, `dataDismissione` ed opera su un `Sensore` non dismesso.
+```ocl
+context Sensore::dismetti()
+pre: NOT isDismesso
+
+post: isDismesso AND
+	dataDismissione = now()
+```
+
+### Heatmap
+Il `currSnapshot` è selezionato tra quelli in `snapshots`.
+```ocl
+context Heatmap inv:
+snapshots->includes(currSnapshot)
+```
+
+## Classi relative ai Dipendenti
+
+![](./.media/dipendenti-ocl.png){width=16cm fig-pos=H}
+
+### Intervento
+La `motivazione` è impostata solo per gli interventi di riparazione; un `tecnico` è sempre assegnato in una `dataAssegnazione`; `isConcluso` è un attributo ridondante; se l'intervento è assegnato, la `dataAssegnazione` è maggiore della `dataRichiesta` (il tecnico non può ancora viaggiare nel tempo)
+```ocl
+context Intervento inv:
+dataRichiesta <> null AND
+(motivazione <> null IIF tipo = riparazione)
+(tecnico = null IIF dataAssegnazione = null) AND
+(isConcluso IIF resoconto <> null) AND
+(dataAssegnazione <> null IMPLIES dataAssegnazione >= dataRichiesta)
+```
+Il metodo imposta `tecnico`, `data` e opera su un `Intervento` non ancora assegnato
+```ocl
+context Intervento::assegna(tecnico, data)
+pre: self.tecnico = null AND
+	self.dataAssegnazione = null
+
+post: self.tecnico = tecnico AND
+	self.dataAssegnazione = data
+```
+Il metodo imposta `isConcluso`, `resoconto` e opera su un `Intervento` non concluso
+```ocl
+context Intervento::concludi(resoconto)
+pre: NOT isConcluso
+
+post: self.resoconto = resoconto AND
+	isConcluso
+```
+
+### Tecnico
+L'attributo `seleIntervento` è selezionato da `interventiAssegnati`, che è l'insieme degli interventi assegnati al tecnico
+```ocl
+context Tecnico inv:
+interventiAssegnati->forAll( i | i.tecnico = self)
+```
+```ocl
+context Vetrina::selezionaIntervento() 
+post: seleIntervento <> null AND
+  interventiAssegnati->includes(seleIntervento)
+```
+I metodi `getMisurazioniImp()`, `getHeatmapImp()`, `getInterventiImp()`, `modificaImpianto()`, `modificaImpianto()` devono essere invocati successivamente a `selezionaIntervento()` e possono essere invocati solo se `seleIntervento` non è concluso.
+
+```ocl
+context Tecnico::getMisurazioniImp()
+pre: seleIntervento <> null AND
+NOT seleIntervento.isConcluso
+```
+```ocl
+context Tecnico::getHeatmapImp()
+pre: seleIntervento <> null AND
+NOT seleIntervento.isConcluso
+```
+```ocl
+context Tecnico::getInterventiImp()
+pre: seleIntervento <> null AND
+NOT seleIntervento.isConcluso
+```
+```ocl
+context Tecnico::modificaImpianto()
+pre: seleIntervento <> null AND
+NOT seleIntervento.isConcluso
+```
+```ocl
+context Tecnico::concludiIntervento(res)
+pre: seleIntervento <> null AND
+	NOT seleIntervento.isConcluso
+
+post: seleIntervento.resoconto = res AND
+	seleIntervento.isConcluso
+```
+Il metodo `concludiIntervento(res)` imposta `seleIntervento.resoconto` ed `seleIntervento.isConcluso`.
+
+### Supervisore
+Il `Supervisore` può assegnare un `Intervento` a un `Tecnico` solo se l'`Intervento` non è concluso e il `Tecnico` è libero nella `Data`; la `Data` non può essere il giorno corrente.
+```ocl
+context Supervisore::assegnaIntervento(tec, data)
+pre: seleIntervento <> null AND
+	seleIntervento.tecnico = null AND
+  data >= tomorrow() AND
+	(tec.interventiAssegnati->forAll( i |
+		i.dataAssegnazione <> data))
+
+post: seleIntervento.tecnico = tec AND
+	seleIntervento.dataAssegnazione = data
+```
+
+\pagebreak
+## Diagramma delle classi complessivo con codice OCL
+Alla fine del documento si trova il diagramma leggibile.
+
+<!--concatenare il pdf!-->
+
+![Anteprima diagramma delle classi complessivo con codice OCL](./.media/complessivo-ocl.png){width=16cm fig-pos=H}

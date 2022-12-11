@@ -70,27 +70,9 @@ height=(%, cm, ...)
 scale=(%)
 fig-cap-location=(top, bottom, margin)
 ```
-#### Concatenate pdf files
-```bash
-pdftk Documento-di-Specifica.pdf diagrammacomp.pdf cat output D2-T41.pdf
-```
-#### Bash exporting .drawio files
-```bash
-drawio -x -s 2 -c -f png -o ".media" ".media/.drawio"
-drawio -x -s 1 -c -f pdf -o ".media" ".media/diagrammacomp.drawio"
-```
-
-#### Complete exporting script
-```bash
-drawio -x -s 2 -c -f png -o ".media" ".media/.drawio" &&\
-drawio -x -s 1.1 -c -f pdf -o ".media" ".media/.drawio/diagrammacomp.drawio" &&\
-quarto render "documento-di-specifica.qmd" &&\
-pdftk "documento-di-specifica.pdf" .media/diagrammacomp.pdf cat output D2-T41.pdf
-```
 
 #### Grammar checking
 ```bash
-split -b 20000 "documento-di-specifica.qmd" &&\
-for f in xa*; do gramma check -m "$f" && rm "$f"; done;
-...
+split -b 20000 documento*.qmd &&\
+for f in xa*; do gramma check -m true "$f" && rm "$f"; done;
 ```

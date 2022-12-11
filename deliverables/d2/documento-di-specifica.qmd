@@ -1,0 +1,1298 @@
+---
+title: | 
+  ![](../../.common-media/logo-unitn-ardeeno-512.png){width=10cm}
+
+  Ardeeno WebApp
+subtitle: |
+  T41-SE22
+
+  D2-Documento di Specifica
+
+  v1.1
+author: [alessandro.manfucci@studenti.unitn.it, enrico.cescato@studenti.unitn.it ,m.sottocornola-1@studenti.unitn.it]
+date: "10-12-2022"
+lang: it
+format:
+  pdf:
+    include-in-header:
+      text: |
+        \usepackage{graphicx}
+        \usepackage{wrapfig}
+    documentclass: article
+    classoption: titlepage
+    toc: true
+    toc-title: Indice
+    papersize: a4
+    number-sections: true
+    number-depth: 3
+    geometry:
+    - top=1in
+    - bottom=1in
+    - right=1in
+    - left=1in
+---
+
+\pagebreak
+# Abstract {.unlisted .unnumbered}
+
+Questo documento descrive in maniera più dettagliata -- ma sempre non tecnica -- i requisiti del sistema da realizzare. Per i requisiti funzionali si utilizza il linguaggio di modellazione UML, mentre per i requisiti non funzionali si utilizzano particolari tabelle. Vedremo poi nel dettaglio il contesto del sistema da realizzare, ovvero gli attori ed i sistemi esterni, e poi descriveremo una prima architettura in componenti.
+
+# Terminologia {-}
+
+- **misurazione**: tupla contenente un valore per ogni parametro misurato. 
+
+- **ciclo di polling**: periodo di tempo in cui la stazione di polling -- compresa nell'impianto -- richiede ad ogni sensore la sua misurazione.
+
+- **intervallo di polling (PI)**: periodo di tempo che occorre tra l'inizio di due cicli di polling. Il ciclo di polling ha durata estremamente breve rispetto all'intervallo di polling. I sensori calcolano i valori della misurazione aggregando in media i dati raccolti durante l'intervallo di polling. Ogni modello di impianto specifica i parametri misurati e l'intervallo di polling.
+
+- **snapshot**: insieme delle misurazioni raccolte in un certo ciclo di polling. Ogni misurazione di uno snapshot ha lo stesso timestamp.
+
+- **modelli**:
+&lt;modello&gt; ::= &lt;tipo&gt; &lt;num-sensori&gt; &lt;variante&gt; &lt;versione&gt;  
+&lt;tipo&gt; ::= "TR" | "AQ" | "FP" | "TE" | "WQ" | "ME" // Specifica i parametri misurati  
+&lt;num-sensori&gt; ::= "10" | "50" | "100" | "200" | "500"  
+&lt;variante&gt; ::= "A" | "B" | "C" // $A \implies PI=5m, B \implies PI=30m, C \implies PI=3h$  
+&lt;versione&gt; ::= "" | "0" | "1" | "2" | ... // Hardware differente
+
+# Requisiti funzionali
+Questo capitolo presenta i requisiti funzionali del sistema, raggruppati per ruolo. Vengono utilizzati i diagrammi UML Use Case (descrivendo nel dettaglio ogni singolo Use Case) e, per i requisiti funzionali più complessi, anche i Sequence Diagrams, gli Activity Diagrams e gli State Diagrams.
+
+La descrizione degli UseCase comprende gli steps che l'attore compie per completare la funzione, gli steps opzionali (Extensions) che non sono strettamente necessari per completare la funzione e le eccezioni (Exceptions) che possono verificarsi durante il caso d'uso.
+
+Similmente, ma su un livello diverso, gli UseCase possono includere (&lt;include&gt;) o estendere (&lt;extend&gt;) altri UseCase.
+
+Si evidenzia la seguente gerarchia disgiunta di Attori:
+
+![Gerarchia Attori](.media/gerarchia.png){width=9cm fig-pos=H}
+
+Il punto di vista è sempre quello del sistema; dunque un utente, anche se registrato, verrà considerato come Utente Anonimo fino al momento del Login.
+
+<!--FORM
+1. Il <attore> inserisce X [Exception 1]
+2. Il <attore> invia il form premendo il bottone "<bottone>" [Exception 2]
+3. <qualcosa> è stato correttamente <fatto> ed appare la scritta "<scritta>"
+Exceptions
+1. X non è valido (<motivo>), il bordo del campo del form diventa rosso.
+2. Vi è almeno un campo del form vuoto o non valido, appare in rosso la scritta "Compila correttamente il form".
+-->
+
+<!--
+1. L'utente anonimo riceve un'email da *<component>.ardeeno@gmail.com* con oggetto "<oggetto>".
+
+2. L'utente anonimo visualizza il messaggio dell'email e preme sul link con testo "<testo>"
+
+3. Il sistema <fa qualcosa> e mostra una pagina con scritto "<Ho fatto qualcosa>"
+-->
+
+<!--CONTROLLO ERRORI
+\*\*\*.*\*\*\*\n\w+
+^\d\.\s*[\w\s\d'",\-/:\*()èéÈÉàù@;]+\.
+-->
+
+## Utente anonimo
+
+![RF1, RF2, RF2.1, RF3](.media/anonimo1.png){width=10cm fig-pos=H}
+
+### UseCase Visualizzazione presentazione {-}
+
+***Summary***
+
+Questo use case descrive la visualizzazione da parte di un utente anonimo della presentazione dell'azienda.
+
+***Description***
+
+1. L'utente anonimo visualizza una breve descrizione dell'azienda.
+
+2. L'utente anonimo visualizza una mappa fornita da OpenStreetMap, in cui è evidenziata la posizione delle sedi dell'azienda.
+
+3. L'utente anonimo visualizza indirizzo email e numero di telefono dell'azienda. [Extension 1]
+
+***Extensions***
+
+1. L'utente preme il bottone "Copia", posto a fianco dell'indirizzo email/numero di telefono, e copia sulla clipboard del dispositivo con cui si sta accedendo al sistema l'indirizzo email/il numero di telefono.
+
+### UseCase Visualizzazione vetrina {-}
+
+***Summary***
+
+Questo use case descrive la visualizzazione da parte di un utente anonimo dei modelli di impianto in vendita.
+
+***Description***
+
+1. L'utente anonimo visualizza una lista dei modelli di impianto in vendita. [Exception 1] [Extension 1] [Extension 2]
+
+2. L'utente anonimo seleziona uno specifico filtro dal menu dei filtri, che consente di filtrare i modelli per: tipo, prezzo, superficie consigliata. [Exception 1]
+
+***Exceptions***
+
+1. Nessun impianto soddisfa il filtro selezionato; la lista è vuota e compare la scritta "Nessun impianto".
+
+***Extensions***
+
+1. L'utente anonimo seleziona uno specifico modello di impianto e visualizza inoltre le *product reviews* di TrustPilot. [Extension 2]
+
+2. L'utente anonimo seleziona uno specifico filtro dal menu dei filtri, che consente di filtrare le recensioni per: valutazione in stelle, data.
+
+### UseCase Visualizzazione recensioni {-}
+
+***Summary***
+
+Questo use case descrive la visualizzazione da parte di un utente anonimo delle *service reviews* di TrustPilot.
+
+***Description***
+
+1. L'utente anonimo visualizza una lista delle dieci più recenti *service reviews* con almeno quattro stelle. [Exception 1]
+
+2. L'utente anonimo visualizza il *TrustScore* dell'azienda, fornito dal servizio TrustPilot. [Exception 2]
+
+***Exceptions***
+
+1. Non ci sono *service reviews*; compare la scritta "Nessuna recensione disponibile".
+
+2. Non ci sono *service reviews*; compare la scritta "TrustScore non disponibile".
+
+![RF4, RF5, RF6, RF7](.media/anonimo2.png){width=10cm fig-pos=H}
+
+### UseCase Registrazione cliente {-}
+***Summary***
+
+Questo use case descrive come l'utente anonimo effettua la registrazione come cliente nel sistema tramite form.
+
+***Description***
+
+1. L'utente anonimo inserisce il nome e il cognome. [Exception 1]
+
+2. L'utente anonimo inserisce l'indirizzo email. [Exception 2]
+
+3. L'utente anonimo inserisce il numero di telefono. [Exception 3]
+
+4. L'utente anonimo inserisce l'indirizzo di domicilio. [Exception 4]
+
+5. L'utente anonimo inserisce due volte la password. [Exception 5]
+
+5. L'utente anonimo invia il form premendo il bottone "Registrati". [Exception 6] [Exception 7]
+
+6. Il sistema -- tramite Gmail -- invia due email: una contenente il codice per confermare l'indirizzo email, l'altra con i dati di registrazione e un messaggio di benvenuto.
+
+7. La registrazione è stata correttamente effettuata, appare la scritta "Registrazione completata".
+
+***Exceptions***
+
+1. Il nome e/o il cognome non è valido \(non soddisfa la regex "\[A-Za-z\]\{3,20\}"\), il bordo del campo del form diventa rosso.
+
+2. L'indirizzo email non è valido \(non soddisfa la regex ".\*@.\*"\), il bordo del campo del form diventa rosso.
+
+3. Il numero di telefono non è valido (non soddisfa la regex "(.\\d*) \\d\{10\}" \), il bordo del campo del form diventa rosso.
+
+4. L'indirizzo non è valido, il bordo del campo del form diventa rosso.
+
+5. Le due password non sono congruenti oppure la prima non e valida ([RNF2 Sicurezza](#rnf2-sicurezza)), il bordo del campo del form diventa rosso.
+
+6. Vi è almeno un campo del form vuoto o non valido, appare in rosso la scritta "Compila correttamente il form".
+
+7. L'indirizzo email inserito è già utilizzato da un altro account, appare la scritta "Indirizzo email già utilizzato".
+
+### UseCase Conferma indirizzo email {-}
+***Summary***
+
+Questo use case descrive come avviene la conferma dell'indirizzo email inserito nella registrazione da parte dell'utente anonimo.
+
+***Description***
+
+1. L'utente anonimo riceve un'email da *accounts.ardeeno@gmail.com* con oggetto "Conferma indirizzo email".
+
+2. L'utente anonimo visualizza il messaggio dell'email e preme sul link con testo "Conferma il mio indirizzo email". [Exception 1]
+
+3. Il sistema conferma l'indirizzo email e mostra una pagina con scritto "Indirizzo email confermato".
+
+***Exceptions***
+
+1. Dal momento dell'invio dell'email all'apertura del link sono trascorse più di 24h, il link non è più valido ed appare la scritta "Indirizzo email non confermato, link non valido"!
+
+### UseCase Autenticazione {-}
+
+***Summary***
+
+Questo use case descrive come l'utente anonimo effettua l'autenticazione tramite form.
+
+***Description***
+
+1. L'utente anonimo inserisce l'indirizzo email. [Exception 1]
+
+2. L'utente anonimo inserisce la password.
+
+3. L'utente anonimo invia il form premendo il bottone "Login". [Exception 2]
+
+4. Il sistema verifica che l'indirizzo email inserito appartenga ad un account. [Exception 3]
+
+5. Il sistema verifica che l'indirizzo email inserito sia stato confermato. [Exception 4]
+
+5. Il sistema verifica che la password sia corretta. [Exception 5]
+
+6. L'autenticazione è conclusa, l'utente è portato alla pagina degli impianti o degli interventi.
+
+***Exceptions***
+
+1. L'indirizzo email non è valido \(non soddisfa la regex ".\*@.\*"\), il bordo del campo del form diventa rosso.
+
+2. Vi è almeno un campo del form vuoto o non valido, appare in rosso la scritta "Compila correttamente il form".
+
+3. L'indirizzo email non appartiene ad alcun account o appartiene all'account di un Dipendente dimesso, appare la scritta "Indirizzo email non corretto".
+
+4. L'indirizzo email non è confermato; il sistema -- tramite Gmail -- invia all'indirizzo email un nuovo link per confermare tale indirizzo email ed appare la scritta "Inviato nuovo link di conferma!"; il link precedente non è più valido.
+
+5. La password non è corretta, appare la scritta "Password non corretta" ed il link alla pagina "Recupera password".
+
+### UseCase Recupero password {-}
+***Summary***
+
+Questo use case descrive come avviene il recupero -- ovvero il cambio -- della password da parte di un utente anonimo.
+
+***Description***
+
+1. L'utente anonimo inserisce l'indirizzo email. [Exception 1]
+
+2. L'utente anonimo invia il form premendo il bottone "Recupera password". [Exception 2]
+
+3. Il sistema -- tramite Gmail -- invia all'indirizzo email inserito un link per recuperare la password. 
+
+4. L'utente anonimo riceve un'email da *accounts.ardeeno@gmail.com* con oggetto "Recupero password".
+
+5. L'utente anonimo visualizza il messaggio dell'email e preme sul link con testo "Modifica la mia password". [Exception 3]
+
+6. L'utente anonimo visualizza il form ed inserisce due volte la nuova password.
+
+7. L'utente anonimo invia il form premendo il bottone "Modifica password". [Exception 4]
+
+8. Il sistema modifica la password dell'account.
+
+***Exceptions***
+
+1. L'indirizzo email non è valido \(non soddisfa la regex ".\*@.\*"\), il bordo del campo del form diventa rosso.
+
+2. L'indirizzo email non appartiene ad alcun account o appartiene all'account di un Dipendente dimesso, appare la scritta "Indirizzo email non corretto".
+
+3. Dal momento dell'invio dell'email all'apertura del link sono trascorse più di 24h, il link non è più valido ed appare la scritta "Recupero non possibile, link non valido!".
+
+4. Le due password non sono congruenti oppure la prima non e valida ([RNF2 Sicurezza](#rnf2-sicurezza)), il bordo del campo del form diventa rosso.
+
+## Utente autenticato
+
+![RF5.1, RF8, RF9](.media/autenticato.png){width=12cm fig-pos=H}
+
+### UseCase Logout {-}
+
+***Summary***
+
+Questo use case descrive come un Utente Autenticato effettua il logout dal sistema.
+
+***Description***
+
+1. L'utente autenticato preme il bottone "Logout".
+
+2. Il sistema riporta l'utente alla pagina di presentazione; l'utente non è più autenticato.
+
+### UseCase Visualizzazione dati personali {-}
+
+***Summary***
+
+Questo use case descrive come l'utente autenticato visualizza i suoi dati personali.
+
+***Description***
+
+1. L'utente autenticato visualizza una pagina contenente la lista dei dati personali. Vi è un link alla pagina di modifica [Extension 1].
+
+***Extensions***
+
+1. Se l'utente è un dipendete vi è in aggiunta il campo CF.
+
+### UseCase Modifica dati personali{-}
+
+***Summary***
+
+Questo use case descrive come l'utente autenticato modifica i propri dati personali.
+
+***Description***
+
+1. L'utente autenticato visualizza un form contenente tutti i campi presenti nella registrazione Cliente.
+
+2. L'utente riempie certi campi. [Exception 1] 
+
+3. L'utente invia il form premendo il tasto "Modifica dati". [Exception 2] [Exception 3]
+
+4. Il sistema aggiorna solo quei campi riempiti ed invia un'email di notifica tramite Gmail.
+
+***Exceptions***
+
+1. Se certi campi non sono validi, il bordo diventa rosso.
+
+2. Alcuni campi non sono validi o nessun campo è riempito, appare la scritta "Compila correttamente il form".
+
+3. Il nuovo indirizzo email che è stato inserito è già presente nel sistema.
+
+***Extensions***
+
+1. È stato inserito un nuovo indirizzo email; viene inviata una nuova email di conferma tramite Gmail.
+
+## Cliente
+
+![RF10, RF16](.media/cliente1.png){width=10cm fig-pos=H}
+
+### UseCase Acquisto impianto {-}
+  
+***Summary***
+
+Questo use case descrive come il cliente effettua l'acquisto dell'impianto precedentemente selezionato.
+
+***Description***
+
+1. Il cliente inserisce l'indirizzo di installazione. [Exception 1]
+
+2. Il cliente inserisce la superficie in $m^2$. [Exception 2]
+
+3. Il cliente invia il form premendo il bottone "Acquista", al cui lato è presente il costo del tipo di impianto. [Exception 3]
+
+4. Il cliente effettua il pagamento tramite PayPal. [Exception 4]
+
+5. L'acquisto è concluso, nella pagina di acquisto appare in verde la scritta "Acquisto concluso!".
+
+6. L'acquisto è concluso, il sistema inserisce un intervento di installazione per il nuovo impianto ed -- tramite Gmail -- invia una richiesta di recensione e un messaggio di avvenuto acquisto.
+
+***Exceptions***
+
+1. L'indirizzo non è valido, il bordo del campo del form diventa rosso.
+
+2. La superficie non è valida (non è un intero positivo), il bordo del campo del form diventa rosso.
+
+3. I campi indirizzo o superficie sono vuoti o non validi, appare in rosso la scritta "Compila correttamente il form".
+
+4. PayPal riporta che il pagamento non è andato a buon fine, appare in rosso la scritta "Acquisto annullato - Pagamento non andato a buon fine".
+
+***Sequence Diagram***
+
+![Sequence Diagram](.media/cliente1seq.png){width=7cm fig-pos=H}
+
+### UseCase Pagamento {-}  
+
+***Summary***
+
+Questo use case descrive come avviene il pagamento dell'impianto tramite PayPal.
+
+***Description***
+
+1. Il cliente si collega al sistema PayPal.
+
+2. Il cliente effettua il pagamento tramite PayPal. [Exception 1]
+
+3. Il cliente ritorna al sistema Ardeeno WebApp.
+
+***Exceptions***
+
+1. PayPal riporta che il pagamento non è andato a buon fine.
+
+### UseCase Richiesta Recensione {-}  
+
+***Summary***
+
+Questo use case descrive come avviene la richiesta e l'inserimento di una recensione su TrustPilot da parte del cliente.
+
+***Description***
+
+1. Il cliente riceve un'email da *sales.ardeeno@gmail.com* con oggetto "Acquisto concluso".
+
+2. Il cliente visualizza il messaggio dell'email e clicca sul link con testo "Recensisci il modello di impianto!".
+
+3. Il cliente si collega al sistema TrustPilot ed inserisce una recensione.
+
+4. TrustPilot riporta che la recensione è stata correttamente inserita.
+
+![RF11, RF12, RF13](.media/cliente2.png){width=12cm fig-pos=H}
+
+### UseCase Visualizzazione Impianti Acquistati {-}  
+
+***Summary***
+
+Questo use case descrive la visualizzazione da parte di un cliente degli impianti acquistati.
+
+***Description***
+
+1. Il cliente visualizza la lista di tutti gli impianti acquistati; è attivo il filtro Tutti. [Exception 1] [Extension 1] [Extension 2] [Extension 3]
+
+***Exceptions***
+
+1. Nessun impianto soddisfa tale filtro; la lista è vuota ed appare la scritta "Nessun impianto".
+
+***Extensions***
+
+1. Il cliente seleziona uno specifico impianto e visualizza la Dashboard dell'impianto.
+
+2. Il cliente seleziona il filtro Tutti, Attivi o Dismessi. [Exception 1]
+
+3. Il cliente seleziona il menu degli ulteriori filtri e seleziona uno specifico filtro (tra cui vi sono tutti i modelli e tutti i tipi degli impianti acquistati). [Exception 1]
+
+### UseCase Dashboard {-}
+
+***Summary***
+
+Questo use case descrive come il cliente interagisce con la Dashboard dell'impianto selezionato.
+
+***Description***
+
+1. Il cliente visualizza le informazioni del singolo impianto (ID, indirizzo, modello, stato, data acquisto, superficie) e le funzioni disponibili (Heatmap, visualizzazione su tabella, visualizzazione interventi).
+
+2. Il cliente seleziona una funzione. 
+
+### UseCase Visualizzazione misurazioni su tabella {-}  
+
+***Summary***
+
+Questo use case descrive come un cliente visualizza le misurazioni di uno specifico impianto su tabella.
+
+***Description***
+
+1. Il cliente visualizza una tabella contenente tutte le misurazioni ordinate per data da più recente a meno recente.
+
+2. Il cliente clicca un bottone per aggiornare la tabella con le più recenti misurazioni. [Exception 1]
+
+***Exceptions***
+
+1. L'impianto è dismesso e non è presente tale bottone
+
+### UseCase Visualizzazione misurazioni su heatmap {-}  
+
+***Summary***
+
+Questo use case descrive come un cliente visualizza le misurazioni di uno specifico impianto su heatmap.
+
+***Description***
+
+1. La heatmap mostra lo snapshot più recente dell'impianto considerando un parametro arbitrario. Per ogni misurazione nello snapshot, il valore del parametro considerato è posizionato sulla mappa alle coordinate del dato sensore. Il valore del parametro considerato è rappresentato con una scala di colori dal giallo (valore minimo assoluto) al rosso (valore massimo assoluto). Le mappe sono reperite da OpenStreetMap.
+
+2. Il cliente seleziona il parametro considerato da una lista contenente tutti i parametri misurati dall'impianto selezionato.
+
+3. Il cliente clicca su un bottone per visualizzare lo snapshot precedente (meno recente). [Exception 1]
+
+4. Il cliente clicca su un bottone per visualizzare lo snapshot successivo (più recente). [Exception 2]
+
+***Exceptions***
+
+1. Lo snapshot attuale è il meno recente in assoluto, viene visualizzata con pop-up la scritta "Nessuno snapshot precedente".
+
+2. Lo snapshot attuale è il più recente in assoluto, viene visualizzata con pop-up la scritta "Nessuno snapshot successivo".
+
+![RF14, RF15, RF15.1](.media/cliente3.png){width=10cm fig-pos=H}
+
+### UseCase Visualizzazione interventi {-}  
+
+***Summary***
+
+Questo use case descrive come un cliente visualizza gli interventi effettuati su uno specifico impianto su heatmap.
+
+***Description***
+
+1. Il cliente visualizza la lista di tutti gli interventi effettuati sull'impianto selezionato; è attivo il filtro Tutti. È presente un link per richiedere un intervento di riparazione. [Exception 1] [Extension 1] [Extension 2]
+
+***Exceptions***
+
+1. Nessun intervento soddisfa tale filtro; la lista è vuota ed appare la scritta "Nessun intervento".
+
+***Extensions***
+
+1. Il cliente seleziona il filtro Tutti, Richiesti, In Corso, Conclusi. [Exception 1]
+
+2. Il cliente seleziona il menu degli ulteriori filtri e seleziona uno specifico filtro (Installazioni, Manutenzioni, Riparazioni, Dismissioni). [Exception 1]
+
+### UseCase Richiesta intervento di riparazione {-}
+
+***Summary***
+
+Questo use case descrive come un cliente richiede un intervento di riparazione per l'impianto selezionato.
+
+***Description***
+
+1. Il cliente clicca sul bottone "Richiedi riparazione". [Exception 1]
+
+2. Il cliente inserisce la motivazione della riparazione.
+
+3. Il cliente invia la richiesta di riparazione.
+
+***Exceptions***
+
+1. L'impianto è dismesso ed il bottone non è presente.
+
+### UseCase Richiesta interventi di manutenzione e dismissione {-}  
+
+***Summary***
+
+Questo use case descrive come il sistema interagisce con Ardeeno DataLayer per richiedere la manutenzione periodica degli impianti acquistati e per richiedere gli interventi di dismissione.
+
+***Description***
+
+1. È trascorso esattamente un anno dalla richiesta del precedente intervento di installazione o manutenzione. Il sistema inserisce una richiesta di intervento di manutenzione. [Exception 1][Exception 2]
+
+***Exceptions***
+
+1. L'impianto è dismesso. Non è inserita alcuna richiesta di manutenzione
+
+2. Sono trascorsi esattamente cinque anni dalla data di acquisto dell'impianto. Il sistema inserisce una richiesta di intervento di dismissione (anziché di manutenzione).
+
+## Supervisore
+
+![RF17, RF18, RF19](.media/supervisore1.png){width=12cm fig-pos=H}
+
+### UseCase Visualizzazione interventi {-}  
+
+***Summary***
+
+Questo use case descrive la visualizzazione da parte del supervisore di tutti gli interventi.
+
+***Description***
+
+1. Il supervisore visualizza la lista di tutti gli interventi; è attivo il filtro Tutti. [Exception 1] [Extension 1] [Extension 2]
+
+2. Il supervisore seleziona uno specifico intervento e appare un pop-up con ulteriori informazioni e con un link per assegnare l'intervento al tecnico. [Exception 2]
+
+***Exceptions***
+
+1. Nessun intervento soddisfa tale filtro; la lista è vuota e appare la scritta "Nessun intervento".
+
+2. L'intervento è assegnato; non si mostra il link per assegnare l'intervento al tecnico.
+
+***Extensions***
+
+1. Il supervisore seleziona il filtro Tutti, Richiesti, In Corso, Conclusi. [Exception 1]
+
+2. Il supervisore seleziona il menu degli ulteriori filtri e seleziona uno specifico filtro (Installazioni, Manutenzioni, Riparazioni, Dismissioni). [Exception 1]
+
+### UseCase Assegnazione intervento {-}
+
+***Summary***
+
+Questo use case descrive come un supervisore assegna l'intervento precedentemente selezionato a un tecnico in una certa data.
+
+***Description***
+
+1. Il supervisore clicca sul campo data ed appare un calendario.
+
+2. Il supervisore seleziona una data dal calendario; non sono selezionabili i giorni precedenti a quello corrente ed i festivi.
+
+3. Il sistema mostra una lista (nome, cognome) dei tecnici liberi in quella data. [Exception 1]
+
+4. Il supervisore seleziona un tecnico dalla lista ed il sistema controlla nuovamente la disponibilità e lo considera *Prenotato*. [Exception 2]
+
+5. Appare il bottone "Assegna" ed il supervisore lo preme. Ad assegnazione conclusa viene inviata un'email di notifica al dato tecnico. [Exception 3]
+
+***Exceptions***
+
+1. Non vi sono tecnici liberi in quella data, quindi la lista è vuota e appare la scritta "Nessun tecnico disponibile".
+
+2. Dal momento di selezione della data al momento di selezione del tecnico, il dato tecnico è stato *prenotato* o assegnato ad un intervento; appare la scritta "Tecnico non disponibile" e viene caricata nuovamente la lista dei tecnici.
+
+3. Sono trascorsi più di 15 minuti dalla selezione del tecnico; appare la scritta "Tempo scaduto, ripeti l'operazione" e si rimuove la *prenotazione* del tecnico e la selezione della data.
+
+***Activity Diagram***
+
+![Activity Diagram](.media/supervisore1activity.png){width=10cm fig-pos=H}
+
+## Tecnico
+
+![RF20, RF21, RF22](.media/tecnico1.png){width=12cm fig-pos=H}
+
+### UseCase Visualizzazione interventi {-}  
+
+***Summary***
+
+Questo use case descrive come un tecnico visualizza gli interventi che gli sono stati assegnati.
+
+***Description***
+
+1. Il tecnico visualizza la lista di tutti gli interventi; è attivo il filtro Tutti. [Exception 1] [Extension 1] [Extension 2]
+
+2. Il tecnico seleziona uno specifico intervento e appare un pop-up con ulteriori informazioni e con: un link per visualizzare la dashboard del relativo impianto, un link per aggiungere/rimuovere sensori, un link per concludere l'intervento. [Exception 2]
+
+***Exceptions***
+
+1. Nessun intervento soddisfa tale filtro; la lista è vuota e appare la scritta "Nessun intervento".
+
+2. L'intervento è concluso; non si mostrano tali link.
+
+***Extensions***
+
+1. Il supervisore seleziona il filtro Tutti, Richiesti, In Corso, Conclusi. [Exception 1]
+
+2. Il tecnico seleziona il menu degli ulteriori filtri e seleziona uno specifico filtro (Installazioni, Manutenzioni, Riparazioni, Dismissioni). [Exception 1]
+
+### UseCase Dashboard {-}
+
+***Summary***
+
+Questo use case descrive come il tecnico interagisce con la Dashboard dell'impianto relativo all'intervento (in corso) selezionato.
+
+***Description***
+
+1. Il tecnico visualizza le informazioni del singolo impianto (ID, indirizzo, modello, stato, data acquisto, superficie, anagrafica del proprietario) e le funzioni disponibili (Heatmap, visualizzazione su tabella, visualizzazione interventi).
+
+2. Il tecnico seleziona una funzione.
+
+### UseCase Visualizzazione misurazioni su tabella {-}
+
+***Summary***  
+Il tecnico si comporta come il cliente in [UseCase Visualizzazione misurazioni su tabella](#usecase-visualizzazione-misurazioni-su-tabella)
+
+### UseCase Visualizzazione misurazioni su heatmap {-}
+
+***Summary***  
+Il tecnico si comporta come il cliente in [UseCase Visualizzazione misurazioni su heatmap](#usecase-visualizzazione-misurazioni-su-heatmap)
+
+### UseCase Visualizzazione interventi {-}
+
+***Summary***  
+Il tecnico si comporta come il cliente in [UseCase Visualizzazione misurazioni su heatmap](#usecase-visualizzazione-interventi), ma non è presente il link per richiedere un intervento di riparazione.
+
+
+### UseCase Conclusione intervento {-}  
+
+***Summary***
+
+Questo use case descrive come un tecnico conclude l'intervento precedentemente selezionato.
+
+***Description***
+
+1. Il tecnico inserisce il resoconto testuale dell'intervento.
+
+2. Il sistema inserisce automaticamente nel form la data corrente.
+
+3. Il tecnico invia il form premendo sul bottone "Concludi".
+
+### UseCase Aggiunta sensore {-}  
+
+***Summary***
+
+Questo use case descrive come un tecnico aggiunge un sensore all'impianto relativo all'intervento in corso precedentemente selezionato.
+
+***Description***
+
+1. Il tecnico inserisce da tastiera l'ID alfanumerico del sensore. [Exception 1] [Extension 1]
+
+2. Il tecnico inserisce da tastiera latitudine e longitudine in gradi decimali. [Exception 2] [Extension 2]
+
+3. Il tecnico invia il form premendo il bottone "Aggiungi". [Exception 3]
+
+4. Il sensore è stato correttamente aggiunto ed appare la scritta "Sensore aggiunto".
+
+***Exceptions***
+
+1. L'ID non è valido \(non soddisfa la regex "\[\\dA-Za-z\]\{10\}"\), il bordo del campo del form diventa rosso.
+
+2. Le coordinate non sono valide (non sono un numero), il bordo del campo del form diventa rosso.
+
+3. I campi ID o coordinate sono vuoti o non validi, appare in rosso la scritta "Compila correttamente il form".
+
+4. Il dispositivo con cui si accede ad Ardeeno WebApp non dispone di GPS; appare la scritta "GPS Non disponibile".
+
+***Extensions***
+
+1. Il tecnico preme un bottone al lato, inquadra con la fotocamera il codice qr del sensore ed l'ID è inserito dal sistema.
+
+2. Il tecnico preme un bottone al lato ed il GPS inserisce automaticamente le coordinate. [Exception 4]
+
+### UseCase Rimozione sensore {-}  
+
+***Summary***
+
+Questo use case descrive come un tecnico rimuove un sensore dall'impianto relativo all'intervento precedentemente selezionato.
+
+***Description***
+
+1. Il tecnico inserisce da tastiera l'ID alfanumerico del sensore [Exception 1] [Extension 1]
+
+2. Il tecnico invia il form premendo il bottone "Rimuovi" [Exception 2]
+
+3. Il sensore è stato correttamente aggiunto ed appare la scritta "Sensore rimosso"
+
+***Exceptions***
+
+1. L'ID non è valido \(non soddisfa la regex "\[\\dA-Za-z\]\{10\}"\), il bordo del campo del form diventa rosso.
+
+2. Il campo ID è vuoto o non valido, appare in rosso la scritta "Compila correttamente il form".
+
+## Amministratore
+
+![RF23, RF24, RF25, RF26, RF27](.media/amministratore1.png){width=12cm fig-pos=H}
+
+### UseCase Registrazione dipendente {-}  
+
+***Summary***
+
+Questo use case descrive come avviene la registrazione di un dipendente da parte di un amministratore.
+
+***Description***
+
+1. L'amministratore inserisce il nome e il cognome. [Exception 1]
+
+2. L'amministratore inserisce l'indirizzo email. [Exception 2]
+
+3. L'amministratore inserisce il numero di telefono. [Exception 3]
+
+4. L'amministratore inserisce l'indirizzo di domicilio. [Exception 4]
+
+5. L'amministratore inserisce il CF. [Exception 5]
+
+6. L'amministratore seleziona il ruolo del dipendente da una lista contenente: tecnico, supervisore o amministratore.
+
+7. L'amministratore invia il form premendo il bottone "Registra dipendente". [Exception 6] [Exception 7].
+
+8. Il sistema -- tramite Gmail -- invia l'email contenente la password generata automaticamente per il nuovo account.
+
+9. Il sistema -- tramite Gmail -- invia l'email per il recupero della password -- come sollecito a modificare la password.
+
+10. L'indirizzo email è automaticamente confermato.
+
+11. La registrazione è stata correttamente effettuata, appare la scritta "Registrazione completata" ed il sistema -- tramite Gmail -- invia al Dipendente una notifica di avvenuta registrazione.
+
+***Exceptions***
+
+1. Il nome e/o il cognome non è valido \(non soddisfa la regex "\[A-Za-z\]\{3,20\}"\), il bordo del campo del form diventa rosso.
+
+2. L'indirizzo email non è valido \(non soddisfa la regex ".\*@.\*"\), il bordo del campo del form diventa rosso.
+
+3. Il numero di telefono non è valido (non soddisfa la regex "(.\\d*) \\d\{10\}" \), il bordo del campo del form diventa rosso.
+
+4. L'indirizzo non è valido, il bordo del campo del form diventa rosso.
+
+5. Il CF non è valido, il bordo del campo del form diventa rosso.
+
+6. Vi è almeno un campo del form vuoto o non valido, appare in rosso la scritta "Compila correttamente il form".
+
+7. Il CF o l'indirizzo email inserito sono già presenti nella BD, appare la scritta "Dipendente già registrato".
+
+### UseCase Visualizzazione lista dipendenti {-}  
+
+***Summary***
+
+Questo use case descrive come un amministratore visualizza la lista di tutti i dipendenti.
+
+***Description***
+
+1. L'amministratore visualizza la lista di tutti i dipendenti; è attivo il filtro Tutti. [Exception 1] [Extension 1] [Extension 2]
+
+2. L'amministratore seleziona uno specifico dipendente dalla lista.
+
+***Exceptions***
+
+1. Nessun dipendente soddisfa tale filtro; la lista è vuota e appare la scritta "Nessun dipendente".
+
+***Extensions***
+
+1. L'amministratore seleziona il filtro Tutti, Attivi, Dimessi. [Exception 1]
+
+2. L'amministratore seleziona il menu degli ulteriori filtri e seleziona uno specifico filtro (Clienti, Tecnici, Supervisori, Amministratori). [Exception 1]
+
+### UseCase Modifica dati dipendente {-}  
+
+***Summary***
+
+Questo use case descrive come un amministratore modifica i dati di un dipendente della azienda.
+
+***Description***
+
+1. L'amministratore compila almeno uno dei campi descritti nella [Registrazione dipendente](#usecase-registrazione-dipendente). [Extension 1]
+
+3. L'amministratore invia il form premendo il bottone "Modifica dati". Ad avvenuta modifica il sistema -- tramite Gmail -- invia un'email di notifica al Dipendente. [Exception 1]
+
+***Exceptions***
+
+1. Tutti i campi del form sono vuoti o vi è almeno un campo non valido, appare in rosso la scritta "Compila correttamente il form".
+
+***Extensions***
+
+1. L'amministratore segna il dipendente come dimesso o non dimesso.
+
+### UseCase Visualizzazione grafico vendite {-}  
+
+***Summary***
+
+Questo use case descrive la visualizzazione da parte di un amministratore del grafico delle vendite.
+
+***Description***
+
+1. L'amministratore visualizza il grafico delle vendite con granularità mensile; inizialmente comprende il massimo intervallo possibile. [Extension 1] [Extension 2]
+
+***Extensions***
+
+1. L'amministratore seleziona un punto sull'asse del tempo ed appare un pop-up con il numero esatto di impianti venduti in quel mese.
+
+2. L'amministratore seleziona un intervallo sull'asse del tempo ed il grafico si adatta al nuovo intervallo considerato.
+
+### UseCase Visualizzazione grafico interventi {-}  
+
+***Summary***
+
+Questo use case descrive la visualizzazione da parte di un amministratore del grafico degli interventi effettuati.
+
+***Description***
+
+1. L'amministratore visualizza il grafico degli interventi effettuati con granularità mensile; inizialmente comprende il massimo intervallo possibile. [Extension 1] [Extension 2]
+
+***Extensions***
+
+1. L'amministratore seleziona un punto sull'asse del tempo ed appare un pop-up con il numero di interventi richiesti (sia totale che suddiviso per tipo). 
+
+2. L'amministratore seleziona un intervallo sull'asse del tempo ed il grafico si adatta al nuovo intervallo considerato.
+
+\pagebreak
+# Requisiti Non Funzionali
+Questo capitolo descrive in maniera dettagliata i requisiti non funzionali del sistema. Ogni requisito non funzionale è suddiviso in più proprietà e per ognuna di queste si definisce una misura. La misura è estremamente importante, in quanto permetterà di stabilire -- a sistema sviluppato -- se il requisito non funzionale è soddisfatto, oppure no, con la minima ambiguità. 
+
+### RNF1 Privacy {-}
+
+|Proprietà|Descrizione|Misura|
+|---|------|------|
+|GDPR|Il sistema deve rispettare il regolamento europeo 2016/679 noto come GDPR (General Data Protection Regulation).|Conforme: Privacy Policy, richiesta del consenso per l'utilizzo di Cookies, possibilità di cancellare i propri dati (account e impianti), possibilità di esportare i propri dati (account e impianti) |
+
+### RNF2 Sicurezza {-}
+|Proprietà|Descrizione|Misura|
+|---|------|------|
+|Trasmissione sicura|La trasmissione dei dati in ogni funzione deve avvenire in maniera sicura|Il sistema utilizza il protocollo HTTPS|
+||||
+|Password sicura|La password deve essere lunga almeno 8 caratteri e deve contenere almeno: una lettera maiuscola, una lettera minuscola, un numero|Nel [RF4](#a), [RF7](#a) il sistema non permette di inserire una password non sicura; nel [RF23](#a) il sistema genera una password sicura|
+||||
+|Password non in chiaro|La password non deve essere salvata in chiaro|Nel [RF4](#a), [RF7](#a), [RF23](#a) sul database è salvato un salted hash della password (funzione bcrypt)|
+||||
+|Logout|Un utente autenticato deve poter uscire dal proprio account|Funzione di logout [RF5.1](#a) presente|
+||||
+|Dipendenti dimessi|Un dipendente segnato come dimesso non deve poter autenticarsi nel sistema|Nel [RF5](#a), non è permessa l'autenticazione degli account di dipendenti dimessi|
+
+### RNF3 Portabilità {-}
+|Proprietà|Descrizione|Misura|
+|---|------|------|
+|Compatibilità per ogni RF| Ogni funzione deve essere funzionante sui seguenti sistemi operativi: Windows 7+, MacOS 10.6+, Android 5.0+, iOS 5.0+. Ogni funzione deve essere funzionante sui seguenti browser: Chrome 18+, Chrome Mobile 18+, Safari 5.1+, Safari Mobile 5.0+|Utilizzo di librerie compatibili, testing manuale di ogni funzione per le seguenti coppie (S.O., Browser): (Windows 7, Chrome 18), (MacOS 10.6, Chrome 18), (Android 5.0, Chrome Mobile 18), (iOS 5.0, Chrome Mobile 18), (MacOS 10.6, Safari 5.1), (iOS 5.0, Safari Mobile 5.0)|
+||||
+|Compatibilità per specifici RF|Le funzioni [RF.Tecnico](#tecnico), [RF.Supervisore](#supervisore), [RF.Amministratore](#amministratore) devono in aggiunta essere funzionanti sui seguenti sistemi operativi: Ubuntu 20.04+. Le specifiche funzioni devono in aggiunta essere funzionanti sui seguenti browser: Firefox 7+, Firefox Mobile 7+|Utilizzo di librerie compatibili, testing manuale delle specifiche funzioni per le seguenti coppie (S.O., Browser): (Ubuntu 20.04, Firefox 7), (Android 5.0, Firefox Mobile 7)|
+
+
+### RNF4 Prestazioni {-}
+<!--
+Un software proprietario effettua in sequenza 10 test di prestazione sulla rete intranet di Ardeeno con browser compatibile Chrome su Windows; per ogni test la misurazione parte da quando <succede qualcosa> a quando <succede qualcosa>; il sistema soddisfa il RNF se almeno 7 test hanno durata di al più <x> secondi
+-->
+
+|Proprietà|Descrizione|Misura|
+|---|----|-----------|
+|Prestazioni acquisto|La funzione di acquisto [RF10](#a) deve essere eseguita dal sistema in al più 10 secondi|Un software proprietario effettua in sequenza 10 test di prestazione sulla rete intranet di Ardeeno con browser compatibile Chrome su Windows; per ogni test la misurazione parte da quando il form è inviato a quando appare la scritta "Acquisto concluso" (si utilizza una procedura di pagamento fittizia ed istantanea); il sistema soddisfa il RNF se almeno 7 test hanno durata di al più 10 secondi|
+||||
+|Prestazioni heatmap|La funzione del cliente [RF12](#a) deve essere eseguita dal sistema in al più 5 secondi|Un software proprietario effettua in sequenza 10 test di prestazione sulla rete intranet di Ardeeno con browser compatibile Chrome su Windows; per ogni test la misurazione parte da quando si richiede al sistema la heatmap dell'impianto a quando la pagina è completamente caricata dal browser (si utilizza un account cliente con un solo impianto modello AQ50A -- 50 sensori, 5 parametri misurati -- con 100 snapshot); il sistema soddisfa il RNF se almeno 7 test hanno durata di al più 5 secondi|
+||||
+|Prestazioni tecnici|Le funzioni dei tecnici [RF.Tecnico](#tecnico) devono essere eseguite in al più 5 secondi|Un software proprietario effettua in sequenza 10 test di prestazione sulla rete intranet di Ardeeno con browser compatibile Chrome su Windows; ogni test ha 3 sottotest; per il primo sottotest la misurazione parte da quando si richiede al sistema la pagina [RF20](#a) a quando la pagina è completamente caricata dal browser; per il secondo sottotest la misurazione parte da quando si seleziona un intervento dalla lista a quando appare la scritta "Sensore aggiunto"; per il terzo sottotest la misurazione parte da quando si seleziona un intervento dalla lista a quando appare "Intervento concluso"; il sistema soddisfa il RNF se almeno 7 test hanno ogni sottotest con durata di al più 5 secondi (si utilizza un account tecnico con 10 interventi assegnati in corso su 10 impianti)|
+
+\pagebreak
+### RNF5 Facilità d'uso {-}
+
+<!--
+A 10 dipendenti di Ardeeno sarà fornito: un dispositivo compatibile con Ardeeno WebApp (di cui 4 smartphones Android, 4 pc Windows, 2 tablet Android), l'URL della WebApp (ardeeno.it), un account di Ardeeno WebApp; saranno quindi date le seguenti istruzioni: "<istruzioni>"; la misurazione parte dal momento in cui si forniscono le istruzioni e si conclude quando <succede qualcosa>; il sistema soddisfa il RNF se almeno 7 dipendenti concludono il test in al più <x> minuti
+
+Per 10 dipendenti di Ardeeno sarà organizzato un breve corso di formazione specifica di <x> minuti. Successivamente, verrà fatto un test. Ai 10 dipendenti di Ardeeno sarà fornito: un dispositivo compatibile con Ardeeno WebApp (di cui 4 smartphones Android, 4 pc Windows, 2 tablet Android), l'URL della WebApp (ardeeno.it), un account di Ardeeno WebApp; saranno quindi date le seguenti istruzioni: "<istruzioni>"; la misurazione parte dal momento in cui si forniscono le istruzioni e si conclude quando <succede qualcosa>; il sistema soddisfa il RNF se almeno 7 dipendenti concludono il test in al più <y> minuti  
+-->
+
+|Proprietà|Descrizione|Misura|
+|---|----|-----------|
+|Facilità d'uso utente anonimo|Un utente anonimo deve essere in grado di registrarsi e portare a termine un acquisto ([RF2](#a), [RF4](#a), [RF10](#a)) senza alcun addestramento, imparando in autonomia in meno di 10 minuti|A 10 dipendenti di Ardeeno sarà fornito: un dispositivo compatibile con Ardeeno WebApp (di cui 4 smartphones Android, 4 pc Windows, 2 tablet Android), l'URL della WebApp (ardeeno.it), un account email, un account PayPal; saranno quindi date le seguenti istruzioni: "Registrarsi e concludere un acquisto"; la misurazione parte dal momento in cui si forniscono le istruzioni e si conclude quando, successivamente al pagamento, appare la scritta "Acquisto concluso"; il sistema soddisfa il RNF se almeno 7 dipendenti concludono il test in al più 10 minuti|
+||||
+|Facilità d'uso supervisore|I supervisori devono imparare ad usare le funzioni [RF17](#a), [RF18](#a), [RF19](#a) con un corso di formazione specifica di al più 15 minuti.|Per 10 supervisori di Ardeeno sarà organizzato un breve corso di formazione specifica di 15 minuti. Successivamente, verrà fatto un test.  Ai 10 supervisori di Ardeeno sarà fornito: un dispositivo compatibile con Ardeeno WebApp (di cui 4 smartphones Android, 4 pc Windows, 2 tablet Android), l'URL della WebApp (ardeeno.it), un account di Ardeeno WebApp; saranno quindi date le seguenti istruzioni: "Visualizzare gli interventi, selezionare il più recente intervento di riparazione richiesto ed assegnarlo ad un tecnico qualsiasi in un giorno qualsiasi"; la misurazione parte dal momento in cui si forniscono le istruzioni e si conclude quando, successivamente all'assegnazione, appare la scritta "Intervento assegnato"; il sistema soddisfa il RNF se almeno 7 supervisori concludono il test in al più 5 minuti.|
+||||
+|Facilità d'uso tecnico|I tecnici devono imparare ad usare le funzioni [RF20](#a), [RF21](#a), [RF22](#a) con un corso di formazione specifica di al più 15 minuti|Per 10 tecnici di Ardeeno sarà organizzato un breve corso di formazione specifica di 15 minuti. Successivamente, verrà fatto un test.  Ai 10 tecnici di Ardeeno sarà fornito: un dispositivo compatibile con Ardeeno WebApp (di cui 4 smartphones Android, 4 pc Windows, 2 tablet Android), l'URL della WebApp (ardeeno.it), un account di Ardeeno WebApp, un sensore; saranno quindi date le seguenti istruzioni: "Visualizzare gli interventi assegnati, selezionare il più recente intervento di riparazione in corso, aggiungere il sensore fornito, scrivere il resoconto e concludere l'intervento"; la misurazione parte dal momento in cui si forniscono le istruzioni e si conclude quando appare la scritta "Intervento concluso"; il sistema soddisfa il RNF se almeno 7 tecnici concludono il test in al più 5 minuti |
+||||
+|Codice QR|L'ID sensore deve essere compilabile sia con scrittura da tastiera che inquadrando un codice QR ISO/IEC 18004:2006 con la fotocamera del dispositivo con cui si utilizza il sistema|Funzione presente nel [RF22](#rfa)|
+
+\pagebreak
+### RNF6 Scalabilità {-}
+<!--
+Un software proprietario effettua in contemporanea <x> test di prestazione come da [RNF4.<prop>](#rnf4-prestazioni) (dove nel sistema sono presenti 1000 clienti con ognuno un impianto modello ME100A -- 100 sensori, 10 parametri misurati -- con $12*24*30*12*5=518400$ snapshot); il sistema soddisfa il RNF se almeno <y> test hanno durata di al più <z> secondi
+-->
+
+|Proprietà|Descrizione|Misura|
+|---|----|-----------|
+|Scalabilità acquisto|Il sistema deve mantenere le prestazione descritte in [RNF4.Acquisto](#rnf4-prestazioni) anche con 1000 clienti che contemporaneamente usano [RF10](#a)|Un software proprietario effettua in contemporanea 1000 test di prestazione come da [RNF4.Acquisto](#rnf4-prestazioni) (dove nel sistema sono presenti 1000 clienti con ognuno un impianto modello ME100A -- 100 sensori, 10 parametri misurati -- con $12*24*30*12*5=518400$ snapshot); il sistema soddisfa il RNF se almeno 700 test hanno durata di al più 10 secondi|
+||||
+|Scalabilità heatmap|Il sistema deve mantenere le prestazione descritte in [RNF4.Heatmap](#rnf4-prestazioni) anche con 1000 clienti che contemporaneamente usano [RF12](#a)|Un software proprietario effettua in contemporanea 1000 test di prestazione come da [RNF4.Heatmap](#rnf4-prestazioni) (dove nel sistema sono presenti 1000 clienti con ognuno un impianto modello ME100A -- 100 sensori, 10 parametri misurati -- con $12*24*30*12*5=518400$ snapshot); il sistema soddisfa il RNF se almeno 700 test hanno durata di al più 5 secondi|
+||||
+|Scalabilità tecnici|Il sistema deve mantenere le prestazione descritte in [RNF4.Tecnici](#rnf4-prestazioni) anche con 100 tecnici che contemporaneamente usano una qualsiasi delle funzioni [RF.Tecnico](#tecnico)|Un software proprietario effettua in contemporanea 100 test di prestazione come da [RNF4.Tecnici](#rnf4-prestazioni) (dove nel sistema sono presenti 1000 clienti con ognuno un impianto modello ME100A -- 100 sensori, 10 parametri misurati -- con $12*24*30*12*5=518400$ snapshot); il sistema soddisfa il RNF se almeno 700 test hanno ogni sottotest con durata di al più 3 secondi|
+
+# Analisi del Contesto
+Nel seguente capitolo vedremo una dettagliata analisi del contesto del sistema da realizzare. Identificheremo gli attori del sistema ed i sistemi esterni con cui si interagisce (paritari, subordinati e superiori). Evidenzieremo quindi -- con una certa astrazione -- i principali flussi dati, stabilendo inoltre il verso dell'informazione. Il risultato sarà sintetizzato in un Context Diagram UML.
+
+## Utenti e sistemi esterni
+
+### Utente Anonimo {-}
+L'Utente Anonimo è l'attore qualsiasi che accede al sistema. Egli può visualizzare la vetrina, visualizzare le recensioni, registrarsi, recuperare la password, confermare l'indirizzo email ed autenticarsi. A seguito dell'autenticazione [RF5](#a) si specializza in Utente Autenticato.
+
+### Utente Autenticato {-}
+L'Utente Autenticato è colui che si è autenticato tramite [RF5](#a) e può in aggiunta fare il logout, visualizzare i dati dell'account e modificarli. Ogni Utente Autenticato è specializzato come Cliente o Dipendente.
+
+### Cliente {-}
+Il Cliente è colui che si è registrato nel sistema tramite [RF7](#a) allo scopo di acquistare un impianto. Egli può visualizzare i propri impianti, inserire recensioni, visualizzare le misurazioni, gli interventi e richiedere interventi di riparazione.
+
+### Dipendente {-}
+Il Dipendente è colui che è stato registrato nel sistema da un Amministratore tramite [RF23](#a); ogni Dipendente è specializzato come Tecnico o Supervisore.
+
+### Tecnico {-}
+Il Tecnico è colui che si occupa degli interventi di installazione, manutenzione, riparazione e dismissione degli impianti. Può visualizzare gli interventi che gli sono stati assegnati e per gli interventi in corso aggiungere/rimuovere sensori dall'impianto e concludere l'intervento con un resoconto.
+
+### Supervisore {-}
+Il Supervisore è colui che si occupa di assegnare gli interventi richiesti ad un tecnico in una certa data. Può quindi visualizzare tutti gli interventi e monitorarne lo svolgimento. Alcuni Supervisori sono specializzati in Amministratori.
+
+### Amministratore {-}
+L'Amministratore è colui che si occupa di gestire i Dipendenti, segnando i Dipendenti dimessi come tali e registrando tramite [RF23](#a) nuovi Dipendenti (Tecnici, Supervisori o Amministratori). In aggiunta un Amministratore può monitorare l'andamento delle vendite e degli interventi con grafici.
+
+### PayPal {-}
+PayPal è il sistema esterno subordinato tramite cui il Cliente effettua il pagamento per concludere l'acquisto di un impianto ([RF10](#a)). L'interazione con PayPal è guidata da ArdeenoWebApp all'invio del form di acquisto in [RF10](#a).
+
+### Gmail {-}
+Gmail è il sistema esterno subordinato che Ardeeno WebApp utilizza per richiedere l'invio di email in [RF6 Conferma indirizzo email](#a), [RF7 Recupero password](#a), [RF9 Modifica dati personali](#a) (nel caso della modifica dell'indirizzo email), [RF25 Modifica dati dipendente](#a) (nel caso della modifica dell'indirizzo email) ed [RF16 Richiesta recensione](#a).
+
+### TrustPilot {-}
+TrustPilot è il sistema esterno subordinato che Ardeeno WebApp utilizza per ottenere le *service reviews*, le *product reviews* ed i codici per inserire le *product reviews*. TrustPilot è inoltre il sistema tramite cui il Cliente interagisce in maniera guidata in [RF16 Richiesta recensione](#a) per inserire una *product review*, o in maniera non guidata per inserire una *service review*.
+
+### OpenStreetMap {-}
+Il Tile-Provider OSM è il sistema esterno subordinato che Ardeeno WebApp utilizza per ottenere mappe geografiche da utilizzare in [RF1 Visualizzazione presentazione](#a) ed [RF12 Visualizzazione misurazioni su heatmap](#a).
+
+### GPS{-}
+Il GPS è il sistema esterno subordinato che Ardeeno WebApp utilizza per ottenere le coordinate della posizione attuale in [RF22 Aggiunta/rimozione sensori da impianto](#a).
+
+### Ardeeno DataLayer{-}
+Ardeeno DataLayer è il sistema esterno paritario con cui Ardeeno WebApp interagisce continuamente per ottenere dati dal DB e modificare/aggiungere dati nel DB. Ardeeno WebApp si interfaccia con questo sistema in tutti i [RF](#a) esclusi: [RF1 Visualizzazione presentazione](#a), [RF5.1 Logout](#a), [RF16 Richiesta recensione](#a) (poiché le recensioni sono memorizzate da TrustPilot).
+Il DB del DataLayer è gestito da cloud.mongodb.com .
+
+## Diagramma di contesto
+Ogni flusso può sottintendere un messaggio di richiesta e una risposta sincrona, ovvero ciò che il verso indica è appunto il flusso dell'informazione -- non dei dati. Con flussi bidirezionali si sottintendono più flussi unidirezionali, i quali sono stati omessi per principio di astrazione. Infine, per le richieste/risposte asincrone avremo certamente due distinti flussi con verso opposto.
+
+![Diagramma di contesto](.media/contesto.png){width=16cm fig-pos=H}
+
+<!-- Componente s.m. -->
+\pagebreak
+# Analisi dei Componenti
+Nel seguente capitolo analizzeremo una prima architettura a componenti del sistema da realizzare, cercando di minimizzare l'accoppiamento (connessioni inter-componenti) e massimizzare la coesione (connessioni intra-componente). Descriveremo ogni singolo componente nel suo scopo e nelle sue interfacce, seguendo il flusso di utilizzo del sistema. Il risultato sarà sintetizzato in un Diagramma dei Componenti UML.
+
+Un componente rappresenta, nell'ambito software, un'astrazione del codice da sviluppare. Esso interagisce con gli altri componenti tramite delle interfacce, che possono essere richieste o fornite; un'interfaccia fornita rappresenta una o più API da sviluppare.
+Essendo un componente un'astrazione, non si specificano ancora i dettagli implementativi (come lo standard delle singole API -- che potrà essere RESTful, GraphQl, o una semplice invocazione di una funzione di libreria).
+
+Per ogni attore e sistema esterno si definisce almeno un componente; per ogni flusso informativo presente nel diagramma di contesto si definisce almeno un'interfaccia -- dunque, si aumenta il livello di dettaglio. Si osservi che il flusso informativo potrebbe essere sia nel messaggio di richiesta che in quello di risposta: il concetto di verso dell'informazione è indipendente dal concetto di interfaccia richiesta/fornita.
+
+Raggruppiamo da ora in poi nel termine Utente sia l'Utente Anonimo che l'Utente Autenticato.
+
+<!--
+|Richiesta|Data|Il componente utilizza l'interfaccia del comp. "Gestione DataLayer" per accedere al DataLayer|
+||||
+|Richiesta|Auth|Il componente utilizza l'interfaccia del comp. "Gestione Autenticazione" per validare il token di accesso ed ottenere l'identificativo, il ruolo e gli altri dati account dell'Utente|
+||||
+-->
+
+## Definizione dei componenti
+
+### Gestione DataLayer
+
+***Descrizione***
+Questo componente gestisce le interazioni con Ardeeno DataLayer, permettendo agli altri componenti interni di accedere e modificare i dati sul database.
+
+***Interfacce***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Data|Il componente utilizza un'interfaccia fornita dal DataLayer per accedere ai dati sul database|
+||||
+|Fornita|Data|Il componente fornisce internamente un'interfaccia per accedere al DataLayer|
+
+
+### Gestione Autenticazione
+
+***Descrizione***
+Questo componente gestisce l'autenticazione degli Utenti del sistema. L'autenticazione è effettuata in maniera stateless e prevede due fasi:
+
+1. generazione di un token di accesso a partire da username e password
+2. validazione del token di accesso, il quale deve essere incluso in ogni richiesta da parte dell'Utente Autenticato.
+
+***Interfacce relative ai componenti interni ***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Data|Il componente utilizza l'interfaccia del comp. "Gestione DataLayer" per accedere al DataLayer|
+||||
+|Fornita|Auth|Il componente fornisce agli altri componenti interni un'interfaccia per generare e validare il token di accesso|
+
+
+### Gestione Utente
+
+***Descrizione***
+Questo componente gestisce le generiche interazioni con l'Utente Anonimo e l'Utente Autenticato. Comprende [RF1, RF3, RF4, RF5, RF6, RF7, RF5.1, RF8, RF9](#a). A questo scopo utilizza interfacce fornite da altre componenti, come la verifica dell'autenticazione e l'invio di email.
+
+***Interfacce fornite all'Utente***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Informazioni Azienda|Il componente fornisce all'Utente le informazioni generiche dell'azienda, come da [RF1, RF3](#a). Questa interfaccia include la presentazione delle mappe reperite da OSM e le service reviews ottenute da TrustPilot|
+||||
+|Fornita|Registrazione|Il componente fornisce all'Utente un'interfaccia per registrarsi, come da [RF4](#a)|
+||||
+|Fornita|Conferma email|Il componente fornisce all'Utente un interfaccia per confermare l'indirizzo email, come da [RF6](#a). Il processo di conferma prevede: 1. generazione di un codice di recupero data una richiesta contenente l'indirizzo email; 2. invio dell'email con codice di conferma (implicito in un link); 3. conferma dell'indirizzo email, data una richiesta contenente il codice di conferma|
+||||
+|Fornita|Recupero password|Il componente fornisce all'Utente un interfaccia per recuperare la password, come da [RF7](#a). Il processo di recupero prevede: 1. generazione di un codice di recupero, data una richiesta contenente l'indirizzo email; 2. invio dell'email con codice di recupero (implicito in un link); 3. recupero della password, data una richiesta contenente codice di recupero e nuova password|
+||||
+|Fornita|Login|Il componente fornisce all'Utente un'interfaccia per effettuare il login, come da [RF5](#a). Il processo prevede generazione e invio di un token di autenticazione, data una richiesta contenente email e password|
+||||
+|Fornita|Logout|Il componente fornisce all'Utente un'interfaccia per effettuare il logout, come da [RF5.1](#a)|
+||||
+|Fornita|Dati Account|Il componente fornisce all'Utente un'interfaccia per ricevere e modificare i dati del proprio account, come da [RF8, RF9](#a)|
+
+
+***Interfacce richieste ad OpenStreetMap***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Maps|Il componente richiede a un TileProvider OSM le map-tiles necessarie per la visualizzazione delle sedi dell'azienda|
+
+***Interfacce richieste ai componenti interni***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Auth|Il componente utilizza l'interfaccia del comp. "Gestione Autenticazione" sia per ottenere un nuovo token di accesso nel processo di login (a partire da username e password) che per validare il token di accesso incluso nelle richieste dell'Utente Autenticato|
+||||
+|Richiesta|Data|Il componente utilizza l'interfaccia del comp. "Gestione DataLayer" per accedere al DataLayer|
+|Richiesta|Service Review|Il componente utilizza l'interfaccia del comp. "Gestione TrustPilot" per ottenere le service reviews da inoltrare all'Utente|
+||||
+|Richiesta|Invio Email|Il componente utilizza l'interfaccia del comp. "Gestione Gmail" per inviare via email il codice di recupero password, il codice di conferma email ed il messaggio di avvenuta registrazione, come da [RF4, RF6, RF7](#a)|
+||||
+
+### Gestione TrustPilot
+
+***Descrizione***
+Questo componente gestisce le interazioni con il sistema esterno TrustPilot (che memorizza le recensioni e ne gestisce l'inserimento da parte dell'Utente). Le recensioni sono direttamente messe a disposizione per gli altri componenti interni; ovvero, non sono memorizzate sul DataLayer.
+Per le recensioni si preferisce utilizzare lo stesso standard di rappresentazione usato da TrustPilot.
+
+***Interfacce richieste a TrustPilot***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Service Reviews|Il componente utilizza un'interfaccia di TrustPilot per ottenere le service reviews (con un minimo numero di stelle) e il TrustScore dell'azienda|
+||||
+|Richiesta|Product Reviews|Il componente utilizza un'interfaccia di TrustPilot per ottenere le product reviews di un certo modello di impianto e per ottenere un nuovo codice product review -- che sarà poi inoltrato al Cliente che ha effettuato l'acquisto|
+
+***Interfacce fornite ai componenti interni***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Service Review|Il componente fornisce internamente un'interfaccia per ottenere le Service Reviews|
+||||
+|Fornita||Il componente fornisce internamente un'interfaccia per ottenere le Product Reviews o un nuovo codice Product Review|
+
+### Vetrina
+
+***Descrizione***
+Questo componente gestisce le interazioni dell'Utente con la vetrina contenente i modelli di impianto in vendita, come da [RF2, RF2.1](#a).
+
+***Interfacce fornite all'Utente ***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Modelli|Il componente fornisce all'Utente un'interfaccia per ottenere i modelli di impianto in vendita|
+||||
+|Fornita|Product Review|Il componente fornisce all'Utente un'interfaccia per ottenere le product review di un singolo modello di impianto|
+
+***Interfacce richieste ai componenti interni***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Data|Il componente utilizza l'interfaccia del comp. "Gestione DataLayer" per accedere al DataLayer|
+||||
+|Richiesta|Product Reviews|Il componente utilizza  l'interfaccia del comp. "Gestione TrustPilot" per ottenere le product reviews di un modello di impianto|
+
+<!--
+Questo componente gestisce le interazioni col sistema esterno XXX
+Il componente utilizza un'interfaccia fornita da XXX per richiedere/ottenere XXX
+Il componente fornisce internamente un'interfaccia per XXX
+Il componente utilizza un'interfaccia fornita dal comp. "XXX" per richiedere/ottenere XXX
+-->
+
+### Gestione Gmail
+
+***Descrizione***
+Questo componente gestisce le interazioni col sistema esterno Gmail. Per la rappresentazione di un email si preferisce sviluppare uno standard interno semplificato.
+
+***Interfacce***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Invio Email|Il componente utilizza un'interfaccia fornita da Gmail per richiedere l'invio di email|
+||||
+|Fornita|Invio Email|Il componente fornisce internamente un'interfaccia per inviare email. Lo standard di rappresentazione email è interno e semplificato rispetto a quello di Gmail|
+
+### Gestione PayPal
+
+***Descrizione***
+Questo componente gestisce le interazioni col sistema esterno PayPal.
+
+***Interfacce***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Pagamento|Il componente utilizza un'interfaccia fornita da PayPal per richiedere un pagamento da parte dell'Utente|
+||||
+|Fornita|Pagamento|Il componente fornisce internamente un'interfaccia per effettuare un pagamento tramite PayPal|
+
+### Gestione Cliente
+
+***Descrizione***
+Questo componente gestisce le generiche interazioni con il Cliente, come da [RF10, RF11, RF16](#a).
+
+***Interfacce fornite al Cliente***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Acquisto|Il componente fornisce al Cliente un'interfaccia per effettuare l'acquisto di un impianto|
+||||
+|Fornita|Impianti Acquistati|Il componente fornisce al Cliente un'interfaccia per ottenere gli impianti acquistati|
+
+***Interfacce richieste ai componenti interni***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Data|Il componente utilizza l'interfaccia del comp. "Gestione DataLayer" per accedere al DataLayer|
+||||
+|Richiesta|Auth|Il componente utilizza l'interfaccia del comp. "Gestione Autenticazione" per validare il token di accesso ed ottenere l'identificativo, il ruolo e gli altri dati account dell'Utente|
+||||
+|Richiesta|Pagamento|Il componente utilizza l'interfaccia del comp. "Gestione PayPal" per richiedere il pagamento al momento dell'acquisto di un impianto|
+||||
+|Richiesta|Product Reviews|Il componente utilizza l'interfaccia del comp. "Gestione TrustPilot" per ottenere un nuovo codice Product Review al momento dell'acquisto di un impianto|
+||||
+|Richiesta|Invio Email|Il componente utilizza l'interfaccia del comp. "Gestione Gmail" per richiedere l'invio dell'email di avvenuto acquisto, come da [RF10, RF16](#a) |
+
+### Gestione Impianto Acquistato
+
+***Descrizione***
+Questo componente gestisce le interazioni del Cliente con gli impianti acquistati, come da [RF11.1, RF12, RF13, RF14, RF15, RF15.1](#a)
+
+***Interfacce fornite al Cliente***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Misurazioni|Il componente fornisce al Cliente un'interfaccia per ottenere tutte le misurazioni effettuate da un impianto|
+||||
+|Fornita|Heatmap|Il componente fornisce al Cliente un'interfaccia per ottenere la Heatmap di un impianto|
+||||
+|Fornita|Interventi|Il componente fornisce al Cliente un'interfaccia per ottenere gli interventi effettuati su un impianto|
+||||
+|Fornita|Richiesta Riparazione|Il componente fornisce al Cliente un'interfaccia per richiedere un'intervento di riparazione su un impianto|
+
+***Interfacce richieste ai componenti interni***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Data|Il componente utilizza l'interfaccia del comp. "Gestione DataLayer" per accedere al DataLayer|
+||||
+|Richiesta|Auth|Il componente utilizza l'interfaccia del comp. "Gestione Autenticazione" per validare il token di accesso ed ottenere l'identificativo, il ruolo e gli altri dati account dell'Utente|
+
+***Interfacce richieste a OpenStreetMap***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Maps|Il componente richiede a un TileProvider OSM le map-tiles necessarie per la visualizzazione della Heatmap|
+
+### Gestione Supervisore
+
+***Descrizione***
+Questo componente gestisce le interazioni col Supervisore, come da [RF17, RF18, RF19](#a).
+
+***Interfacce fornite al Supervisore***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Interventi|Il componente fornisce al Supervisore un'interfaccia per ottenere i dati di tutti gli interventi|
+||||
+|Fornita|Assegna interventi|Il componente fornisce al Supervisore un'interfaccia per assegnare un intervento a un tecnico in una certa data, come da [RF19](#a)|
+
+***Interfacce richieste ai componenti interni***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Data|Il componente utilizza l'interfaccia del comp. "Gestione DataLayer" per accedere al DataLayer|
+||||
+|Richiesta|Auth|Il componente utilizza l'interfaccia del comp. "Gestione Autenticazione" per validare il token di accesso ed ottenere l'identificativo, il ruolo e gli altri dati account dell'Utente|
+||||
+|Richiesta|Invio Email|Il componente utilizza l'interfaccia fornita dal comp. "Gestione Gmail" per richiedere l'invio di un'email durante l'assegnazione di un intervento, come da [RF19](#a)|
+
+### Gestione GPS
+
+***Descrizione***
+Questo componente gestisce le interazioni col sistema esterno GPS.
+Per la rappresentazione delle coordinate si preferisce sviluppare uno standard interno semplificato.
+
+***Interfacce***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Coord|Il componente utilizza un'interfaccia fornita dal sistema esterno GPS per ottenere le coordinate|
+||||
+|Fornita|Coord|Il componente fornisce internamente un'interfaccia per ottenere le coordinate|
+
+### Gestione Tecnico
+
+***Descrizione***
+Questo componente gestisce le interazioni col Tecnico, come da [RF20, RF21, RF22](#a)
+
+***Interfacce fornite al Tecnico***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Interventi assegnati|Il componente fornisce al Tecnico un'interfaccia per ottenere gli interventi assegnati|
+||||
+|Fornita|Modifica impianto|Il componente fornisce al Tecnico un'interfaccia per aggiungere/rimuovere un sensore all'/dall'impianto relativo a un certo intervento|
+||||
+|Fornita|Concludi intervento|Il componente fornisce al Tecnico un'interfaccia per concludere un certo intervento assegnato con un resoconto|
+|Fornita|Dati impianto|Il componente fornisce al Tecnico un'interfaccia per ottenere misurazioni, heatmap ed interventi relativi ad un impianto di un intervento assegnato in corso|
+
+***Interfacce richieste ai componenti interni***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Data|Il componente utilizza l'interfaccia del comp. "Gestione DataLayer" per accedere al DataLayer|
+||||
+|Richiesta|Auth|Il componente utilizza l'interfaccia del comp. "Gestione Autenticazione" per validare il token di accesso ed ottenere l'identificativo, il ruolo e gli altri dati account dell'Utente|
+||||
+|Richiesta|Coord|Il componente utilizza l'interfaccia del comp. "Gestione GPS" per ottenere le coordinate durante l'aggiunta di un nuovo sensore all'impianto, come da [RF22](#a)|
+
+***Interfacce richieste a OpenStreetMap***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Maps|Il componente richiede a un TileProvider OSM le map-tiles necessarie per la visualizzazione della Heatmap|
+
+### Gestione Amministratore
+
+***Descrizione***
+Questo componente gestisce le interazioni con l'Amministratore, come da [RF23, RF24, RF25, RF26, RF27](#a).
+
+***Interfacce fornite all'Amministratore***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Fornita|Modifica dipendente|Il componente fornisce all'Amministratore un'interfaccia per aggiungere e modificare i Dipendenti, come da [RF23, RF25](#a) |
+||||
+|Fornita|Dipendenti|Il componente fornisce all'Amministratore un'interfaccia per ottenere i Dipendenti, come da [RF24](#a)|
+||||
+|Fornita|Statistiche|Il componente fornisce all'Amministratore un'interfaccia per ottenere le statistiche sulle vendite e sugli interventi, come da [RF26, RF27](#a)|
+
+***Interfacce richieste ai componenti interni***
+
+|Tipo|Nome|Descrizione|
+|---|---|---------------------|
+|Richiesta|Data|Il componente utilizza l'interfaccia del comp. "Gestione DataLayer" per accedere al DataLayer|
+||||
+|Richiesta|Auth|Il componente utilizza l'interfaccia del comp. "Gestione Autenticazione" per validare il token di accesso ed ottenere l'identificativo, il ruolo e gli altri dati account dell'Utente|
+||||
+|Richiesta|Invio Email|Il componente utilizza l'interfaccia fornita dal comp. "Gestione Gmail" per richiedere l'invio di email alla registrazione/modifica di un Dipendente, come da [RF23, RF25](#a)|
+
+\pagebreak
+
+## Diagramma dei componenti
+Alla pagina successiva si trova il diagramma leggibile.
+<!--concatenare il pdf!-->
+
+![Anteprima diagramma dei componenti](.media/diagrammacomp.png){width=16cm fig-pos=H}
