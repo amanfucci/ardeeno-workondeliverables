@@ -1,0 +1,16 @@
+{
+  "name": "d5",
+  "version": "1.0.0",
+  "description": "",
+  "main": "work-time.js",
+  "scripts": {
+    "start": "node work-time.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commit-stream": "^1.1.0",
+    "list-stream": "^2.1.0",
+    "split2": "^4.1.0"
+  }
+}

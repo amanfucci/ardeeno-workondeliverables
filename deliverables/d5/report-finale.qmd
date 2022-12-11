@@ -8,9 +8,9 @@ subtitle: |
 
   D5-Report Finale
 
-  v0.1
+  v0.9
 author: [alessandro.manfucci@studenti.unitn.it, enrico.cescato@studenti.unitn.it ,m.sottocornola-1@studenti.unitn.it]
-date: "24-11-2022"
+date: "11-12-2022"
 lang: it
 format:
   pdf:
@@ -33,13 +33,200 @@ format:
 
 \pagebreak
 # Abstract {.unlisted .unnumbered}
+Questo documento rappresenta la parte finale di ogni progetto, ovvero l'introspezione. Riassumere come è stato svolto il lavoro -- e quale flusso è stato implementato -- è fondamentale per migliorare il processo di lavoro.
 
 # Organizzazione del lavoro
 
-# Ruoli e attività
+## Flusso di lavoro
+Il flusso di lavoro è stato organizzato in maniera Agile con la suddivisione dei deliverables in tasks (in genere composte da un singolo capitolo del deliverable), che sono poi state scelte dai membri del team durante i meeting settimanali.
+
+Per gestire il flusso di lavoro è stato utilizzato GitHub, con il repository [`t41-se22/ardeeno-workondeliverables`](https://github.com/T41-SE22/ardeeno-workondeliverables). Il flusso di lavoro è stato sviluppato in tre branches:
+
+- `main` branch: contenente la versione dei documenti pubblicata in `t41-se22/Deliverables`
+- `d<i>` branch: utilizzato per lavorare sul deliverable-`<i>`
+  - `topic-branch`: utilizzato per lavorare su una task del deliverable-`<i>` (solo nel caso di lavoro in contemporanea di più membri del team)
+- `pm` branch: contenente i documenti di project management, come le agende dei meeting (estremamente brevi e sintetiche) (chiaramente non rendicontati in [Carico e Distribuzione del Lavoro](#carico-e-distribuzione-del-lavoro))
+
+```{mermaid}
+%%| fig-width: 3
+gitGraph
+  commit
+  commit
+  branch d1
+  checkout d1
+  commit
+  branch topic-branch
+  commit
+  checkout d1
+  merge topic-branch
+  commit
+  checkout main
+  merge d1
+```
+
+Il branch `d<i>` non comprende il lavoro effettuato esclusivamente sul deliverable-`<i>`, piuttosto comprende il lavoro effettuato durante la scrittura della **prima** versione del deliverable-`<i>` su tutti i deliverable (da 1 a `<i>`) . Raggiunta la prima versione del deliverable-`<i>` si effettua il merge sul `main` e si crea il nuovo branch `d<i+1>`.
+Dunque, quasi sempre il tempo di vita del branch `d<i>` coincide con le scadenze stabilite dal corso.  
+
+Per scrivere i Deliverables è stato usato il linguaggio Quarto MarkDown, il quale -- essendo testo semplice -- ha facilitato il merging dei branch.
+Per facilitare l'utilizzo di questi strumenti e di questo flusso di lavoro sono stati caricati più `README.md`.
+Inoltre, si è usato GoogleDrive per condividere documenti non prettamente associati ai deliverable (e quindi chiaramente non rendicontati in [Carico e Distribuzione del Lavoro](#carico-e-distribuzione-del-lavoro)), soprattutto per ideare il sistema da realizzare e condividere il work-time.
+
+Per quanto riguarda la sviluppo del codice, si è utilizzato il metodo KanBan, con una [KanBan Board](https://github.com/orgs/T41-SE22/projects/1) integrata con GitHub. Non si sono tuttavia posti WIP limits.
+
+Per quanta riguarda le comunicazioni tra i membri del team è stato usato Telegram per avvisare problemi/cambiamenti/assenze. Inoltre, sono stati organizzati brevi meeting settimanali, così suddivisi:
+
+- KickOff Meeting all'inizio del progetto per comprendere la realtà di riferimento del sistema e installare l'ambiente di lavoro comune (VSCode, Latex, ...)
+- Meetings settimanali in Saletta BUP per fare il punto della situazione, gestire problemi/cambiamenti e scegliere le tasks da svolgere -- organizzati nel periodo di tempo delle scadenze `D1`, `D2`
+- StandUp Meetings settimanali prima/dopo le lezioni di ISW per fare un breve punto della situazione e scegliere le tasks da svolgere -- organizzati nel periodo di tempo delle scadenze `D3`, `D4`
+- Meeting Finale in Saletta BUP per rivedere insieme il Report Finale
+
+Le Meeting Agendas sono visibili in [`t41-se22/ardeeno-workondeliverables`](https://github.com/T41-SE22/ardeeno-workondeliverables/tree/pm/pm/rendered)
+
+## Ruoli
+Non vi è stata una specializzazione dei ruoli.
+
+| |**Ruolo**|
+|------|---|
+|Alessandro Manfucci|Analyst, Programmer, PM|
+|Enrico Cescato|Analyst, Programmer|
+|Matteo Sottocornola|Analyst, Programmer|
+
+## Tasks List
+|**Deliverable**|**Task**|**Assignees (A,E,M)**|**Due To**|
+|---------|---------|---|---|---|
+|D1-Documento di Progetto    |Definizione Obiettivi   |A,E,M|27/09|
+|                            |Definizione Requisiti   |A,E|10/10|
+|                            |Mock-Up FrontEnd        |A,M|10/10|
+|                            |Schema BackEnd          |A|10/10|
+|D2-Documento di Specifica   |Spec ReqF               |A,E,M|24/10|
+|                            |Spec ReqNF              |A|24/10|
+|                            |Diagramma di Contesto   |A|30/10|
+|                            |Diagramma dei Componenti|A,M|9/11|
+|D3-Documento di Architettura|Class Diagrams          |A,E|23/11|
+|                            |OCL                     |A|02/12|
+|D4-Documento di Sviluppo    |User Flows              |A,M|22/12|
+|                            |Resources Extraction    |A|22/12|
+|                            |Resources Models        |A|22/12|
+|                            |Sviluppo BackEnd        |A,E,M|22/12|
+|                            |Sviluppo FrontEnd       |A|22/12|
+|                            |Deployment              |A|22/12|
+|                            |Testing                 |A|22/12|
+
+## KanBan Board
+
+|**Task**|**Chosen by (A, E, M)**|
+|---|------|
+
+\pagebreak
+## Gantt Diagram
+Anche se non prettamente Agile, è stato utilizzato un Gantt per avere un'idea approssimativa delle dipendenze tra le singole task. Chiaramente, dato il processo iterativo utilizzato, il Gantt rappresenta solo il processo a cascata della **prima** versione di ogni deliverable. 
+```{mermaid}
+%%| fig-width: 6.5in
+%%| fig-height: 6in
+gantt
+  dateFormat DD-MM
+  axisFormat %d-%m
+
+  section Analisi dei Requisiti
+  Definizione Obiettivi :done, a0, 23-09, 29-09
+  Definizione Requisiti :done,a1, after a0, 05-10
+  Mock-Up FrontEnd :done,a2, after a1, 10-10 
+  Schema BackEnd :done,a3, after a1, 10-10
+  Documento di Progetto :done,milestone, am, 10-10, 0d
+  
+  section Specifica dei Requisiti
+  Spec ReqF (UCD) :done,s0, after am, 12d
+  Spec ReqNF :done,s1, after s0, 4d
+  Diagramma di Contesto :done,s2, after s1, 5d
+  Diagramma dei Componenti :done, s3, after s2, 10d
+  Documento di Specifica :done, milestone, sm, 09-11, 0d
+
+  section Progettazione Architettura
+  Class Diagrams :done, pa0, after sm, 12d
+  OCL :done, pa1, after pa0, 8d
+  Documento di Architettura :done, milestone, pam, 02-12, 0d
+
+  section Sviluppo e Deployment
+
+  User Flows :active, d0, after pam, 12-12
+  Resources Extraction :active, d1, after pam, 12-12
+  Resources Models :d2, after d1, 2d
+  Sviluppo BackEnd :d3, after d2, 2d
+  Sviluppo FrontEnd :d4, after d0, 22-12
+  Deployment :d5, after d0, 22-12
+  Testing :d6, after d0, 22-12
+  Documento di Sviluppo :milestone, dm, 22-12, 0d
+
+  section Report
+  Closing meeting :i0, 12-12, 1d
+  Report Finale :milestone, fm, 22-12, 0d
+```
+
 
 # Carico e distribuzione del lavoro
+Per la rendicontazione del lavoro svolto si sono utilizzati i messaggi di commit di git, stabilendo un formato standard che estende quello di GitHub:
+```bash
+git commit -m "My Commit message
 
-# Criticità
+hh:mm
+
+
+Co-authored-by: name <name@example.com>
+Co-authored-by: another-name <another-name@example.com>"
+```
+Dove `hh:mm` rappresenta il work-time impiegato tra il commit appena effettuato e il precedente commit con il campo `hh:mm` (dunque `hh:mm` può essere omesso).
+Il co-authoring permette di associare un certo commit (e dunque un certo `work-time`) a più membri del team.
+
+Dare un work-time ad ogni commit pone due vantaggi:
+
+- Il work-time è sempre associato ad un lavoro concretamente realizzato. Questo aiuta a distinguere il tempo di studio dal tempo impiegato concretamente al progetto.
+- Il work-time è sempre associato ad un branch e ad una repository. Quindi, visto il workflow utilizzato, ad un deliverable.
+
+Tuttavia, come accennato prima, dato il processo di lavoro Agile sarebbe complicato separare il lavoro impiegato e rendicontato per ogni singolo deliverable. Dunque, per associare un certo `work-time` ad un certo deliverable (uno e uno solo!) si considera il branch `d<i>` su cui è stato pubblicato.
+Quindi, il `work-time` calcolato per il deliverable-`<i>` comprende il `work-time` impiegato durante la scrittura della **prima** versione del deliverable-`<i>` su tutti i deliverables (da 1 a `<i>`). Fa eccezione il branch `d5` -- che comprende modifiche esclusivamente per il D5.
+
+## WorkTime
+
+||**D1**|**D2**|**D3**|**D4+BE+FE**|**D5**||**TOT**|
+|---|---|---|---|----|---|---|---|
+|Alessandro Manfucci|D1|D2|D3|D4+BE+FE|D5||TOT|
+|Enrico Cescato|D1|D2|D3|D4+BE+FE|D5||TOT|
+|Matteo Sottocornola|D1|D2|D3|D4+BE+FE|D5||TOT|
+|||||||||
+|**TOT**|D1|D2|D3|D4+BE+FE|D5||TOT|
+<!--
+I commit `co-authored` (che assegnano un certo `work-time` a più membri contemporaneamente) possono falsare i tempi totali per Deliverable, per cui, si propone una seconda tabella:
+
+||**D1**|**D2**|**D3**|**D4+BE+FE**|**D5**||**TOT**|
+|---|---|---|---|----|---|---|---|
+|Alessandro Manfucci|D1|D2|D3|D4+BE+FE|D5||TOT|
+|Enrico Cescato|D1|D2|D3|D4+BE+FE|D5||TOT|
+|Matteo Sottocornola|D1|D2|D3|D4+BE+FE|D5||TOT|
+|Alessandro ed Enrico|D1|D2|D3|D4+BE+FE|D5||TOT|
+|Alessandro, Enrico e Matteo|D1|D2|D3|D4+BE+FE|D5||TOT|
+|||||||||
+|TOT|
+-->
+
+### Statistiche
+Si riportano alcune statistiche sui tempi di rendicontazione in ore decimali:
+
+::: {layout-ncol=2}
+- $N=86$
+- $T_{avg}=2.3$
+- $T_{max}=21.5 ~ (0.0)$
+- $T_{min}=0.33 ~ (0.28)$
+- $\sigma^2=11.4$
+
+![](./work-time.png)
+:::
+
+
+Ovvero, il metodo di rendicontazione è stato effettivamente usato.
 
 # Autovalutazione
+||**Voto**|
+|------|---|
+|Alessandro Manfucci||
+|Enrico Cescato||
+|Matteo Sottocornola||
