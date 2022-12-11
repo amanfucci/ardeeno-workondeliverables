@@ -8,9 +8,9 @@ subtitle: |
 
   D4-Documento di Sviluppo
 
-  v1.0
+  v0.1
 author: [alessandro.manfucci@studenti.unitn.it, enrico.cescato@studenti.unitn.it ,m.sottocornola-1@studenti.unitn.it]
-date: "24-11-2022"
+date: "11-12-2022"
 lang: it
 format:
   pdf:
@@ -60,21 +60,19 @@ Nella figura 3 si illustra come un Tecnico modifica i dati di un impianto colleg
 
 ## Dipendenze
 
+## Database
+
 ## APIs
 
 ### Resources Extraction from the Class Diagram
 
 ### Resources Models
 
-# Specifica delle APIa
-
 ## Sviluppo APIs
 
-# Testing APIs
+# Documentazione APIs
 
 # Sviluppo FrontEnd
-
-# Deployment
 
 # Deployment
 
