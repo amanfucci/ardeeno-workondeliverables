@@ -35,6 +35,24 @@ format:
 # Abstract {.unlisted .unnumbered}
 
 # User Flows
+In questo capitolo si descrivono gli User Flow della WebApp 
+
+## User Flow 1
+Nella figura 1 si illustra come un Utente Anonimo effettua la procedura di registrazione/autenticazione e come un Amministratore effettua la procedura di registrazione di un Dipendente.
+
+
+![Autenticazione/Registrazione](./.media/flow1.png)
+
+
+## User Flow 2
+Nella figura 2 si illustra come un Cliente possa visualizzare i dati dei suoi sensori e come avviene il processo di inserimento delle recensioni
+
+![Visualizzazione Misurazioni](./.media/flow2.png)
+
+## User Flow 3
+Nella figura 3 si illustra come un Tecnico modifica i dati di un impianto collegato ad un intervento assegnato in corso.
+
+![Aggiunta/Rimozione sensori](./.media/flow3.png)
 
 # Sviluppo e Documentazione dell'applicazione
 
@@ -42,19 +60,21 @@ format:
 
 ## Dipendenze
 
-## Database
-
 ## APIs
 
 ### Resources Extraction from the Class Diagram
 
 ### Resources Models
 
+# Specifica delle APIa
+
 ## Sviluppo APIs
 
-# Documentazione APIs
+# Testing APIs
 
 # Sviluppo FrontEnd
+
+# Deployment
 
 # Deployment
 
