@@ -194,8 +194,11 @@ Quindi, il `work-time` calcolato per il deliverable-`<i>` comprende il `work-tim
 |Matteo Sottocornola|D1|D2|D3|D4+BE+FE|D5||TOT|
 |||||||||
 |**TOT**|D1|D2|D3|D4+BE+FE|D5||TOT|
+
+I commit `co-authored` (che assegnano un certo `work-time` a più membri contemporaneamente) possono falsare i tempi totali per Deliverable. Questi sono stati utilizzati per lo più nel D1.
+
 <!--
-I commit `co-authored` (che assegnano un certo `work-time` a più membri contemporaneamente) possono falsare i tempi totali per Deliverable, per cui, si propone una seconda tabella:
+, per cui, si propone una seconda tabella:
 
 ||**D1**|**D2**|**D3**|**D4+BE+FE**|**D5**||**TOT**|
 |---|---|---|---|----|---|---|---|
@@ -227,6 +230,8 @@ Ovvero, il metodo di rendicontazione è stato effettivamente usato.
 # Autovalutazione
 ||**Voto**|
 |------|---|
-|Alessandro Manfucci||
-|Enrico Cescato||
-|Matteo Sottocornola||
+|Alessandro Manfucci|30|
+|Enrico Cescato|25|
+|Matteo Sottocornola|23|
+
+Il lavoro è stato svolto in gruppo ed in maniera costante; il contributo di ogni membro è dipeso anche dal carico di lavoro degli altri corsi.
