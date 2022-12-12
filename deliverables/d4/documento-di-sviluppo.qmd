@@ -33,47 +33,54 @@ format:
 
 \pagebreak
 # Abstract {.unlisted .unnumbered}
+In questo primo sprint di sviluppo (D4v1.0), ci si limita ai Requisiti Funzionali:
+
+- [RF1 Visualizzazione presentazione](#a)
+- [RF4 Registrazione Cliente](#a)
+- [RF5 Autenticazione](#a)
+- [RF5.1 Logout](#a)
+- [RF11 Visualizzazione impianti acquistati](#a)
+- [RF11.1 Visualizzazione singolo impianto (Dashboard)](#a)
+- [RF12 Visualizzazione misurazioni su heatmap](#a)
+- [RF13 Visualizzazione misurazioni su tabella](#a)
+
+Si veda il Documento di Specifica per i casi d'uso associati a questi RF -- che verranno quindi implementati.
+
+Per i Requisiti Non Funzionali ci si limita al [RNF2 Sicurezza](#a)
 
 # User Flows
-In questo capitolo si descrivono gli User Flow della WebApp 
 
-## User Flow 1
-Nella figura 1 si illustra come un Utente Anonimo effettua la procedura di registrazione/autenticazione e come un Amministratore effettua la procedura di registrazione di un Dipendente.
-
-
-![Autenticazione/Registrazione](./.media/flow1.png)
-
-
-## User Flow 2
-Nella figura 2 si illustra come un Cliente possa visualizzare i dati dei suoi sensori e come avviene il processo di inserimento delle recensioni
-
-![Visualizzazione Misurazioni](./.media/flow2.png)
-
-## User Flow 3
-Nella figura 3 si illustra come un Tecnico modifica i dati di un impianto collegato ad un intervento assegnato in corso.
-
-![Aggiunta/Rimozione sensori](./.media/flow3.png)
+![Registrazione e Login](.media/user-flow-1.png)
 
 # Sviluppo e Documentazione dell'applicazione
+<!--trivial-->
 
 ## Struttura
+<!--trivial-->
 
 ## Dipendenze
+<!--trivial-->
 
 ## Database
+<!--trivial-->
 
 ## APIs
 
 ### Resources Extraction from the Class Diagram
 
+![Resources Extraction](.media/resources-extraction.png){fig-pos=H}
+
 ### Resources Models
 
-## Sviluppo APIs
+![Resources Models](.media/resources-models.png){fig-pos=H}
 
-# Documentazione APIs
+### Sviluppo
 
-# Sviluppo FrontEnd
+### Documentazione
+
+## FrontEnd
 
 # Deployment
+<!--trivial-->
 
 # Testing
