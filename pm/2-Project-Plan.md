@@ -62,4 +62,4 @@ gantt
 |                            |Sviluppo BackEnd        |A,E,M|16/12|Active|
 |                            |Sviluppo FrontEnd       |A|22/12|Active|
 |                            |Deployment              |A|22/12|Active|
-|                            |Testing                 |A|22/12|Active|
+|                            |Testing                 |A,E,M|22/12|Active|
