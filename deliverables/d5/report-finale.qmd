@@ -45,7 +45,6 @@ Per gestire il flusso di lavoro è stato utilizzato GitHub, con il repository [`
 - `main` branch: contenente la versione dei documenti pubblicata in `t41-se22/Deliverables`
 - `d<i>` branch: utilizzato per lavorare sul deliverable-`<i>`
   - `topic-branch`: utilizzato per lavorare su una task del deliverable-`<i>` (solo nel caso di lavoro in contemporanea di più membri del team)
-- `pm` branch: contenente i documenti di project management, come le agende dei meeting (estremamente brevi e sintetiche) (chiaramente non rendicontati in [Carico e Distribuzione del Lavoro](#carico-e-distribuzione-del-lavoro))
 
 ```{mermaid}
 %%| fig-width: 3
@@ -69,25 +68,23 @@ Dunque, quasi sempre il tempo di vita del branch `d<i>` coincide con le scadenze
 
 Per scrivere i Deliverables è stato usato il linguaggio Quarto MarkDown, il quale -- essendo testo semplice -- ha facilitato il merging dei branch.
 Per facilitare l'utilizzo di questi strumenti e di questo flusso di lavoro sono stati caricati più `README.md`.
-Inoltre, si è usato GoogleDrive per condividere documenti non prettamente associati ai deliverable (e quindi chiaramente non rendicontati in [Carico e Distribuzione del Lavoro](#carico-e-distribuzione-del-lavoro)), soprattutto per ideare il sistema da realizzare e condividere il work-time.
+Inoltre, si è usato GoogleDrive per condividere documenti non prettamente associati ai deliverable (non rendicontati in [Carico e Distribuzione del Lavoro](#carico-e-distribuzione-del-lavoro)), soprattutto per ideare il sistema da realizzare e condividere il work-time.
 
 Per quanto riguarda la sviluppo del codice, si è utilizzato il metodo KanBan, con una [KanBan Board](https://github.com/orgs/T41-SE22/projects/1) integrata con GitHub. Non si sono tuttavia posti WIP limits.
 
 Per quanta riguarda le comunicazioni tra i membri del team è stato usato Telegram per avvisare problemi/cambiamenti/assenze. Inoltre, sono stati organizzati brevi meeting settimanali, così suddivisi:
 
-- KickOff Meeting all'inizio del progetto per comprendere la realtà di riferimento del sistema e installare l'ambiente di lavoro comune (VSCode, Latex, ...)
+- KickOff Meeting all'inizio del progetto per comprendere la realtà di riferimento del sistema e installare l'ambiente di lavoro comune (VSCode, git, ...)
 - Meetings settimanali in Saletta BUP per fare il punto della situazione, gestire problemi/cambiamenti e scegliere le tasks da svolgere -- organizzati nel periodo di tempo delle scadenze `D1`, `D2`
 - StandUp Meetings settimanali prima/dopo le lezioni di ISW per fare un breve punto della situazione e scegliere le tasks da svolgere -- organizzati nel periodo di tempo delle scadenze `D3`, `D4`
 - Meeting Finale in Saletta BUP per rivedere insieme il Report Finale
-
-Le Meeting Agendas sono visibili in [`t41-se22/ardeeno-workondeliverables`](https://github.com/T41-SE22/ardeeno-workondeliverables/tree/pm/pm/rendered)
 
 ## Ruoli
 Non vi è stata una specializzazione dei ruoli.
 
 | |**Ruolo**|
 |------|---|
-|Alessandro Manfucci|Analyst, Programmer, PM|
+|Alessandro Manfucci|Analyst, Programmer, Team Leader|
 |Enrico Cescato|Analyst, Programmer|
 |Matteo Sottocornola|Analyst, Programmer|
 
@@ -110,7 +107,7 @@ Non vi è stata una specializzazione dei ruoli.
 |                            |Sviluppo BackEnd        |A,E,M|22/12|
 |                            |Sviluppo FrontEnd       |A|22/12|
 |                            |Deployment              |A|22/12|
-|                            |Testing                 |A|22/12|
+|                            |Testing                 |A,E,M|22/12|
 
 ## KanBan Board
 
@@ -182,8 +179,8 @@ Dare un work-time ad ogni commit pone due vantaggi:
 - Il work-time è sempre associato ad un lavoro concretamente realizzato. Questo aiuta a distinguere il tempo di studio dal tempo impiegato concretamente al progetto.
 - Il work-time è sempre associato ad un branch e ad una repository. Quindi, visto il workflow utilizzato, ad un deliverable.
 
-Tuttavia, come accennato prima, dato il processo di lavoro Agile sarebbe complicato separare il lavoro impiegato e rendicontato per ogni singolo deliverable. Dunque, per associare un certo `work-time` ad un certo deliverable (uno e uno solo!) si considera il branch `d<i>` su cui è stato pubblicato.
-Quindi, il `work-time` calcolato per il deliverable-`<i>` comprende il `work-time` impiegato durante la scrittura della **prima** versione del deliverable-`<i>` su tutti i deliverables (da 1 a `<i>`). Fa eccezione il branch `d5` -- che comprende modifiche esclusivamente per il D5.
+Tuttavia, come accennato prima, dato il processo di lavoro Agile sarebbe complicato separare il lavoro impiegato e rendicontato per ogni singolo deliverable. Dunque, per associare un certo `work-time` ad un certo deliverable (uno e uno solo) si considera il branch `d<i>` su cui è stato pubblicato.
+Quindi, il `work-time` calcolato per il deliverable-`<i>` comprende il `work-time` impiegato su tutti i deliverables (da 1 a `<i>`), durante il periodo di scrittura della **prima** versione del deliverable-`<i>`. Fa eccezione il branch `d5` -- che comprende modifiche esclusivamente per il D5.
 
 ## WorkTime
 
@@ -233,5 +230,3 @@ Ovvero, il metodo di rendicontazione è stato effettivamente usato.
 |Alessandro Manfucci|30|
 |Enrico Cescato|25|
 |Matteo Sottocornola|23|
-
-Il lavoro è stato svolto in gruppo ed in maniera costante; il contributo di ogni membro è dipeso anche dal carico di lavoro degli altri corsi.
