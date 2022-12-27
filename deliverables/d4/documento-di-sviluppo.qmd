@@ -8,9 +8,9 @@ subtitle: |
 
   D4-Documento di Sviluppo
 
-  v0.3
+  v0.8
 author: [alessandro.manfucci@studenti.unitn.it, enrico.cescato@studenti.unitn.it ,m.sottocornola-1@studenti.unitn.it]
-date: "26-12-2022"
+date: "27-12-2022"
 lang: it
 format:
   pdf:
@@ -38,13 +38,17 @@ In questo primo sprint di sviluppo (D4v1.0), ci si limita ai Requisiti Funzional
 - [RF1 Visualizzazione presentazione](#a)
 - [RF5 Autenticazione](#a)
 - [RF5.1 Logout](#a)
+- [RF8 Visualizzazione dati personali](#a)
 - [RF11 Visualizzazione impianti acquistati](#a)
 - [RF11.1 Visualizzazione singolo impianto (Dashboard)](#a)
 - [RF12 Visualizzazione misurazioni su heatmap](#a)
 
 Si veda il Documento di Specifica per i casi d'uso associati a questi RF -- che verranno quindi implementati.
 
-Per i Requisiti Non Funzionali ci si limita al [RNF2 Sicurezza](#a) ed in particolare alla proprietà 'Password salvata non in chiaro'.
+Per i Requisiti Non Funzionali ci si limita ad:
+
+- [RNF2 Sicurezza](#a) limitatamente alla proprietà 'Password salvata non in chiaro'
+- [RNF3 Portabilità](#a) limitatamente alle coppie (S.O., Browser): (Ubuntu 20.04, Firefox 108), (Android 9, Firefox 108)
 
 Il progetto è stato suddiviso in due repositories: `ardeeno-frontend`, contenente il progetto React, ed `ardeeno-backend`, il quale si interfaccia con cloud.mongodb.com e fornisce le API al FrontEnd.
 
@@ -65,8 +69,8 @@ t41-se22/ardeeno-backend/
 |---tests/
 |---utils/
 |---.env
+|---.gitignore
 |---app.js
-|---babel.config.js
 |---package.json
 |---Procfile
 |---README.md
@@ -75,58 +79,54 @@ t41-se22/ardeeno-backend/
 ```
 La struttura del BackEnd è stata suddivisa in più cartelle, in particolare:
 
-- **controllers**: contiene le funzioni che costituiscono le vere e proprie API
-- **coverage**: contiene le informazioni sulla copertura del codice garantita dai test `Jest`
-- **middleware**: contiene quelle funzioni comuni a tutte le API -- autorizzazione e controllo del token -- come dal paradigma di sviluppo di `Node`
-- **routes**: contiene gli end-point delle API
-- **utils**: contiene quelle funzioni generiche, di supporto
-- **models**: contiene i `Model` degli Schemas utilizzati sul database `mongodb`
-- **schemas**: contiene gli Schemas utilizzati sul database `mongodb`
-- **tests**: contiene i file di test `Jest` ed il file di configurazione del mock-database
-- **app.js**: contiene la configurazione degli endpoint tramite `express` e la configurazione della connessione a `mongodb` tramite `mongoose`
-- **Procfile**: contiene la configurazione di `Heroku`
-- **server.js**: contiene la configurazione del server di rete
-- **swagger3.json**: contiene la documentazione Open API 3.0 in formato `json`
+- **`controllers/`**: contiene le funzioni che costituiscono le vere e proprie API
+- **`coverage/`**: contiene le informazioni sulla copertura del codice garantita dai test `Jest`
+- **`middleware/`**: contiene quelle funzioni comuni a tutte le API -- autorizzazione e controllo del token -- come dal paradigma di sviluppo di `Node`
+- **`models/`**: contiene i `Model` degli Schemas utilizzati sul database `mongodb`
+- **`routes/`**: contiene gli end-point delle API
+- **`schemas/`**: contiene gli Schemas utilizzati sul database `mongodb`
+- **`tests/`**: contiene i file di test `Jest` ed il file di configurazione del mock-database
+- **`app.js`**: contiene la configurazione degli endpoint tramite `express` e la configurazione della connessione a `mongodb` tramite `mongoose`
+- **`Procfile`**: contiene la configurazione di `Heroku`
+- **`server.js`**: contiene la configurazione del server di rete
+- **`swagger3.json`**: contiene la documentazione Open API 3.0 in formato `json`
 
 ## Dependencies
-```js
-  "dependencies": {
-    "bcrypt": "^5.1.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "http-status-codes": "^2.2.0",
-    "jsonwebtoken": "^8.5.1",
-    "mongodb-memory-server": "^8.10.2",
-    "mongoose": "^6.8.0",
-    "swagger-ui-express": "^4.6.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.20.5",
-    "@babel/preset-env": "^7.20.2",
-    "babel-jest": "^29.3.1",
-    "jest": "^29.3.1",
-    "supertest": "^6.3.3"
-  }
+```json
+"dependencies": {
+  "bcrypt": "^5.1.0",
+  "cors": "^2.8.5",
+  "dotenv": "^16.0.3",
+  "express": "^4.18.2",
+  "http-status-codes": "^2.2.0",
+  "jsonwebtoken": "^8.5.1",
+  "mongodb-memory-server": "^8.10.2",
+  "mongoose": "^6.8.0",
+  "swagger-ui-express": "^4.6.0"
+},
+"devDependencies": {
+  "jest": "^29.3.1",
+  "supertest": "^6.3.3"
+}
 ```
 Si descrivono nello specifico le librerie più rilevanti:
 
-- **bcrypt**: libreria che fornisce funzioni di salted-hashing con multipli hashing-rounds, in maniera stateless
-- **cors**: libreria per gestire il Cross-Origin Resource Sharing -- necessaria per adempiere al protocollo HTTP
-- **dotenv**: libreria che carica come variabili globali le costanti in `.env`
-- **http-status-codes**: libreria che contiene come costanti i codici di stato http più rilevanti
-- **jsonwebtoken**: libreria che fornisce funzioni di generazione di token json come dall'[RFC 7519](https://datatracker.ietf.org/doc/html/rfc7519)
-- **mongodb-memory-server**: libreria che permette la creazione di un database `mongodb` in memoria RAM -- utile per creare mock-database da utilizzare nella fase di testing
-- **swagger-ui-express**: libreria che genera a partire da un file `.json/.yaml` pagine `html` per la documentazione delle API
-- **jest**: libreria che effettua il testing dell'applicazione
-- **supertest**: libreria che mette a disposizione utili convenience-methods per inoltrare richieste http e fare assertions sulle risposte http; utilizzata per effettuare il testing dell'applicazione
+- **`bcrypt`**: libreria che fornisce funzioni di salted-hashing con multipli hashing-rounds, in maniera stateless
+- **`cors`**: libreria per gestire il Cross-Origin Resource Sharing -- necessaria per adempiere al protocollo HTTP
+- **`dotenv`**: libreria che carica come variabili globali le costanti in `.env`
+- **`http-status-codes`**: libreria che contiene come costanti i codici di stato http più rilevanti
+- **`jsonwebtoken`**: libreria che fornisce funzioni di generazione di token json come dall'[RFC 7519](https://datatracker.ietf.org/doc/html/rfc7519)
+- **`mongodb-memory-server`**: libreria che permette la creazione di un database `mongodb` in memoria RAM -- utile per creare mock-database da utilizzare nella fase di testing
+- **`swagger-ui-express`**: libreria che genera a partire da un file `.json/.yaml` pagine `html` per la documentazione delle API
+- **`jest`**: libreria che effettua il testing dell'applicazione -- si utilizza senza `babel`, dunque per default non supporta i moduli js ES6
+- **`supertest`**: libreria che mette a disposizione utili convenience-methods per inoltrare richieste http e fare assertions sulle risposte http; utilizzata per effettuare il testing dell'applicazione
 
 ## Database
 
-Il BackEnd si interfaccia con un database `mongodb` in hosting su [MongoDB Atlas](https://www.mongodb.com/atlas). MongoDB è un database document-based, non relazionale. Inoltre, si utilizza `mongoose` per interfacciarsi con il database in maniera più strutturata, definendo degli Schemas.
+Il BackEnd si interfaccia con un database `mongodb` in hosting su [MongoDB Atlas](https://www.mongodb.com/atlas). MongoDB è un database document-based, non relazionale. Si utilizza `mongoose` per interfacciarsi con il database in maniera più strutturata, definendo degli Schemas.
 Il database `ardeeno-db` è suddiviso in più collections, per ognuna delle quali si definisce uno Schema `mongoose`:
 
-- **Utenti**
+- **`Utenti`**
 
 ```javascript
 {
@@ -149,7 +149,7 @@ Il database `ardeeno-db` è suddiviso in più collections, per ognuna delle qual
 }
 ```
 
-- **Modelli**
+- **`Modelli`**
 
 ```javascript
 {
@@ -164,7 +164,7 @@ Il database `ardeeno-db` è suddiviso in più collections, per ognuna delle qual
 }
 ```
 
-- **Impianti**
+- **`Impianti`**
 
 ```javascript
 {
@@ -181,7 +181,7 @@ Il database `ardeeno-db` è suddiviso in più collections, per ognuna delle qual
 }
 ```
 
-- **Sensori**
+- **`Sensori`**
 
 ```javascript
 {
@@ -193,11 +193,11 @@ Il database `ardeeno-db` è suddiviso in più collections, per ognuna delle qual
 }
 ```
 
-- **Snapshots_&lt;impianto._id&gt;**
+- **`Snapshots_<impianto._id>`**
 
-In questo caso, per ogni Impianto si crea una nuova collections con lo stesso Schema `mongoose`; questo perché le query sugli Snapshots sono sempre -- nel nostro contesto -- su un solo impianto. Inoltre, si stima dai [RNF](#a) un utilizzo con numerosi impianti, che producono una notevole quantità di snapshot -- questa struttura aiuta a mantenere un'importante efficienza. Le collections create sono di tipo `capped`, ovvero hanno un massimo numero di documenti; questo, come dalla documentazione ([link](https://www.mongodb.com/docs/v6.0/core/capped-collections/)), mantiene l'ordine di inserimento dei documenti -- che è in maniera ordinata, e dunque non si necessita di un riordinamento al momento della query.
+In questo caso, per ogni Impianto si crea una nuova collections con lo stesso Schema `mongoose`; questo perché le query sugli Snapshots sono sempre -- nel nostro contesto -- su un solo impianto. Inoltre, si stima dai [RNF](#a) un utilizzo con numerosi impianti, che producono una notevole quantità di snapshot -- questa struttura aiuta a mantenere efficienza. Le collections create sono di tipo `capped`, ovvero hanno un massimo numero di documenti; questo, come dalla documentazione ([link](https://www.mongodb.com/docs/v6.0/core/capped-collections/)), mantiene l'ordine di inserimento dei documenti -- che avviene nel nostro contesto in maniera ordinata, e dunque non si necessita di un riordinamento al momento della query.
 
-```javascript
+```javascript 
 {
   impianto: {type: mongoose.Schema.Types.ObjectId,
     ref:'Impianto', required:true},
@@ -205,7 +205,7 @@ In questo caso, per ogni Impianto si crea una nuova collections con lo stesso Sc
 }
 ```
 
-- **Misurazioni_&lt;impianto._id&gt;**
+- **`Misurazioni_<impianto._id>`**
 
 Come nel caso precedente, anche per le Misurazioni si crea una nuova collection per ogni Impianto con lo stesso Schema `mongoose`, di tipo `capped`.
 
@@ -233,38 +233,76 @@ Come nel caso precedente, anche per le Misurazioni si crea una nuova collection 
 Si è utilizzato uno stile di programmazione con `async/await` e gestione degli errori -- anche asincroni -- con `try/catch`.
 
 ### Documentazione OpenAPI 3.0
-Le API sono state documentate seguendo lo standard Open API 3.0 e sono visibili ad [api.ardeeno.cloud/api-docs](http://api.ardeeno.cloud/api-docs). Si documentano tutti i possibili messaggi di errore nella sezione `examples`. Si danno inoltre `examples` per i messaggi di richiesta della funzione `genToken` in `POST /auth`.
+Le API sono state documentate seguendo lo standard Open API 3.0 e sono visibili ad [api.ardeeno.cloud/api-docs](http://api.ardeeno.cloud/api-docs). Si documentano tutti i possibili messaggi di errore nella sezione `examples`. Si danno inoltre `examples` per i messaggi di richiesta della funzione `genToken` in `POST /auth`; si descrivono poi gli Schemas Mongoose. Sono presenti due configurazioni Server:
 
-L'applicazione prototipo dispone di un Utente pre-registrato, a cui è associato un Impianto con sensori, snapshots e misurazioni. Le credenziali sono:
+- `http://localhost:8080` da utilizzare se si esegue il BackEnd in locale
+- `http://api.ardeeno.cloud` da utilizzare se connessi al BackEnd deployed su Heroku.
+
+L'applicazione prototipo dispone di un Utente pre-registrato, a cui sono associati due Impianti:
+
+- **Panarotta SP11**: Impianto con sensori, snapshots e misurazioni (auto generati con [t41-se22/ardeeno-datalayer](https://https://github.com/T41-SE22/ardeeno-datalayer)
+- **Val Borzago**: Impianto **senza** sensori, snapshots o misurazioni
+
+Le credenziali dell'Utente sono:
 ```
 email: mario.rossi@gmail.com
 password: password
 ```
 Le credenziali sono appunto visibili sugli `examples` di `genToken` ([api.ardeeno.cloud](http://api.ardeeno.cloud/api-docs/#/Authentication/post_auth)).
 
-<!--Devo mettere la documentazione effettiva o devo solo spiegare come è stata gestita la documentazione? (Standard Swagger)-->
+![Anteprima Documentazione](./.media/swagger3.png){width=16cm fig-pos=H}
 
 ### Testing Jest
 Il Testing è stato gestito con la libreria `Jest` ed `supertest`. Inoltre, si è utilizzato `mongodb-memory-server` per creare -- al momento del testing -- un mock-database con dati sempre costanti, così da fare assertions direttamente sul body delle risposte.
 
-Per ogni API definita, si sono effettuati tutti i casi di test sul successo (2xx SUCCESS) e sugli errori dell'Utente (4xx CLIENT_ERROR) -- ma non sui possibili errori interni (5xx SERVER_ERROR). Inoltre, si sono testate quelle solo risposte definite esplicitamente nello sviluppo, e non quelle gestite implicitamente da `Node.js`.
+Per ogni API definita, si sono effettuati tutti i casi di test sul successo (2xx SUCCESS) e sugli errori dell'Utente (4xx CLIENT ERROR) (a meno del token non valido, funzionalità presente in ogni risposta tramite header `x-token-status`) -- ma non sui possibili errori interni (5xx SERVER ERROR). Inoltre, si sono testate quelle sole risposte definite esplicitamente nello sviluppo, e non quelle gestite implicitamente da `Node.js`.
 
-Dal report sul coverage di `Jest` si nota che si sono coperti il `57.99%` dei branch -- quelli non coperti sono appunto quei branch che gestiscono gli errori (5xx SERVER_ERROR), i quali sono principalmente gli errori del server `mongodb`.
+Nel particolare:
 
-![Coverage](./.media/coverage.png){width=16cm fig-pos=H}
+- **`POST /auth`**  
+  - 201 CREATED
+  - 403 FORBIDDEN: Wrong Password `code 1`
+  - 404 NOT FOUND: Utente Not Found `code 0`
 
-![Coverage Controllers](./.media/coverage-controllers.png){width=16cm fig-pos=H}
+- **`POST /register`** 
+  - 200 OK
+  - 409 CONFLICT: Email already used `code 0`
+  - 409 CONFLICT: Telefono already used `code 1`
 
-![Coverage Middleware](./.media/coverage-middleware.png){width=16cm fig-pos=H}
+- **`GET /myAcc`** 
+  - 200 OK
 
-![Coverage Models](./.media/coverage-models.png){width=16cm fig-pos=H}
+- **`GET /myAcc/impianti`** 
+  - 200 OK
 
-![Coverage Ruotes](./.media/coverage-routes.png){width=16cm fig-pos=H}
+- **`GET /myAcc/impianti/:selImpId/heatmap`**
+  - 200 OK
+  - 404 NOT FOUND: No such impianto for this user `code 1`
 
-![Coverage Schemas](./.media/coverage-schemas.png){width=16cm fig-pos=H}
+- **`GET /myAcc/impianti/:selImpId/snapshots/:selSnapTs`**
+  - 200 OK
+  - 404 NOT FOUND: No such impianto for this user `code 1`
+  - 404 NOT FOUND: No such snapshot `code 3`
 
-![Coverage Tests](./.media/coverage-tests.png){width=16cm fig-pos=H}
+```shell
+ardeeno-backend$ npm test
 
+> @t41-se22/ardeeno-backend@0.1.0 test
+> jest --coverage
+
+  PASS  tests/token.test.js
+  PASS  tests/cliente.test.js
+
+Test Suites: 2 passed, 2 total
+Tests:       13 passed, 13 total
+Snapshots:   0 total
+Time:        5.73 s
+Ran all test suites.
+```
+
+Dal report sul coverage di `Jest` si nota che si sono coperti il `57.99%` dei branch -- quelli non coperti sono appunto quei branch che gestiscono gli errori 5xx SERVER ERROR, i quali sono principalmente gli errori del server `mongodb`. Infatti i test coprono il `89.34%` degli Statements, il `100.00%` delle funzioni ed il `89.34%` delle linee di codice.
+
+![Coverage](./.media/coverage/coverage.png){width=16cm fig-pos=H}
 
 # FrontEnd
 
@@ -281,113 +319,168 @@ t41-se22/ardeeno-frontend/
 |   |   |---fonts/
 |   |   |---images/
 |   |---components/
-|   |---layout/
+|   |   |---AppContent.js
+|   |   ...
 |   |---scss/
 |   |---views/
 |   |   |---appContent/
-|   |   ...
 |   |   |---pages/
-|   |   ...
+|   |   |---AppLayout.js
 |   |---_nav.js
 |   |---App.js
 |   |---index.js
+|   |---store.js
 |---.env
 |---.eslintrc.json
+|---.gitignore
 |---.jsconfig.json
-|---LICENSE
+|---LICENSE-COREUI-FREE
 |---package.json
 |---Procfile
 |---README.md
 ```
-La struttura del FrontEnd è stata suddivisa in più cartelle, in particolare:
+La struttura del FrontEnd è suddivisa in più cartelle, in particolare:
 
-- **public**: contiene quei file scaricati dal browser -- che si occupano di configurare l'ambiente React
-- **src**: contiene i file React
-- **src/components**: contiene le componenti React dell'`AppLayout`, tra cui AppContent, che effettua inoltre il routing tra i contenuti dell'applicazione
-- **src/layout**: contiene la componente React `AppLayout`, che crea il layout instanziando `Sidebar`, `Header`, `Footer` ed `AppContent`
-- **src/views**: contiene le viste React -- dove una vista è un contenuto dell'applicazione o una pagina a sé stante dall'`AppLayout`
-- **src/views/appContent**: contiene le viste caricate da AppContent -- ovvero l'applicazione vera e propria
-- **src/views/pages**: contiene le pagine a sé stante dall'`AppLayout`, che sono *esterne* all'applicazione (`Login`, `Registrazione`, `Error404`, ...)
-- **src/App.js**: contiene la configurazione dell'applicazione React, ovvero esporta la variabile di ambiente `API_URL`, fornisce il contesto con `loggedUser`, `selImp` (a partire dai *persistent data* di `localforage`) ed effettua il routing verso l'`AppLayout` e verso le `pages` esterne ad `AppLayout`
-- **src/index.js**: è la radice dell'applicazione React -- instanzia `App.js`
-- **.eslintrc.json**: contiene le impostazioni per il linting dei file React ed JSX (Javascript XML) -- sono state seguite le buone norme di programmazione react suggerite dal linting
-- **LICENSE**: contiene la licenza della libreria `coreui`, da includere obbligatoriamente
-- **Procfile**: contiene la configurazione di `Heroku`
+- **`public/`**: contiene il file `index.html` scaricato inizialmente dal browser, che si occupa di configurare il runtime-environment `React`
+- **`src/`**: contiene i file React
+- **`src/components/`**: contiene le componenti React dell'`AppLayout`
+- **`src/components/AppContent.js`**: contiene la componente React `AppContent`, che effettua il routing tra i contenuti dell'applicazione
+- **`src/views/`**: contiene le viste React -- dove una vista è un contenuto dell'applicazione o una pagina a sé stante dall'`AppLayout`
+- **`src/views/AppLayout.js`**: contiene la componente React `AppLayout`, che crea il layout instanziando `Sidebar`, `Header`, `Footer` ed `AppContent`
+- **`src/views/appContent/`**: contiene le viste caricate da `AppContent` -- ovvero l'applicazione vera e propria
+- **`src/views/pages/`**: contiene le pagine a sé stanti dall'`AppLayout`, che sono *esterne* all'applicazione (`Login`, `Page401`, `Page404`, ...)
+- **`src/_nav.js`**: file javascript contenenete constanti per la configurazione dinamica della `Sidebar` (a seconda del tipo di Utente) 
+- **`src/App.js`**: contiene la componente React `App`, che esporta la variabile di ambiente `API_URL`, fornisce il contesto `loggedUser`, `selImp` (a partire dai *persistent data* di `localforage`) ed effettua il routing verso l'`AppLayout` e verso le `pages` esterne ad `AppLayout`
+- **`src/index.js`**: file javascript che configura il contesto `redux` ed instanzia la componente React radice `App`
+- **`.eslintrc.json`**: contiene le impostazioni per il linting dei file React ed JSX
+- **`Procfile`**: contiene la configurazione di `Heroku`
 
 
 ## Dependencies
-```js
-  "dependencies": {
-    "@coreui/chartjs": "^3.0.0",
-    "@coreui/coreui": "^4.2.1",
-    "@coreui/icons": "^2.1.0",
-    "@coreui/icons-react": "^2.1.0",
-    "@coreui/react": "^4.3.1",
-    "@coreui/react-chartjs": "^2.1.0",
-    "@coreui/utils": "^1.3.1",
-    "axios": "^1.2.1",
-    "chart.js": "^3.9.1",
-    "classnames": "^2.3.1",
-    "core-js": "^3.24.1",
-    "deck.gl": "^8.8.20",
-    "jquery": "^3.6.2",
-    "localforage": "^1.10.0",
-    "prop-types": "^15.8.1",
-    "pullstate": "^1.25.0",
-    "react": "^18.2.0",
-    "react-app-polyfill": "^3.0.0",
-    "react-dom": "^18.2.0",
-    "react-leaflet": "^4.2.0",
-    "react-map-gl": "^5.3.0",
-    "react-persistent-store-manager": "^1.1.1",
-    "react-redux": "^8.0.2",
-    "react-router-dom": "^6.3.0",
-    "react-scripts": "5.0.1",
-    "redux": "4.2.0",
-    "sass": "^1.54.4",
-    "simplebar-react": "^2.4.1",
-    "web-vitals": "^2.1.4"
-  },
-  "devDependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.3.0",
-    "@testing-library/user-event": "^14.4.3",
-    "@typescript-eslint/eslint-plugin": "^5.47.0",
-    "@typescript-eslint/parser": "^5.47.0",
-    "eslint": "^8.30.0",
-    "eslint-plugin-react": "^7.31.11",
-    "eslint-plugin-react-hooks": "^4.6.0"
-  }
+```json
+"dependencies": {
+  "@coreui/coreui": "^4.2.1",
+  "@coreui/icons": "^2.1.0",
+  "@coreui/icons-react": "^2.1.0",
+  "@coreui/react": "^4.3.1",
+  "@coreui/utils": "^1.3.1",
+  "axios": "^1.2.1",
+  "core-js": "^3.24.1",
+  "deck.gl": "^8.8.20",
+  "localforage": "^1.10.0",
+  "prop-types": "^15.8.1",
+  "react": "^18.2.0",
+  "react-app-polyfill": "^3.0.0",
+  "react-dom": "^18.2.0",
+  "react-leaflet": "^4.2.0",
+  "react-map-gl": "^5.3.0",
+  "react-redux": "^8.0.2",
+  "react-router-dom": "^6.3.0",
+  "react-scripts": "5.0.1",
+  "redux": "4.2.0",
+  "sass": "^1.54.4",
+  "simplebar-react": "^2.4.1"
+},
+"devDependencies": {
+  "eslint": "^8.30.0",
+  "eslint-plugin-react": "^7.31.11",
+  "eslint-plugin-react-hooks": "^4.6.0"
+}
 ```
 
-Oltre a `coreui` ed alle sue dependencies si sono utilizzate molte altre librerie, tra cui le più rilevanti sono:
+Oltre a `coreui` ed alle sue dependencies (`@coreui/...`, `react-redux`, `redux`, `sass`, `simplebar-react`) si sono utilizzate ulteriori librerie, che si descrivono nello specificono:
 
-- **axios**: libreria che mette a disposizione convenience-methods per effettuare richieste http AJAX
-- **deck.gl**: libreria che agregga e renderizza Big Data su mappe geografiche, in maniera bidimensionale ma anche tridimensionale
-- **localforage**: libreria che, appoggiandosi su **localstorage**, mette a disposizione funzioni per il salvataggio di dati sul browser; è stata utilizzata per mantenere `persistent data` dell'Utente Autenticato
-- **react-leaflet**: libreria che permette la renderizzazione di mappe OpenStreetMap
-- **sass**: libreria che permette di ricompilare i fogli di stile `coreui` con la palette di colori `ardeeno`
+- **`axios`**: libreria che mette a disposizione convenience-methods per effettuare richieste http AJAX
+- **`deck.gl`**: libreria che agregga e renderizza Big Data su mappe geografiche, in maniera bidimensionale ma anche tridimensionale
+- **`localforage`**: libreria che, appoggiandosi su **`localstorage`**, mette a disposizione funzioni per il salvataggio di dati sul browser; è stata utilizzata per mantenere *persistent data* dell'Utente Autenticato
+- **`prop-types`**: libreria che permette di documentare le `props` delle componenti React
+- **`react-leaflet`**: libreria che permette la renderizzazione di mappe OpenStreetMap
+- **`react-map-gl`**: libreria che permette la renderizzazione di mappe -- necessaria la versione (deprecata) `^5` per **`deck.gl`**
 
 ## User Flows
 
-![Login](.media/login.png){fig-pos=H width=16cm}
+![legenda](.media/user-flows/legenda.png){fig-pos=H width=5cm}
 
-![Logout](.media/logout.png){fig-pos=H width=10cm}
+![Login](.media/user-flows/login.png){fig-pos=H width=16cm}
 
-![Dashboard](.media/dashboard.png){fig-pos=H width=12cm}
+![Logout](.media/user-flows/logout.png){fig-pos=H width=10cm}
 
-![Heatmap](.media/heatmap.png){fig-pos=H width=12cm}
+![Dashboard (Requires Login)](.media/user-flows/dashboard.png){fig-pos=H width=12cm}
+
+![Heatmap (Requires Dashboard)](.media/user-flows/heatmap.png){fig-pos=H width=12cm}
 
 ## Sviluppo
 
-![App Layout](.media/layout.png){fig-pos=H width=10cm}
+Per quanto riguarda lo sviluppo, si è utilizzato uno stile `React` con *function components* ed *stateful function components* (*hooks*). Si sono gestiti sia i casi d'usi corretti, che le exceptions (tutti i code di errore descritti dal BackEnd, BackEnd non raggiungibile, ...). Inoltre, si sono ricompilati i fogli di stile `scss` introducendo il Font-Family `Lato` e la palette di colori `ardeeno`, come dai mock-up presentati nel D1-Documento di Progetto.
+Infine, l'applicazione è stata sviluppata pensando ad un uso sia su Desktop che Mobile (Tablet, Smartphone) -- dunque nel concreto utilizzando le corretti componenti per garantire una visualizzazione ottimale dei contenuti per ogni grandezza di schermo (`Row`, `Col` con impostazioni su `xs.cols`, `md.cols`), e differenziando il motore di rendering della `Heatmap.js` a seconda del tipo di dispositivo (Mobile, Desktop); l'applicazione è stata quindi testata su Desktop (Ubuntu 20.04, Firefox 108), Tablet (Android 12, Firefox 108) ed Smartphone (Android 9, Firefox 108).
 
-Si descrivono le componenti ad-hoc sviluppate appositamente per `ardeeno` a partire da `coreui` e presenti in `/src/views/appContent` ed `/src/views/pages`.
-Si è utilizzato uno stile `React` con `function-components` ed `stateful-function-components` (`hooks`).
+Il routing ha la seguente struttura [^1]\:
+```bash
+/ ·> /home
+/home -> Home.js
+/MyAccount -> MyAccount.js
+/MyImpianti ·> /MyImpianti/list
+/MyImpianti/list -> MyImpianti.js
+/MyImpianti/Dashboard -> Dashboard.js
+/MyImpianti/Heatmap -> Heatmap.js
+/MyImpianti/Misurazioni -> Misurazioni.js
 
-###
+/login -> Login.js
+/401 -> Page401.js
+/404 -> Page404.js
+/500 -> Page500.js
+/* ·> /404
+```
+[^1]: Con `react-router 6.3`, le routes sono *final-slash insensitive*, ovvero /home ed /home/ sono sempre equivalenti.
+
+Si descrivono ora le componenti sviluppate/modificate ad-hoc per `ardeeno-frontend`. 
+
+### App.js
+Si utilizza `BrowserRouter` anziché `HashRouter` e si configura un AppContext `React` -- si preferisce per semplicità utilizzare `localforage` anziché gli store `redux`. Si esporta la costante `API_URL` poiché la variabile di ambiente `REACT_APP_API_URL` è visibile esclusivamente in `App.js`.
+
+### ActionModal.js
+Componente sviluppata per mostrare all'Utente i messaggi di errore.
+```javascript
+ActionModal.propTypes = {
+  title:string,
+  body:string,
+  onClose:func
+}
+```
+
+### Home.js
+Componenente sviluppata per implementare [RF1 Visualizzazione Presentazione](#a); si utilizza `react-leaflet` per mostrare la mappa con le sedi dell'azienda, connettendosi a un TileProvider OSM.
+
+### Login.js
+Componente sviluppata per implementare [RF5 Autenticazione](#a) in tutte le sue exceptions. I dati dell'Utente Autenticato sono memorizzati in `localforage` e nel `AppContext` React.
+La funzione [RF5.1 Logout](#a) è accessibile dall'`AppHeader` in qualunque pagina dell'applicazione.
+
+### MyAccount.js
+Componente sviluppata per implementare [RF8 Visualizzzazione dati personali](#a).
+
+### MyImpianti.js
+Componente sviluppata per implementare [RF11 Visualizzazione impianti acquistati](#a). Al primo accesso, per accedere alla Dashboard ed alla Heatmap è necessario selezionare un Impianto cliccando sul link `Go to Dashboard` -- se ciò non è fatto, la Dashboard e la Heatmap fanno un redirect ad `/MyImpianti/list`.
+I dati dell'Impianto selezionato sono memorizzati in `localforage` e nel `AppContext` React.
+
+### Dashboard.js
+Componente sviluppata per implementare [RF11.1 Visualizzazione singolo impianto (Dashboard)](#a); contiene link ridondanti per le funzioni disponibili (Heatmap).
+
+### Heatmap.js
+Componente sviluppata per implementare [RF12 Visualizzazione misurazioni su heatmap](#a). Si utilizza `deck.gl` per renderizzare la heatmap sopra ad una `react-map-gl`, che reperisce le mappe da un TileProvider OSM (`deck.gl` supporta lo stile dichiarativo di React). Come dalle specifiche, si memorizzano le misurazioni del solo snapshot selezionato, dunque con `nextSnapshot()`, `prevSnapshot()` si effettua una richiesta `axios` al BackEnd per reperire le misurazioni del dato snapshot. Come da specifiche si memorizzano tutti gli snapshots dell'Impianto (il solo `date`). In un futuro *sprint* potrebbe essere utile (per adempiere al [RNF4 Prestazioni](#a)) implementare la paginazione degli snapshots -- in quel caso si dovrebbe memorizzare una sola pagina di snapshot, e richiedere la pagina successiva/precedente *on-demand*.
 
 ## Schermate
+
+![Home](.media/schermate/home.png){fig-pos=H width=16cm}
+
+![Login](.media/schermate/login.png){fig-pos=H width=16cm}
+
+![MyAccount](.media/schermate/account.png){fig-pos=H width=16cm}
+
+![MyImpianti](.media/schermate/impianti.png){fig-pos=H width=16cm}
+
+![Dashboard](.media/schermate/dashboard.png){fig-pos=H width=16cm}
+
+![Heatmap](.media/schermate/heatmap.png){fig-pos=H width=16cm}
 
 # GitHub Repository
 Per entrambi i repositories il flusso di lavoro è stato organizzato su più branch:
@@ -416,8 +509,7 @@ Per entrambi i repositories il flusso di lavoro è stato organizzato su più bra
     checkout develop
     merge patch
 ```
-Inoltre, per quanto riguarda il BackEnd si sono utilizzate delle GitHub Actions per automatizzare il testing con Jest (per le pull request sul `develop` e sul `main`)
-<!--mermaid workflow, git workflow file, kanban board-->
+Inoltre, per quanto riguarda il BackEnd si sono utilizzate delle GitHub Actions  per automatizzare il testing Jest su pull request/push per `develop` e `main` (Continuos Integration)
 
 # Deployment
 Si è utilizzato Heroku per avere un Fast Deployment agli URL:
@@ -425,5 +517,26 @@ Si è utilizzato Heroku per avere un Fast Deployment agli URL:
 - [www.ardeeno.cloud](http://www.ardeeno.cloud)
 - [api.ardeeno.cloud](http://api.ardeeno.cloud)
 
-I record CNAME sono stati impostati tramite la CLI di Heroku
-<!--schermata del deployment su heroku, parlare del dns, va aggiunto su heroku??-->
+Il Fast Deployment è stato configurato attraverso Heroku e non tramite le GitHub Actions
+
+I record CNAME sono stati impostati tramite la CLI di Heroku.
+
+Per `ardeeno-backend` è stato sufficiente un *EcoDyno*, mentre per `ardeeno-frontend` è stato necessario utilizzare un *MediumDyno* con 2GB di memoria RAM.
+
+:::{layout-ncol=2}
+
+![CD backend](./.media/heroku/deploy-backend.png)
+
+![CD frontend](./.media/heroku/deploy-frontend.png)
+
+:::
+
+:::{layout-ncol=2}
+
+![DNS backend](./.media/heroku/dns-backend.png)
+
+![DNS frontend](./.media/heroku/dns-frontend.png)
+
+:::
+
+<!--mettere altri screenshots sui push fatti su heroku backend/frontend e sui dynos utilizzati-->
