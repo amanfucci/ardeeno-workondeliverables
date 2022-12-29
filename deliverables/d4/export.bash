@@ -1,5 +1,6 @@
 declare -a names=(
   "legenda"
+  "cliente"
   "login"
   "logout"
   "dashboard"
@@ -7,7 +8,7 @@ declare -a names=(
 );
 
 declare -a index=(
-  0 1 2 3 4
+  0 1 2 3 4 5
 );
 
 for i in "${index[@]}"
@@ -27,3 +28,6 @@ quarto render *.qmd;
 code documento-di-sviluppo.pdf;
 
 cp documento-di-sviluppo.pdf D4-T41.pdf;
+
+# pdf compression
+ps2pdf D4-T41.pdf;

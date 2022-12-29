@@ -36,6 +36,7 @@ format:
 In questo primo sprint di sviluppo (D4v1.0), ci si limita ai Requisiti Funzionali:
 
 - [RF1 Visualizzazione presentazione](#a)
+- [RF4 Registrazione](#a) (la sola parte BackEnd)
 - [RF5 Autenticazione](#a)
 - [RF5.1 Logout](#a)
 - [RF8 Visualizzazione dati personali](#a)
@@ -49,8 +50,8 @@ Si veda il Documento di Specifica per i casi d'uso associati a questi RF -- che 
 
 Per i Requisiti Non Funzionali ci si limita ad:
 
-- [RNF2 Sicurezza](#a) limitatamente alla proprietà 'Password salvata non in chiaro'
-- [RNF3 Portabilità](#a) limitatamente alle coppie (S.O., Browser): (Ubuntu 20.04, Firefox 108), (Android 9, Firefox 108)
+- [RNF2 Sicurezza](#a) la sola proprietà 'Password salvata non in chiaro'
+- [RNF3 Portabilità](#a) le sole coppie (S.O., Browser): (Ubuntu 20.04, Firefox 108), (Android 9, Firefox 108)
 
 Il progetto è stato suddiviso in due repositories: `ardeeno-frontend`, contenente il progetto React, ed `ardeeno-backend`, il quale si interfaccia con cloud.mongodb.com e fornisce le API al FrontEnd.
 
@@ -223,10 +224,13 @@ Come nel caso precedente, anche per le Misurazioni si crea una nuova collection 
 ## APIs
 
 ### Resources Extraction from the Class Diagram
+Si omettono quelle risorse non necessarie per implementare i RF scelti per questo sprint (D4v1).
 
 ![Resources Extraction](.media/resources-extraction.png){fig-pos=H}
 
+\pagebreak
 ### Resources Models
+Non si indicano gli header in richieste/risposte; il token di accesso è inviato come parametro header `x-access-token` ed è necessario in `getDati`, `getImpianti`, `getHeatmap`, `getOneSnapshot`. Ogni risposta comprende l'header `x-token-status`, con valori `['empty', 'valid', 'expired']`.
 
 ![Resources Models](.media/resources-models.png){fig-pos=H}
 
@@ -241,7 +245,7 @@ Le API sono state documentate seguendo lo standard Open API 3.0 e sono visibili 
 
 L'applicazione prototipo dispone di un Utente pre-registrato, a cui sono associati due Impianti:
 
-- **Panarotta SP11**: Impianto con sensori, snapshots e misurazioni (auto generati con [t41-se22/ardeeno-datalayer](https://https://github.com/T41-SE22/ardeeno-datalayer)
+- **Panarotta SP11**: Impianto con sensori, snapshots e misurazioni (auto generati con [t41-se22/ardeeno-datalayer](https://https://github.com/T41-SE22/ardeeno-datalayer) )
 - **Val Borzago**: Impianto **senza** sensori, snapshots o misurazioni
 
 Le credenziali dell'Utente sono:
@@ -350,7 +354,7 @@ La struttura del FrontEnd è suddivisa in più cartelle, in particolare:
 - **`src/views/AppLayout.js`**: contiene la componente React `AppLayout`, che crea il layout instanziando `Sidebar`, `Header`, `Footer` ed `AppContent`
 - **`src/views/appContent/`**: contiene le viste caricate da `AppContent` -- ovvero l'applicazione vera e propria
 - **`src/views/pages/`**: contiene le pagine a sé stanti dall'`AppLayout`, che sono *esterne* all'applicazione (`Login`, `Page401`, `Page404`, ...)
-- **`src/_nav.js`**: file javascript contenenete constanti per la configurazione dinamica della `Sidebar` (a seconda del tipo di Utente) 
+- **`src/_nav.js`**: file javascript contenente constanti per la configurazione dinamica della `Sidebar` (a seconda del tipo di Utente) 
 - **`src/App.js`**: contiene la componente React `App`, che esporta la variabile di ambiente `API_URL`, fornisce il contesto `loggedUser`, `selImp` (a partire dai *persistent data* di `localforage`) ed effettua il routing verso l'`AppLayout` e verso le `pages` esterne ad `AppLayout`
 - **`src/index.js`**: file javascript che configura il contesto `redux` ed instanzia la componente React radice `App`
 - **`.eslintrc.json`**: contiene le impostazioni per il linting dei file React ed JSX
@@ -389,10 +393,10 @@ La struttura del FrontEnd è suddivisa in più cartelle, in particolare:
 }
 ```
 
-Oltre a `coreui` ed alle sue dependencies (`@coreui/...`, `react-redux`, `redux`, `sass`, `simplebar-react`) si sono utilizzate ulteriori librerie, che si descrivono nello specificono:
+Oltre a `coreui` ed alle sue dependencies (`@coreui/...`, `react-redux`, `redux`, `sass`, `simplebar-react`) si sono utilizzate ulteriori librerie, che si descrivono nello specifico:
 
 - **`axios`**: libreria che mette a disposizione convenience-methods per effettuare richieste http AJAX
-- **`deck.gl`**: libreria che agregga e renderizza Big Data su mappe geografiche, in maniera bidimensionale ma anche tridimensionale
+- **`deck.gl`**: libreria che aggrega e renderizza Big Data su mappe geografiche, in maniera bidimensionale ma anche tridimensionale
 - **`localforage`**: libreria che, appoggiandosi su **`localstorage`**, mette a disposizione funzioni per il salvataggio di dati sul browser; è stata utilizzata per mantenere *persistent data* dell'Utente Autenticato
 - **`prop-types`**: libreria che permette di documentare le `props` delle componenti React
 - **`react-leaflet`**: libreria che permette la renderizzazione di mappe OpenStreetMap
@@ -402,13 +406,9 @@ Oltre a `coreui` ed alle sue dependencies (`@coreui/...`, `react-redux`, `redux`
 
 ![legenda](.media/user-flows/legenda.png){fig-pos=H width=12cm}
 
-![Login](.media/user-flows/login.png){fig-pos=H width=16cm}
+Si descrive un'user flow per il Cliente, che comprende: login, logout, visualizzazione degli impianti acquistati, selezione di un Impianto e visualizzazione delle misurazioni su Heatmap.
 
-![Logout](.media/user-flows/logout.png){fig-pos=H width=10cm}
-
-![Dashboard (Requires Login)](.media/user-flows/dashboard.png){fig-pos=H width=12cm}
-
-![Heatmap (Requires Dashboard)](.media/user-flows/heatmap.png){fig-pos=H width=12cm}
+![User Flow Cliente](.media/user-flows/cliente.png){fig-pos=H width=16cm}
 
 ## Sviluppo
 
@@ -454,7 +454,7 @@ Componente sviluppata per implementare [RF5 Autenticazione](#a) in tutte le sue 
 La funzione [RF5.1 Logout](#a) è accessibile dall'`AppHeader` in qualunque pagina dell'applicazione.
 
 ### MyAccount.js
-Componente sviluppata per implementare [RF8 Visualizzzazione dati personali](#a).
+Componente sviluppata per implementare [RF8 Visualizzazione dati personali](#a).
 
 ### MyImpianti.js
 Componente sviluppata per implementare [RF11 Visualizzazione impianti acquistati](#a) -- con ordinamento e filtraggio. Al primo accesso, per accedere alla Dashboard ed alla Heatmap è necessario selezionare un Impianto cliccando sul link `Go to Dashboard` -- se ciò non è fatto, la Dashboard e la Heatmap fanno un redirect ad `/MyImpianti/list`.

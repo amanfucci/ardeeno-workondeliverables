@@ -74,7 +74,7 @@ Il `Cliente` dipende dalla classe `ReviewManager` poiché la utilizza per ottene
 ## Classi relative alla Vetrina
 ![](./.media/vetrina.png){width=12cm fig-pos=H}
 
-Dal comp. "Vetrina" si definiscono le classi `Vetrina`, `Modello`, `Costo`. È rilevante osservare che il `Modello` ha un attributo `parametri : string [1..n]` che specifica i parametri misurati dal modello di impianto e un attributo `costo : Costo`, dove `Costo` è una classe con ulteriori metodi.
+Dal comp. "Vetrina" si definiscono le classi `Vetrina`, `Modello`, `Costo`. Si osservi che il `Modello` ha un attributo `parametri : Parametro [1..n]` che specifica i parametri misurati dal modello di impianto e un attributo `costo : Costo`, dove `Costo` è una classe con ulteriori metodi.
 
 Dal comp. "Gestione TrustPilot" si definiscono le classi `ReviewManager`, `ProductReview`, `ServiceReview`. Il metodo `newProdReviewID(productID, clientID)` si interfaccia con TrustPilot e ritorna il codice product review; il `productID` è necessario per associare la product review al modello di impianto che è stato acquistato. Utilizzando questo processo ogni product review è associata ad un acquisto realmente effettuato.
 
@@ -83,6 +83,8 @@ Dal comp. "Gestione TrustPilot" si definiscono le classi `ReviewManager`, `Produ
 ![](./.media/impianto.png){width=16cm fig-pos=H}
 
 Dal comp. "Gestione Impianto Acquistato" si definiscono le classi `Impianto`, `Snapshot`, `Misurazione`, `Sensore`, `Heatmap`, `GestioneManutenzione`. Queste classi rappresentano le risorse principali gestite dal sistema.
+
+La classe `Impianto` ha un attributo `coord : Coord` che **non** è inserito dal Cliente al momento dell'acquisto e **non** rappresenta le coordinate geografiche dell'`indirizzo`. Bensì è un campo calcolato a partire dalle coordinate dei `sensori : Sensore[]` -- rappresenta il centro dell'impianto.
 
 La classe `Sensore` necessita di `dataDismissione` poiché la possibile alternativa -- che prevede la rimozione del Sensore dal DataLayer -- non permette di visualizzare sulla `Heatmap` le misurazioni di un `Sensore` dismesso (si osservi che non si avrebbero più le coordinate della misurazione).
 
@@ -112,13 +114,14 @@ Alla fine del documento si trova il diagramma leggibile.
 Questo capitolo presenta particolari proprietà sugli attributi e sulle operazioni delle varie classi (invarianti, pre-condizioni e post-condizioni). Come nel capitolo precedente, le classi sono raggruppate secondo una certa correlazione logica.  
 Si utilizza il linguaggio OCL 2.4, che estende lo standard UML.
 
-Per quanto riguarda le espressione booleane OCL, per attributi di tipo boolean ometteremo spesso `someBoolAttr = true` scrivendo semplicemente `someBoolAttr`. Si aggiunge l'operazione globale `now()` per indicare il valore `Date` che indica la data corrente e `tomorro()` per indicare il valore `Date` che indica il giorno successivo a `now()`. Inoltre estenderemo l'OCL con l'operatore binario IF-AND-ONLY-IF definito come `(a IIF b) = (a IMPLIES b) AND (b IMPLIES a)`.
+Per quanto riguarda le espressione booleane OCL, per attributi di tipo boolean ometteremo spesso `someBoolAttr = true` scrivendo semplicemente `someBoolAttr`. Si aggiunge l'operazione globale `now()` per indicare il valore `Date` che indica la data corrente e `tomorrow()` per indicare il valore `Date` che indica il giorno successivo a `now()`. Inoltre estenderemo l'OCL con l'operatore binario IF-AND-ONLY-IF definito come `(a IIF b) = (a IMPLIES b) AND (b IMPLIES a)`.
 
 ## Classi relative all'Utente
 ![](./.media/utente-ocl.png){width=16cm fig-pos=H}
 
 ### Utente
-L'`Utente` può richiedere un codice di conferma solo se l'email non è confermata. Questo vincolo è presente poiché `newCodiceConferma()` invia un'email tramite il sistema esterno Gmail -- con un certo costo.Non si pone vincoli su `confermaEmail(cod)` in quanto non vi è né questo né altri motivi, ed è buona prassi evitare vincoli non necessari. 
+L'`Utente` può richiedere un codice di conferma solo se l'email non è confermata. Questo vincolo è presente poiché `newCodiceConferma()` invia un'email tramite il sistema esterno Gmail -- con un certo costo.
+
 ```ocl
 context Utente::newCodiceConferma()
 pre: NOT isEmailConfermata
@@ -130,12 +133,12 @@ pre: isEmailConfermata = true
 ```
 
 ### Dipendente
-Un `Dipendente` ha l'email confermata per default, senza necessità di effettuare il processo di conferma. Questo vincolo è accennato nel [RF](#a).
+Un `Dipendente` ha l'email confermata per default, senza necessità di effettuare il processo di conferma. Questo vincolo è accennato nello [UseCase Registrazione dipendente](#a).
 ```ocl
 context Dipendente inv:
 isEmailConfermata = true
 ```
-Un `Dipendente` non può effettuare il login se è dimesso. Si osservi che per la gerarchia di sottoclasse, per il Dipendente valgono che le `context Utente::login()` ma sono sempre soddisfatte.
+Un `Dipendente` non può effettuare il login se è dimesso. Si osservi che per la gerarchia di sottoclasse, per il Dipendente valgono anche le `context Utente::login()` ma sono sempre soddisfatte.
 ```ocl
 context Dipendente::login(email, pw)
 pre: NOT isDimesso
@@ -148,37 +151,15 @@ post: isDimesso
 ```
 
 ### Cliente
-Il metodo `selezionaImpianto()` imposta `seleImpianto`
-```ocl
-context Cliente::selezionaImpianto()
-post: seleImpianto <> null
-```
-I metodi `getMisurazioniImp()`, `getHeatmapImp()`, `richiediRiparazioneImp(mot)` devono essere invocati successivamente a `selezionaImpianto()`
-```ocl
-context Cliente::getMisurazioniImp()
-pre: seleImpianto <> null
-```
-```ocl
-context Cliente::getHeatmapImp()
-pre: seleImpianto <> null
-```
+
+Il metodo `richiediRiparazioneImp(mot)` può essere invocato solo su un impianto non dismesso
 ```ocl
 context Cliente::richiediRiparazioneImp(mot)
-pre: seleImpianto <> null AND 
-	NOT seleImpianto.isDismesso
+pre: NOT sel.Impianto.isDismesso
 ```
-Il metodo `richiediRiparazioneImp(mot)` può essere invocato solo su un impianto non dismesso
 
 ## Classi relative alla Vetrina
 ![](./.media/vetrina-ocl.png){width=16cm fig-pos=H}
-
-### Modello
-`numSensori` e `superficie` sono interi positivi
-```ocl
-context Modello inv:
-superficie > 0 AND
-numSensori > 0
-```
 
 ### ProductReview
 `stars` è compreso tra 1 e 5
@@ -194,35 +175,11 @@ context ServiceReview inv:
 stars >= 1 AND stars <= 5
 ```
 
-### Costo
-Il `Costo` è sempre maggiore di zero -- non ci sono modelli gratuiti.
-```ocl
-context Costo inv:
-getCosto() > 0
-```
-
-### Vetrina
-`selezionaModello()` imposta `seleModello` con un valore in `inVendita`.
-```ocl
-context Vetrina::selezionaModello()
-post: seleModello <> null AND
-       inVendita->includes(seleModello)
-```
-I metodi `getProdReviewsModello()`, `filtraProdReviews(stelle, data)` devono essere invocati successivamente a `selezionaModello()`
-```ocl
-context Vetrina::getProdReviewsModello()
-pre: seleModello <> null
-```
-```ocl
-context Vetrina::filtraProdReviews(stelle, data)
-pre: seleModello <> null
-```
-
 ## Classi relative all'Impianto
 ![](./.media/impianto-ocl.png){width=16cm fig-pos=H}
 
 ### Impianto
-`isDismesso` è un attributo booleano ridondante; `dataAcquisto` è sempre impostato; se l'impianto è dismesso, `dataDismissione` è impostato ed è più recente di `dataAcquisto`. Si comprendono casi di eccezione in cui l'impianto è dismesso prima dei 5 anni di servizio stabiliti.
+`isDismesso` è un attributo booleano ridondante; `dataAcquisto` è sempre impostato; se l'impianto è dismesso, `dataDismissione` è impostato ed è più recente di `dataAcquisto`. Si comprendono i casi di eccezione in cui l'impianto è dismesso prima dei 5 anni di servizio stabiliti.
 ```ocl
 context Impianto inv:
 (isDismesso IIF dataDismissione = null) AND superficie > 0 AND
@@ -271,14 +228,11 @@ context Sensore inv:
 (isDismesso IIF dataDismissione <> null) AND
 (impianto = null IMPLIES NOT isDismesso)
 ```
-Il metodo `installa(impianto, coord)` imposta `impianto`, `coord` ed opera su un `Sensore` non dismesso e non installato. 
+Il metodo `installa(impianto, coord)` opera su un `Sensore` non dismesso e non installato. 
 ```ocl
 context Sensore::installa(impianto, coord)
 pre: NOT isDismesso AND
 	self.impianto = null
-
-post: self.impianto = impianto AND
-	self.coord = coord
 ```
 Il metodo `dismetti()` imposta `isDismesso`, `dataDismissione` ed opera su un `Sensore` non dismesso.
 ```ocl
@@ -289,19 +243,12 @@ post: isDismesso AND
 	dataDismissione = now()
 ```
 
-### Heatmap
-Il `currSnapshot` è selezionato tra quelli in `snapshots`.
-```ocl
-context Heatmap inv:
-snapshots->includes(currSnapshot)
-```
-
 ## Classi relative ai Dipendenti
 
 ![](./.media/dipendenti-ocl.png){width=16cm fig-pos=H}
 
 ### Intervento
-La `motivazione` è impostata solo per gli interventi di riparazione; un `tecnico` è sempre assegnato in una `dataAssegnazione`; `isConcluso` è un attributo ridondante; se l'intervento è assegnato, la `dataAssegnazione` è maggiore della `dataRichiesta` (il tecnico non può ancora viaggiare nel tempo)
+La `motivazione` è impostata solo per gli interventi di riparazione; un `tecnico` è sempre assegnato in una `dataAssegnazione`; `isConcluso` è un attributo ridondante; se l'intervento è assegnato, la `dataAssegnazione` è maggiore della `dataRichiesta`.
 ```ocl
 context Intervento inv:
 dataRichiesta <> null AND
@@ -310,7 +257,7 @@ dataRichiesta <> null AND
 (isConcluso IIF resoconto <> null) AND
 (dataAssegnazione <> null IMPLIES dataAssegnazione >= dataRichiesta)
 ```
-Il metodo imposta `tecnico`, `data` e opera su un `Intervento` non ancora assegnato
+Il metodo imposta `tecnico`, `data` e opera su un `Intervento` non ancora assegnato.
 ```ocl
 context Intervento::assegna(tecnico, data)
 pre: self.tecnico = null AND
@@ -329,60 +276,49 @@ post: self.resoconto = resoconto AND
 ```
 
 ### Tecnico
-L'attributo `seleIntervento` è selezionato da `interventiAssegnati`, che è l'insieme degli interventi assegnati al tecnico
+Definizione di intervento assegnato a un tecnico.
 ```ocl
 context Tecnico inv:
 interventiAssegnati->forAll( i | i.tecnico = self)
 ```
-```ocl
-context Vetrina::selezionaIntervento() 
-post: seleIntervento <> null AND
-  interventiAssegnati->includes(seleIntervento)
-```
-I metodi `getMisurazioniImp()`, `getHeatmapImp()`, `getInterventiImp()`, `modificaImpianto()`, `modificaImpianto()` devono essere invocati successivamente a `selezionaIntervento()` e possono essere invocati solo se `seleIntervento` non è concluso.
+I metodi `getMisurazioniImp()`, `getHeatmapImp()`, `getInterventiImp()`, `modificaImpianto()`, `modificaImpianto()` possono essere invocati solo se `selIntervento` non è concluso.
 
 ```ocl
 context Tecnico::getMisurazioniImp()
-pre: seleIntervento <> null AND
-NOT seleIntervento.isConcluso
+pre: NOT selIntervento.isConcluso
 ```
 ```ocl
 context Tecnico::getHeatmapImp()
-pre: seleIntervento <> null AND
-NOT seleIntervento.isConcluso
+pre: NOT selIntervento.isConcluso
 ```
 ```ocl
 context Tecnico::getInterventiImp()
-pre: seleIntervento <> null AND
-NOT seleIntervento.isConcluso
+pre: NOT selIntervento.isConcluso
 ```
 ```ocl
 context Tecnico::modificaImpianto()
-pre: seleIntervento <> null AND
-NOT seleIntervento.isConcluso
+pre: NOT selIntervento.isConcluso
 ```
 ```ocl
 context Tecnico::concludiIntervento(res)
-pre: seleIntervento <> null AND
-	NOT seleIntervento.isConcluso
+pre: NOT selIntervento.isConcluso
 
-post: seleIntervento.resoconto = res AND
-	seleIntervento.isConcluso
+post: selIntervento.resoconto = res AND
+	selIntervento.isConcluso
 ```
-Il metodo `concludiIntervento(res)` imposta `seleIntervento.resoconto` ed `seleIntervento.isConcluso`.
+Il metodo `concludiIntervento(res)` imposta `selIntervento.resoconto` ed `selIntervento.isConcluso`.
 
 ### Supervisore
 Il `Supervisore` può assegnare un `Intervento` a un `Tecnico` solo se l'`Intervento` non è concluso e il `Tecnico` è libero nella `Data`; la `Data` non può essere il giorno corrente.
 ```ocl
 context Supervisore::assegnaIntervento(tec, data)
-pre: seleIntervento <> null AND
-	seleIntervento.tecnico = null AND
+pre: selIntervento.tecnico = null AND
   data >= tomorrow() AND
-	(tec.interventiAssegnati->forAll( i |
-		i.dataAssegnazione <> data))
+	tec.interventiAssegnati->forAll( i |
+	  i.dataAssegnazione <> data)
 
-post: seleIntervento.tecnico = tec AND
-	seleIntervento.dataAssegnazione = data
+post: selIntervento.tecnico = tec AND
+	selIntervento.dataAssegnazione = data
 ```
 
 \pagebreak

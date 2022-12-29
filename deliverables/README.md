@@ -106,7 +106,7 @@ chmod 777 export_all.bash;
 ```
 
 ### rendering
-This script simply calls `quarto render` on each deliverable and then open them.
+This script simply calls `quarto render` on each deliverable and then opens them.
 ```bash
 chmod 777 render_all.bash;
 ./render_all.bash;
