@@ -8,9 +8,9 @@ subtitle: |
 
   D1-Documento di Progetto
 
-  v1.2
+  v1.3
 author: [alessandro.manfucci@studenti.unitn.it, enrico.cescato@studenti.unitn.it ,m.sottocornola-1@studenti.unitn.it]
-date: "10-12-2022"
+date: "29-12-2022"
 lang: it
 format:
   pdf:
@@ -39,7 +39,7 @@ Questo documento descrive ad alto livello -- e in maniera non tecnica -- il sist
 
 # Obiettivi del progetto
 Il progetto ha come obiettivo lo sviluppo di una WebApp che gestisca la vendita di impianti *Internet of Things* (IoT), la loro installazione, manutenzione, riparazione e dismissione. Inoltre, l'applicazione permetterà ai clienti di visualizzare le misurazioni dei propri impianti e richiedere eventuali interventi di riparazione.
-Gli impianti IoT considerati sono costituti da un insieme omogeneo di sensori distribuiti geograficamente, le cui misurazioni sono raccolte ad intervalli regolari da una stazione di polling compresa nell'impianto. I parametri misurati variano a seconda del modello di impianto.
+Gli impianti IoT considerati sono costituti da un insieme omogeneo di sensori distribuiti geograficamente, le cui misurazioni sono raccolte ad intervalli regolari da una stazione di polling compresa nell'impianto. I parametri misurati variano a seconda del tipo di impianto; il numero di sensori varia a seconda del modello di impianto [^1].
 
 Nel dettaglio:
 
@@ -59,6 +59,8 @@ Un supervisore potrà quindi visualizzare le informazioni di tutti gli intervent
 4. Un tecnico potrà visualizzare gli interventi a lui assegnati -- in corso o conclusi -- con i relativi dati del cliente e dell'impianto. Per ogni intervento assegnato in corso, ad eccezione degli interventi di dismissione, avrà la possibilità di rimuovere e/o aggiungere dei sensori, distinguibili tramite codice a barre e coordinate geografiche, ed accedere ai dati del relativo impianto. Ogni sensore ha uno stato che evolve nel tempo: attivo, dismesso. Un tecnico potrà inoltre inserire un resoconto e segnare l'intervento come concluso.  
 
 5. Un amministratore potrà compiere tutte le azioni permesse ad un supervisore; inoltre, potrà visualizzare le statistiche degli impianti venduti e degli interventi. Potrà registrare, gestire e dimettere i dipendenti.
+
+[^1]: &lt;modello&gt; ::= &lt;tipo&gt; &lt;num-sensori&gt; &lt;variante&gt; &lt;versione&gt;
 
 \pagebreak
 # Requisiti funzionali
@@ -87,7 +89,7 @@ Non vi è filtraggio.
 Il sistema deve mostrare una pagina di presentazione, che comprende una breve descrizione dell'azienda, una mappa che indica la posizione della sede, ed i contatti (indirizzo email, telefono).
 
 ### RF2 Visualizzazione vetrina {-}
-Il sistema deve mostrare una lista dei modelli di impianto in vendita, dove per ognuno si mostra: nome del modello, nome del tipo, prezzo, immagine esemplificativa, superficie consigliata per il modello di impianto (in $m^2$) e lista dei parametri misurati. Tra gli impianti visualizzati, il sistema deve permettere di selezionarne uno.
+Il sistema deve mostrare una lista dei modelli di impianto in vendita, dove per ognuno si mostra: nome del modello, prezzo, immagine esemplificativa, superficie consigliata per il modello di impianto (in $km^2$) e lista dei parametri misurati. Tra gli impianti visualizzati, il sistema deve permettere di selezionarne uno.
 
 Il sistema deve permettere di filtrare la lista dei modelli per: tipo, prezzo, superficie consigliata. I modelli sono sempre ordinati per prezzo crescente.
 
@@ -128,15 +130,15 @@ Il sistema deve consentire attraverso un form -- raggiungibile da [RF8](#rf8-vis
 ## Cliente
 
 ### RF10 Acquisto impianto {-}
-Il sistema -- attraverso la selezione effettuata in [RF2](#rf2-visualizzazione-vetrina) -- deve permettere di effettuare l'acquisto dell'impianto selezionato, specificando indirizzo di installazione e superficie (in $m^2$) attraverso un form. All'invio del form verrà richiesto il pagamento tramite PayPal. L'acquisto è considerato concluso quando il pagamento con PayPal è concluso. Ad acquisto concluso il sistema inserisce una richiesta di installazione per l'impianto acquistato ed invia un'email di avvenuto acquisto.
+Il sistema -- attraverso la selezione effettuata in [RF2](#rf2-visualizzazione-vetrina) -- deve permettere di effettuare l'acquisto dell'impianto selezionato, specificando indirizzo di installazione e superficie (in $km^2$) attraverso un form. All'invio del form verrà richiesto il pagamento tramite PayPal. L'acquisto è considerato concluso quando il pagamento con PayPal è concluso. Ad acquisto concluso il sistema inserisce una richiesta di installazione per l'impianto acquistato ed invia un'email di avvenuto acquisto.
 
 ### RF11 Visualizzazione impianti acquistati {-}
-Il sistema deve consentire ad un cliente di visualizzare una lista di tutti gli impianti acquistati (attivi e dismessi), dove per ognuno si mostra: id, superficie (in $m^2$), indirizzo, stato (attivo o dismesso), data di acquisto e modello. Tra gli impianti visualizzati, il sistema deve permettere di selezionarne uno.
+Il sistema deve consentire ad un cliente di visualizzare una lista di tutti gli impianti acquistati (attivi e dismessi), dove per ognuno si mostra: modello, indirizzo, stato (attivo o dismesso) e data di acquisto. Tra gli impianti visualizzati, il sistema deve permettere di selezionarne uno.
 
-Il sistema deve permettere di filtrare la lista degli impianti per: modello, tipo, stato. Gli impianti sono sempre ordinati per data di acquisto: da più recente a meno recente.
+Il sistema deve permettere di filtrare la lista degli impianti per: modello, stato. Gli impianti sono sempre ordinati per data di acquisto: da più recente a meno recente.
 
 ### RF11.1 Visualizzazione singolo impianto (Dashboard) {-}
-Il sistema -- attraverso la selezione effettuata in [RF11](#rf11-visualizzazione-impianti-acquistati) -- deve mostrare tutte le informazioni dell'impianto già mostrate in [RF11](#rf11-visualizzazione-impianti-acquistati) e in aggiunta una lista di tutte le funzioni permesse dal sistema su quell'impianto.
+Il sistema -- attraverso la selezione effettuata in [RF11](#rf11-visualizzazione-impianti-acquistati) -- deve mostrare tutte le informazioni dell'impianto già mostrate in [RF11](#rf11-visualizzazione-impianti-acquistati), una lista di tutte le funzioni permesse dal sistema su quell'impianto, ed inoltre: id, superficie (in $km^2$), fattura e data di dismissione (se presente).
 
 ### RF12 Visualizzazione misurazioni su heatmap {-}
 Il sistema -- attraverso la selezione effettuata in [RF11](#rf11-visualizzazione-impianti-acquistati) -- deve mostrare le misurazioni dell'impianto selezionato sotto forma di heatmap. Il parametro considerato dalla heatmap può essere scelto tramite una lista. Inizialmente sono mostrare le misurazioni più recenti; con due bottoni è possibile scorrere tra tutte le misurazioni. Con tutte le misurazioni si intendono quelle misurazioni presenti nella base di dati all’atto di caricamento della pagina. La mappa utilizzata è fornita da OpenStreetMap.
@@ -185,7 +187,7 @@ Il sistema deve permettere di filtrare la lista degli interventi per: tipo di in
 ### RF18 Visualizzazione singolo intervento {-}
 Il sistema -- attraverso la selezione effettuata in [RF17](#rf17-visualizzazione-interventi-supervisore) -- deve mostrare tutti i dati dell'intervento selezionato già visualizzati in [RF17](#rf17-visualizzazione-interventi-supervisore) e inoltre:
 
-- Il sistema deve mostrare indirizzo e superficie (in $m^2$) dell'impianto.
+- Il sistema deve mostrare indirizzo e superficie (in $km^2$) dell'impianto.
 - Per le riparazioni il sistema deve mostrare la motivazione della riparazione.
 - Per gli interventi assegnati conclusi deve mostrare: data della conclusione e resoconto dell'intervento.
 
@@ -307,34 +309,41 @@ In particolare vedremo mock-up per:
 - [RF21 Visualizzazione e modifica singolo intervento](#rf21-visualizzazione-e-modifica-singolo-intervento)
 
 ### RF1 Visualizzazione Presentazione {-}
-![Visualizzazione Presentazione](./.media/mockups/presentazione.png){width=6cm fig-pos=H}
+![Visualizzazione Presentazione](./.media/mockups/.framed/presentazione.png.framed.png){width=6cm fig-pos=H}
 
 Pagina d'ingresso della WebApp, dove si mostra una breve presentazione, la posizione delle filiali ed i contatti (indirizzo email, telefono). Si osservi la presenza di un menù laterale, il quale contiene le varie funzioni del sistema, ed un tasto login per procedere all'autenticazione.
 
 \pagebreak
 ### RF5 Autenticazione {-}
-![Autenticazione](./.media/mockups/login.png){width=6cm fig-pos=H}
+![Autenticazione](./.media/mockups/.framed/login.png.framed.png){width=6cm fig-pos=H}
 
 Un'utente anonimo - registrato nel sistema - può autenticarsi inserendo indirizzo email e password. Se la combinazione (indirizzo email, password) non è presente nel sistema, verrà mostrata in rosso la scritta **Password Errata** [RNF1](#rnf1-privacy). Se l'indirizzo email non è confermato verrà mostrata in rosso la scritta **Indirizzo email non confermato**, assieme al link **Invia di nuovo il link**.
 Si osservi la presenza del bottone **Recupera Password** e **Registrati**.
 
 \pagebreak
 ### RF11 Visualizzazione impianti acquistati, RF11.1 Dashboard {-}
-![Visualizzazione impianti acquistati e Dashboard](./.media/mockups/impianti-dashboard.png){width=12cm fig-pos=H}
+:::{layout-ncol=2}
 
-Nella figura a sinistra si ha la pagina mostrata ad un cliente che si è appena autenticato. In azzurro si hanno gli impianti attivi, in arancione quelli dismessi. Tramite gli appositi bottoni si può effettuare un filtraggio per impianti attivi o dismessi. Il filtro selezionato presenta uno sfondo scuro. Gli ulteriori filtri (modello e tipo) sono accessibili tramite l'icona al lato.
+![Visualizzazione impianti acquistati](./.media/mockups/.framed/impianti.png.framed.png){width=6cm fig-pos=H}
+
+![Dashboard](./.media/mockups/.framed/dashboard.png.framed.png){width=6cm fig-pos=H}
+
+:::
+
+
+Nella figura a sinistra si ha la pagina mostrata ad un cliente che si è appena autenticato. In azzurro si hanno gli impianti attivi, in arancione quelli dismessi. Tramite gli appositi bottoni si può effettuare un filtraggio per impianti attivi o dismessi. Il filtro selezionato presenta uno sfondo scuro. Gli ulteriori filtri (vari modelli) sono accessibili tramite l'icona al lato.
 
 Tra gli impianti in lista se ne può selezionare uno. Alla selezione si è portati sulla Dashboard dell'impianto ([RF11.1](#rf11.1-visualizzazione-singolo-impianto-dashboard)). Questa pagina, rappresentata dalla figura a destra, raccoglie tutte le funzioni disponibili sull'impianto acquistato.
 
 \pagebreak
 ### RF12 Visualizzazione misurazioni su heatmap {-}
-![Heatmap](./.media/mockups/heatmap.png){width=6cm fig-pos=H}
+![Heatmap](./.media/mockups/.framed/heatmap.png.framed.png){width=6cm fig-pos=H}
 
 La heatmap riporta in forma grafica (scala di colori dal giallo al rosso) su una mappa geografica le più recenti misurazioni di un impianto. Il parametro preso in considerazione può essere selezionato dalla lista di tutti i parametri misurati. Si possono scorrere tutte le misurazioni tramite le due frecce.
 
 \pagebreak
 ### RF20 Visualizzazione interventi -- tecnico, RF21 {-}
-![Lista interventi](./.media/mockups/interventi.png){width=6cm fig-pos=H}
+![Lista interventi](./.media/mockups/.framed/interventi-tecnico.png.framed.png){width=6cm fig-pos=H}
 
 In questa pagina un tecnico può visualizzare la lista di tutti gli interventi a lui assegnati. In arancione si mostrano gli interventi assegnati in corso mentre in grigio quelli assegnati conclusi. Gli interventi sono ordinati per data di richiesta da più recente a meno recente.
 

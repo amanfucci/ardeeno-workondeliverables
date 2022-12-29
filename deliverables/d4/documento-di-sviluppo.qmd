@@ -8,9 +8,9 @@ subtitle: |
 
   D4-Documento di Sviluppo
 
-  v0.8
+  v1.0
 author: [alessandro.manfucci@studenti.unitn.it, enrico.cescato@studenti.unitn.it ,m.sottocornola-1@studenti.unitn.it]
-date: "27-12-2022"
+date: "29-12-2022"
 lang: it
 format:
   pdf:
@@ -42,6 +42,8 @@ In questo primo sprint di sviluppo (D4v1.0), ci si limita ai Requisiti Funzional
 - [RF11 Visualizzazione impianti acquistati](#a)
 - [RF11.1 Visualizzazione singolo impianto (Dashboard)](#a)
 - [RF12 Visualizzazione misurazioni su heatmap](#a)
+
+Dato che **non** si implementa il [RF6 Conferma indirizzo email](#a) l'applicazione prototipo considera sempre confermato l'indirizzo email di ogni account.
 
 Si veda il Documento di Specifica per i casi d'uso associati a questi RF -- che verranno quindi implementati.
 
@@ -229,7 +231,6 @@ Come nel caso precedente, anche per le Misurazioni si crea una nuova collection 
 ![Resources Models](.media/resources-models.png){fig-pos=H}
 
 ### Sviluppo
-<!--le devo descrivere proprio tutte? Devo mettere tutto il codice o solo le firme?-->
 Si è utilizzato uno stile di programmazione con `async/await` e gestione degli errori -- anche asincroni -- con `try/catch`.
 
 ### Documentazione OpenAPI 3.0
@@ -399,7 +400,7 @@ Oltre a `coreui` ed alle sue dependencies (`@coreui/...`, `react-redux`, `redux`
 
 ## User Flows
 
-![legenda](.media/user-flows/legenda.png){fig-pos=H width=5cm}
+![legenda](.media/user-flows/legenda.png){fig-pos=H width=12cm}
 
 ![Login](.media/user-flows/login.png){fig-pos=H width=16cm}
 
@@ -412,7 +413,7 @@ Oltre a `coreui` ed alle sue dependencies (`@coreui/...`, `react-redux`, `redux`
 ## Sviluppo
 
 Per quanto riguarda lo sviluppo, si è utilizzato uno stile `React` con *function components* ed *stateful function components* (*hooks*). Si sono gestiti sia i casi d'usi corretti, che le exceptions (tutti i code di errore descritti dal BackEnd, BackEnd non raggiungibile, ...). Inoltre, si sono ricompilati i fogli di stile `scss` introducendo il Font-Family `Lato` e la palette di colori `ardeeno`, come dai mock-up presentati nel D1-Documento di Progetto.
-Infine, l'applicazione è stata sviluppata pensando ad un uso sia su Desktop che Mobile (Tablet, Smartphone) -- dunque nel concreto utilizzando le corretti componenti per garantire una visualizzazione ottimale dei contenuti per ogni grandezza di schermo (`Row`, `Col` con impostazioni su `xs.cols`, `md.cols`), e differenziando il motore di rendering della `Heatmap.js` a seconda del tipo di dispositivo (Mobile, Desktop); l'applicazione è stata quindi testata su Desktop (Ubuntu 20.04, Firefox 108), Tablet (Android 12, Firefox 108) ed Smartphone (Android 9, Firefox 108).
+Infine, l'applicazione garantisce compatibilità Desktop e Mobile ([RNF3 Portabilità](#a)), grazie ad un corretto uso delle componenti `Row`, `Col` e differenziando il motore di rendering della `Heatmap.js` a seconda del tipo di dispositivo (Mobile, Desktop); l'applicazione è stata quindi testata su Desktop (Ubuntu 20.04, Firefox 108), Tablet (Android 12, Firefox 108) ed Smartphone (Android 9, Firefox 108).
 
 Il routing ha la seguente struttura [^1]\:
 ```bash
@@ -431,12 +432,9 @@ Il routing ha la seguente struttura [^1]\:
 /500 -> Page500.js
 /* ·> /404
 ```
-[^1]: Con `react-router 6.3`, le routes sono *final-slash insensitive*, ovvero /home ed /home/ sono sempre equivalenti.
+[^1]: Con `react-router 6.3`, le routes sono per default final-slash insensitive.
 
-Si descrivono ora le componenti sviluppate/modificate ad-hoc per `ardeeno-frontend`. 
-
-### App.js
-Si utilizza `BrowserRouter` anziché `HashRouter` e si configura un AppContext `React` -- si preferisce per semplicità utilizzare `localforage` anziché gli store `redux`. Si esporta la costante `API_URL` poiché la variabile di ambiente `REACT_APP_API_URL` è visibile esclusivamente in `App.js`.
+Si descrivono ora brevemente le componenti sviluppate ad-hoc per `ardeeno-frontend`.
 
 ### ActionModal.js
 Componente sviluppata per mostrare all'Utente i messaggi di errore.
@@ -449,7 +447,7 @@ ActionModal.propTypes = {
 ```
 
 ### Home.js
-Componenente sviluppata per implementare [RF1 Visualizzazione Presentazione](#a); si utilizza `react-leaflet` per mostrare la mappa con le sedi dell'azienda, connettendosi a un TileProvider OSM.
+Componenente sviluppata per implementare [RF1 Visualizzazione Presentazione](#a); si utilizza `react-leaflet` per mostrare la mappa con le sedi dell'azienda, connettendosi a un TileProvider OSM. Cliccando sul marker si visualizza l'indirizzo della sede.
 
 ### Login.js
 Componente sviluppata per implementare [RF5 Autenticazione](#a) in tutte le sue exceptions. I dati dell'Utente Autenticato sono memorizzati in `localforage` e nel `AppContext` React.
@@ -459,14 +457,14 @@ La funzione [RF5.1 Logout](#a) è accessibile dall'`AppHeader` in qualunque pagi
 Componente sviluppata per implementare [RF8 Visualizzzazione dati personali](#a).
 
 ### MyImpianti.js
-Componente sviluppata per implementare [RF11 Visualizzazione impianti acquistati](#a). Al primo accesso, per accedere alla Dashboard ed alla Heatmap è necessario selezionare un Impianto cliccando sul link `Go to Dashboard` -- se ciò non è fatto, la Dashboard e la Heatmap fanno un redirect ad `/MyImpianti/list`.
+Componente sviluppata per implementare [RF11 Visualizzazione impianti acquistati](#a) -- con ordinamento e filtraggio. Al primo accesso, per accedere alla Dashboard ed alla Heatmap è necessario selezionare un Impianto cliccando sul link `Go to Dashboard` -- se ciò non è fatto, la Dashboard e la Heatmap fanno un redirect ad `/MyImpianti/list`.
 I dati dell'Impianto selezionato sono memorizzati in `localforage` e nel `AppContext` React.
 
 ### Dashboard.js
 Componente sviluppata per implementare [RF11.1 Visualizzazione singolo impianto (Dashboard)](#a); contiene link ridondanti per le funzioni disponibili (Heatmap).
 
 ### Heatmap.js
-Componente sviluppata per implementare [RF12 Visualizzazione misurazioni su heatmap](#a). Si utilizza `deck.gl` per renderizzare la heatmap sopra ad una `react-map-gl`, che reperisce le mappe da un TileProvider OSM (`deck.gl` supporta lo stile dichiarativo di React). Come dalle specifiche, si memorizzano le misurazioni del solo snapshot selezionato, dunque con `nextSnapshot()`, `prevSnapshot()` si effettua una richiesta `axios` al BackEnd per reperire le misurazioni del dato snapshot. Come da specifiche si memorizzano tutti gli snapshots dell'Impianto (il solo `date`). In un futuro *sprint* potrebbe essere utile (per adempiere al [RNF4 Prestazioni](#a)) implementare la paginazione degli snapshots -- in quel caso si dovrebbe memorizzare una sola pagina di snapshot, e richiedere la pagina successiva/precedente *on-demand*.
+Componente sviluppata per implementare [RF12 Visualizzazione misurazioni su heatmap](#a). Si utilizza `deck.gl` per renderizzare la heatmap sopra ad una `react-map-gl`, che reperisce le mappe da un TileProvider OSM (`deck.gl` supporta lo stile dichiarativo di React). Come dalle specifiche, si memorizzano le misurazioni del solo snapshot selezionato, dunque con `nextSnapshot()`, `prevSnapshot()` si effettua una richiesta `ajax` al BackEnd per reperire le misurazioni del dato snapshot. Come da specifiche si memorizzano tutti gli snapshots dell'Impianto (il solo `date`). In un futuro *sprint* potrebbe essere utile (per adempiere al [RNF4 Prestazioni](#a)) implementare la paginazione degli snapshots -- in quel caso si dovrebbe memorizzare una sola pagina di snapshot, e richiedere la pagina successiva/precedente *on-demand*.
 
 ## Schermate
 

@@ -8,9 +8,9 @@ subtitle: |
 
   D2-Documento di Specifica
 
-  v1.1
+  v1.2
 author: [alessandro.manfucci@studenti.unitn.it, enrico.cescato@studenti.unitn.it ,m.sottocornola-1@studenti.unitn.it]
-date: "10-12-2022"
+date: "29-12-2022"
 lang: it
 format:
   pdf:
@@ -46,13 +46,14 @@ Questo documento descrive in maniera più dettagliata -- ma sempre non tecnica -
 - **intervallo di polling (PI)**: periodo di tempo che occorre tra l'inizio di due cicli di polling. Il ciclo di polling ha durata estremamente breve rispetto all'intervallo di polling. I sensori calcolano i valori della misurazione aggregando in media i dati raccolti durante l'intervallo di polling. Ogni modello di impianto specifica i parametri misurati e l'intervallo di polling.
 
 - **snapshot**: insieme delle misurazioni raccolte in un certo ciclo di polling. Ogni misurazione di uno snapshot ha lo stesso timestamp.
-
+<!--
 - **modelli**:
 &lt;modello&gt; ::= &lt;tipo&gt; &lt;num-sensori&gt; &lt;variante&gt; &lt;versione&gt;  
 &lt;tipo&gt; ::= "TR" | "AQ" | "FP" | "TE" | "WQ" | "ME" // Specifica i parametri misurati  
 &lt;num-sensori&gt; ::= "10" | "50" | "100" | "200" | "500"  
 &lt;variante&gt; ::= "A" | "B" | "C" // $A \implies PI=5m, B \implies PI=30m, C \implies PI=3h$  
 &lt;versione&gt; ::= "" | "0" | "1" | "2" | ... // Hardware differente
+-->
 
 # Requisiti funzionali
 Questo capitolo presenta i requisiti funzionali del sistema, raggruppati per ruolo. Vengono utilizzati i diagrammi UML Use Case (descrivendo nel dettaglio ogni singolo Use Case) e, per i requisiti funzionali più complessi, anche i Sequence Diagrams, gli Activity Diagrams e gli State Diagrams.
@@ -178,11 +179,11 @@ Questo use case descrive come l'utente anonimo effettua la registrazione come cl
 
 ***Exceptions***
 
-1. Il nome e/o il cognome non è valido \(non soddisfa la regex "\[A-Za-z\]\{3,20\}"\), il bordo del campo del form diventa rosso.
+1. Il nome e/o il cognome non è valido (non soddisfa la regex `"[A-Za-z]{3,20}"`), il bordo del campo del form diventa rosso.
 
-2. L'indirizzo email non è valido \(non soddisfa la regex ".\*@.\*"\), il bordo del campo del form diventa rosso.
+2. L'indirizzo email non è valido (non soddisfa la regex `".+@.+\..+"`), il bordo del campo del form diventa rosso.
 
-3. Il numero di telefono non è valido (non soddisfa la regex "(.\\d*) \\d\{10\}" \), il bordo del campo del form diventa rosso.
+3. Il numero di telefono non è valido (non soddisfa la regex `"(.\d*) \d{10}"`), il bordo del campo del form diventa rosso.
 
 4. L'indirizzo non è valido, il bordo del campo del form diventa rosso.
 
@@ -217,11 +218,11 @@ Questo use case descrive come l'utente anonimo effettua l'autenticazione tramite
 
 ***Description***
 
-1. L'utente anonimo inserisce l'indirizzo email. [Exception 1]
+1. L'utente anonimo inserisce l'indirizzo email.
 
 2. L'utente anonimo inserisce la password.
 
-3. L'utente anonimo invia il form premendo il bottone "Login". [Exception 2]
+3. L'utente anonimo invia il form premendo il bottone "Login". [Exception 1] [Exception 2]
 
 4. Il sistema verifica che l'indirizzo email inserito appartenga ad un account. [Exception 3]
 
@@ -229,19 +230,19 @@ Questo use case descrive come l'utente anonimo effettua l'autenticazione tramite
 
 5. Il sistema verifica che la password sia corretta. [Exception 5]
 
-6. L'autenticazione è conclusa, l'utente è portato alla pagina degli impianti o degli interventi.
+6. L'autenticazione è conclusa, l'utente è portato alla pagina di visualizzazione dei dati personali.
 
 ***Exceptions***
 
-1. L'indirizzo email non è valido \(non soddisfa la regex ".\*@.\*"\), il bordo del campo del form diventa rosso.
+1. L'indirizzo email non è valido (non soddisfa la regex `".+@.+\..+"`), il bordo del campo del form diventa rosso ed appare in rosso la scritta "Inserisci un'indirizzo email valido"
 
-2. Vi è almeno un campo del form vuoto o non valido, appare in rosso la scritta "Compila correttamente il form".
+2. La password è vuota, il bordo del campo del form diventa rosso
 
-3. L'indirizzo email non appartiene ad alcun account o appartiene all'account di un Dipendente dimesso, appare la scritta "Indirizzo email non corretto".
+3. L'indirizzo email non appartiene ad alcun account o appartiene all'account di un Dipendente dimesso, appare un pop-up con la scritta "Indirizzo email non corretto".
 
-4. L'indirizzo email non è confermato; il sistema -- tramite Gmail -- invia all'indirizzo email un nuovo link per confermare tale indirizzo email ed appare la scritta "Inviato nuovo link di conferma!"; il link precedente non è più valido.
+4. L'indirizzo email non è confermato; il sistema -- tramite Gmail -- invia all'indirizzo email un nuovo link per confermare tale indirizzo email ed appare un pop-up con la scritta "Inviato nuovo link di conferma!"; il link precedente non è più valido.
 
-5. La password non è corretta, appare la scritta "Password non corretta" ed il link alla pagina "Recupera password".
+5. La password non è corretta, appare un pop-up con la scritta "Password non corretta" ed il link alla pagina "Recupera password".
 
 ### UseCase Recupero password {-}
 ***Summary***
@@ -268,7 +269,7 @@ Questo use case descrive come avviene il recupero -- ovvero il cambio -- della p
 
 ***Exceptions***
 
-1. L'indirizzo email non è valido \(non soddisfa la regex ".\*@.\*"\), il bordo del campo del form diventa rosso.
+1. L'indirizzo email non è valido (non soddisfa la regex `".+@.+\..+"`), il bordo del campo del form diventa rosso.
 
 2. L'indirizzo email non appartiene ad alcun account o appartiene all'account di un Dipendente dimesso, appare la scritta "Indirizzo email non corretto".
 
@@ -290,7 +291,7 @@ Questo use case descrive come un Utente Autenticato effettua il logout dal siste
 
 1. L'utente autenticato preme il bottone "Logout".
 
-2. Il sistema riporta l'utente alla pagina di presentazione; l'utente non è più autenticato.
+2. Il sistema riporta l'utente alla pagina di presentazione; l'utente non è più autenticato ed appare un pop-up con la scritta "Logout avvenuto con successo".
 
 ### UseCase Visualizzazione dati personali {-}
 
@@ -304,7 +305,7 @@ Questo use case descrive come l'utente autenticato visualizza i suoi dati person
 
 ***Extensions***
 
-1. Se l'utente è un dipendete vi è in aggiunta il campo CF.
+1. Se l'utente è un dipendente vi è in aggiunta il campo CF.
 
 ### UseCase Modifica dati personali{-}
 
@@ -348,7 +349,7 @@ Questo use case descrive come il cliente effettua l'acquisto dell'impianto prece
 
 1. Il cliente inserisce l'indirizzo di installazione. [Exception 1]
 
-2. Il cliente inserisce la superficie in $m^2$. [Exception 2]
+2. Il cliente inserisce la superficie in $km^2$. [Exception 2]
 
 3. Il cliente invia il form premendo il bottone "Acquista", al cui lato è presente il costo del tipo di impianto. [Exception 3]
 
@@ -367,10 +368,6 @@ Questo use case descrive come il cliente effettua l'acquisto dell'impianto prece
 3. I campi indirizzo o superficie sono vuoti o non validi, appare in rosso la scritta "Compila correttamente il form".
 
 4. PayPal riporta che il pagamento non è andato a buon fine, appare in rosso la scritta "Acquisto annullato - Pagamento non andato a buon fine".
-
-***Sequence Diagram***
-
-![Sequence Diagram](.media/cliente1seq.png){width=7cm fig-pos=H}
 
 ### UseCase Pagamento {-}  
 
@@ -428,7 +425,7 @@ Questo use case descrive la visualizzazione da parte di un cliente degli impiant
 
 2. Il cliente seleziona il filtro Tutti, Attivi o Dismessi. [Exception 1]
 
-3. Il cliente seleziona il menu degli ulteriori filtri e seleziona uno specifico filtro (tra cui vi sono tutti i modelli e tutti i tipi degli impianti acquistati). [Exception 1]
+3. Il cliente seleziona il menu degli ulteriori filtri e seleziona uno specifico filtro (tra cui vi sono tutti i modelli degli impianti acquistati). [Exception 1]
 
 ### UseCase Dashboard {-}
 
@@ -438,7 +435,7 @@ Questo use case descrive come il cliente interagisce con la Dashboard dell'impia
 
 ***Description***
 
-1. Il cliente visualizza le informazioni del singolo impianto (ID, indirizzo, modello, stato, data acquisto, superficie) e le funzioni disponibili (Heatmap, visualizzazione su tabella, visualizzazione interventi).
+1. Il cliente visualizza le informazioni del singolo impianto e le funzioni disponibili (Heatmap, visualizzazione su tabella, visualizzazione interventi).
 
 2. Il cliente seleziona una funzione. 
 
@@ -466,19 +463,20 @@ Questo use case descrive come un cliente visualizza le misurazioni di uno specif
 
 ***Description***
 
-1. La heatmap mostra lo snapshot più recente dell'impianto considerando un parametro arbitrario. Per ogni misurazione nello snapshot, il valore del parametro considerato è posizionato sulla mappa alle coordinate del dato sensore. Il valore del parametro considerato è rappresentato con una scala di colori dal giallo (valore minimo assoluto) al rosso (valore massimo assoluto). Le mappe sono reperite da OpenStreetMap.
+1. La heatmap mostra lo snapshot più recente dell'impianto considerando un parametro arbitrario. Per ogni misurazione nello snapshot, il valore del parametro considerato è posizionato sulla mappa alle coordinate del dato sensore. Il valore del parametro considerato è rappresentato con una scala di colori. Le mappe sono reperite da OpenStreetMap. [Exception 1]
 
 2. Il cliente seleziona il parametro considerato da una lista contenente tutti i parametri misurati dall'impianto selezionato.
 
-3. Il cliente clicca su un bottone per visualizzare lo snapshot precedente (meno recente). [Exception 1]
+3. Il cliente clicca su un bottone per visualizzare lo snapshot precedente (meno recente). [Exception 2]
 
-4. Il cliente clicca su un bottone per visualizzare lo snapshot successivo (più recente). [Exception 2]
+4. Il cliente clicca su un bottone per visualizzare lo snapshot successivo (più recente). [Exception 3]
 
 ***Exceptions***
+1. L'impianto non ha alcuno snapshot, appare un pop-up con la scritta "L'Impianto non ha alcuno snapshot"
 
-1. Lo snapshot attuale è il meno recente in assoluto, viene visualizzata con pop-up la scritta "Nessuno snapshot precedente".
+2. Lo snapshot attuale è il meno recente in assoluto, il bottone è disattivato.
 
-2. Lo snapshot attuale è il più recente in assoluto, viene visualizzata con pop-up la scritta "Nessuno snapshot successivo".
+3. Lo snapshot attuale è il più recente in assoluto, il bottone è disattivato.
 
 ![RF14, RF15, RF15.1](.media/cliente3.png){width=10cm fig-pos=H}
 
@@ -578,17 +576,15 @@ Questo use case descrive come un supervisore assegna l'intervento precedentement
 
 3. Il sistema mostra una lista (nome, cognome) dei tecnici liberi in quella data. [Exception 1]
 
-4. Il supervisore seleziona un tecnico dalla lista ed il sistema controlla nuovamente la disponibilità e lo considera *Prenotato*. [Exception 2]
+4. Il supervisore seleziona un tecnico dalla lista.
 
-5. Appare il bottone "Assegna" ed il supervisore lo preme. Ad assegnazione conclusa viene inviata un'email di notifica al dato tecnico. [Exception 3]
+5. Appare il bottone "Assegna" ed il supervisore lo preme. Ad assegnazione conclusa viene inviata un'email di notifica al dato tecnico. [Exception 2]
 
 ***Exceptions***
 
 1. Non vi sono tecnici liberi in quella data, quindi la lista è vuota e appare la scritta "Nessun tecnico disponibile".
 
-2. Dal momento di selezione della data al momento di selezione del tecnico, il dato tecnico è stato *prenotato* o assegnato ad un intervento; appare la scritta "Tecnico non disponibile" e viene caricata nuovamente la lista dei tecnici.
-
-3. Sono trascorsi più di 15 minuti dalla selezione del tecnico; appare la scritta "Tempo scaduto, ripeti l'operazione" e si rimuove la *prenotazione* del tecnico e la selezione della data.
+2. Il sistema controlla nuovamente la disponibilità ed il tecnico selezionato non è più disponibile; appare la scritta "Tecnico non disponibile"; vengono ricaricate le disponibilità del giorno selezionato
 
 ***Activity Diagram***
 
@@ -682,7 +678,7 @@ Questo use case descrive come un tecnico aggiunge un sensore all'impianto relati
 
 ***Exceptions***
 
-1. L'ID non è valido \(non soddisfa la regex "\[\\dA-Za-z\]\{10\}"\), il bordo del campo del form diventa rosso.
+1. L'ID non è valido (non soddisfa la regex `"[\dA-Za-z]{24}"`), il bordo del campo del form diventa rosso.
 
 2. Le coordinate non sono valide (non sono un numero), il bordo del campo del form diventa rosso.
 
@@ -712,7 +708,7 @@ Questo use case descrive come un tecnico rimuove un sensore dall'impianto relati
 
 ***Exceptions***
 
-1. L'ID non è valido \(non soddisfa la regex "\[\\dA-Za-z\]\{10\}"\), il bordo del campo del form diventa rosso.
+1. L'ID non è valido (non soddisfa la regex `"[\dA-Za-z]{24}"`), il bordo del campo del form diventa rosso.
 
 2. Il campo ID è vuoto o non valido, appare in rosso la scritta "Compila correttamente il form".
 
@@ -752,11 +748,11 @@ Questo use case descrive come avviene la registrazione di un dipendente da parte
 
 ***Exceptions***
 
-1. Il nome e/o il cognome non è valido \(non soddisfa la regex "\[A-Za-z\]\{3,20\}"\), il bordo del campo del form diventa rosso.
+1. Il nome e/o il cognome non è valido (non soddisfa la regex `"[A-Za-z]{3,20}"`), il bordo del campo del form diventa rosso.
 
-2. L'indirizzo email non è valido \(non soddisfa la regex ".\*@.\*"\), il bordo del campo del form diventa rosso.
+2. L'indirizzo email non è valido (non soddisfa la regex `".+@.+\..+"`), il bordo del campo del form diventa rosso.
 
-3. Il numero di telefono non è valido (non soddisfa la regex "(.\\d*) \\d\{10\}" \), il bordo del campo del form diventa rosso.
+3. Il numero di telefono non è valido (non soddisfa la regex `"(.\d*) \d{10}"`), il bordo del campo del form diventa rosso.
 
 4. L'indirizzo non è valido, il bordo del campo del form diventa rosso.
 

@@ -8,9 +8,9 @@ subtitle: |
 
   D3-Documento di Architettura
 
-  v1.0
+  v1.1
 author: [alessandro.manfucci@studenti.unitn.it, enrico.cescato@studenti.unitn.it ,m.sottocornola-1@studenti.unitn.it]
-date: "10-12-2022"
+date: "29-12-2022"
 lang: it
 format:
   pdf:
