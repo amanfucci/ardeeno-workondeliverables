@@ -238,10 +238,12 @@ Non si indicano gli header in richieste/risposte; il token di accesso è inviato
 Si è utilizzato uno stile di programmazione con `async/await` e gestione degli errori -- anche asincroni -- con `try/catch`.
 
 ### Documentazione OpenAPI 3.0
-Le API sono state documentate seguendo lo standard Open API 3.0 e sono visibili ad [api.ardeeno.cloud/api-docs](http://api.ardeeno.cloud/api-docs). Si documentano tutti i possibili messaggi di errore nella sezione `examples`. Si danno inoltre `examples` per i messaggi di richiesta della funzione `genToken` in `POST /auth`; si descrivono poi gli Schemas Mongoose. Sono presenti due configurazioni Server:
+Le API sono state documentate seguendo lo standard Open API 3.0 e sono visibili ad [api.ardeeno.cloud/api-docs](http://api.ardeeno.cloud/api-docs). Si documentano tutti i possibili messaggi di errore nella sezione `examples`. Si danno inoltre `examples` per i messaggi di richiesta della funzione `genToken` in `POST /auth`; si descrivono poi gli Schemas Mongoose. Sono presenti quattro configurazioni Server:
 
 - `http://localhost:8080` da utilizzare se si esegue il BackEnd in locale
 - `http://api.ardeeno.cloud` da utilizzare se connessi al BackEnd deployed su Heroku.
+- `http://api.ardeeno.best` da utilizzare se connessi al BackEnd deployed su Heroku -- ridondante.
+- `http://ardeeno-backend.herokuapp.com` da utilizzare se connessi al BackEnd deployed su Heroku -- ridondante.
 
 L'applicazione prototipo dispone di un Utente pre-registrato, a cui sono associati due Impianti:
 
@@ -308,6 +310,18 @@ Ran all test suites.
 Dal report sul coverage di `Jest` si nota che si sono coperti il `57.99%` dei branch -- quelli non coperti sono appunto quei branch che gestiscono gli errori 5xx SERVER ERROR, i quali sono principalmente gli errori del server `mongodb`. Infatti i test coprono il `89.34%` degli Statements, il `100.00%` delle funzioni ed il `89.34%` delle linee di codice.
 
 ![Coverage](./.media/coverage/coverage.png){width=16cm fig-pos=H}
+
+### .env
+Per testare manualmente il codice in locale, si lascia la configurazione .env -- che non è presente per motivi di sicurezza su git.
+
+```javascript
+DB_HOST="cluster0.uztncy9.mongodb.net/Cluster0"
+DB_USER=root
+DB_PASS=i64uohew4uSHlUWa
+PORT=8080
+MONGODB_URI="mongodb+srv://root:i64uohew4uSHlUWa@cluster0.uztncy9.mongodb.net/ardeeno-db"
+SUPER_SECRET="someSecret"
+```
 
 # FrontEnd
 
@@ -424,7 +438,6 @@ Il routing ha la seguente struttura [^1]\:
 /MyImpianti/list -> MyImpianti.js
 /MyImpianti/Dashboard -> Dashboard.js
 /MyImpianti/Heatmap -> Heatmap.js
-/MyImpianti/Misurazioni -> Misurazioni.js
 
 /login -> Login.js
 /401 -> Page401.js
@@ -481,7 +494,7 @@ Componente sviluppata per implementare [RF12 Visualizzazione misurazioni su heat
 ![Heatmap](.media/schermate/heatmap.png){fig-pos=H width=16cm}
 
 # GitHub Repository
-Per entrambi i repositories il flusso di lavoro è stato organizzato su più branch:
+Per il BackEnd il flusso di lavoro è stato organizzato su più branch:
 ```{mermaid}
 %%| fig-width: 6
 %%| fig-height: 2
@@ -507,19 +520,28 @@ Per entrambi i repositories il flusso di lavoro è stato organizzato su più bra
     checkout develop
     merge patch
 ```
-Inoltre, per quanto riguarda il BackEnd si sono utilizzate delle GitHub Actions  per automatizzare il testing Jest su pull request/push per `develop` e `main` (Continuos Integration)
+Inoltre, sempre per il BackEnd, si sono utilizzate delle GitHub Actions  per automatizzare il testing Jest su pull request/push per `develop` e `main` (Continuos Integration).
+
+Per il FrontEnd si è usato un solo branch `main`.
 
 # Deployment
 Si è utilizzato Heroku per avere un Fast Deployment agli URL:
 
+## FrontEnd
 - [www.ardeeno.cloud](http://www.ardeeno.cloud)
+- [www.ardeeno.best](http://www.ardeeno.best)
+- [ardeeno-frontend.herokuapp.com](http://ardeeno-frontend.herokuapp.com/)
+
+## BackEnd
 - [api.ardeeno.cloud](http://api.ardeeno.cloud)
+- [api.ardeeno.best](http://api.ardeeno.best)
+- [ardeeno-backend.herokuapp.com](http://ardeeno-backend.herokuapp.com/)
 
 Il Fast Deployment è stato configurato attraverso Heroku e non tramite le GitHub Actions
 
-I record CNAME sono stati impostati tramite la CLI di Heroku.
+I custom domain names sono stati impostati tramite la CLI di Heroku.
 
-Per `ardeeno-backend` è stato sufficiente un *EcoDyno*, mentre per `ardeeno-frontend` è stato necessario utilizzare un *MediumDyno* con 2GB di memoria RAM.
+Per `ardeeno-backend` è stato sufficiente un *EcoDyno*, mentre per `ardeeno-frontend` è stato necessario utilizzare uno *Standard-2X Dyno* con 1GB di memoria RAM.
 
 :::{layout-ncol=2}
 
