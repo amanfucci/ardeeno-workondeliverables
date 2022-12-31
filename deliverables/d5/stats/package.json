@@ -1,16 +1,20 @@
 {
-  "name": "d5",
+  "name": "stats",
   "version": "1.0.0",
   "description": "",
-  "main": "work-time.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node work-time.js"
+    "start": "node app.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "commit-stream": "^1.1.0",
     "list-stream": "^2.1.0",
+    "mongoose": "^6.8.2",
     "split2": "^4.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.30.0"
   }
 }

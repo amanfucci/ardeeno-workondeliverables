@@ -8,9 +8,9 @@ subtitle: |
 
   D5-Report Finale
 
-  v0.9
+  v1.0
 author: [alessandro.manfucci@studenti.unitn.it, enrico.cescato@studenti.unitn.it ,m.sottocornola-1@studenti.unitn.it]
-date: "11-12-2022"
+date: "29-12-2022"
 lang: it
 format:
   pdf:
@@ -68,9 +68,9 @@ Dunque, quasi sempre il tempo di vita del branch `d<i>` coincide con le scadenze
 
 Per scrivere i Deliverables è stato usato il linguaggio Quarto MarkDown, il quale -- essendo testo semplice -- ha facilitato il merging dei branch.
 Per facilitare l'utilizzo di questi strumenti e di questo flusso di lavoro sono stati caricati più `README.md`.
-Inoltre, si è usato GoogleDrive per condividere documenti non prettamente associati ai deliverable (non rendicontati in [Carico e Distribuzione del Lavoro](#carico-e-distribuzione-del-lavoro)), soprattutto per ideare il sistema da realizzare e condividere il work-time.
+Inoltre, si è usato GoogleDrive per condividere documenti non prettamente associati ai deliverable, soprattutto per ideare il sistema da realizzare e condividere il work-time.
 
-Per quanto riguarda la sviluppo del codice, si è utilizzato il metodo KanBan, con una [KanBan Board](https://github.com/orgs/T41-SE22/projects/1) integrata con GitHub. Non si sono tuttavia posti WIP limits.
+Per quanto riguarda lo sviluppo del codice, si è utilizzato il metodo KanBan, con una [KanBan Board](https://github.com/orgs/T41-SE22/projects/1) integrata con GitHub.
 
 Per quanta riguarda le comunicazioni tra i membri del team è stato usato Telegram per avvisare problemi/cambiamenti/assenze. Inoltre, sono stati organizzati brevi meeting settimanali, così suddivisi:
 
@@ -89,7 +89,7 @@ Non vi è stata una specializzazione dei ruoli.
 |Matteo Sottocornola|Analyst, Programmer|
 
 ## Tasks List
-|**Deliverable**|**Task**|**Assignees (A,E,M)**|**Due To**|
+|**Deliverable**|**Task**|**Chosen By (A,E,M)**|**Due To**|
 |---------|---------|---|---|---|
 |D1-Documento di Progetto    |Definizione Obiettivi   |A,E,M|27/09|
 |                            |Definizione Requisiti   |A,E|10/10|
@@ -104,15 +104,23 @@ Non vi è stata una specializzazione dei ruoli.
 |D4-Documento di Sviluppo    |User Flows              |A,M|22/12|
 |                            |Resources Extraction    |A|22/12|
 |                            |Resources Models        |A|22/12|
-|                            |Sviluppo BackEnd        |A,E,M|22/12|
-|                            |Sviluppo FrontEnd       |A|22/12|
-|                            |Deployment              |A|22/12|
-|                            |Testing                 |A,E,M|22/12|
+|                            |Sviluppo BackEnd        |A,E|02/01/23|
+|                            |Sviluppo FrontEnd       |A|02/01/23|
+|                            |Deployment              |A|02/01/23|
+|                            |Testing                 |A,E|02/01/23|
 
 ## KanBan Board
+Si riporta la sola struttura delle KanBan Board BackEnd e FrontEnd
 
-|**Task**|**Chosen by (A, E, M)**|
-|---|------|
+### BackEnd
+
+|**To do**|**Development**|**Swagger Docs**|**Jest Testing**|**Done**|
+|---|----|----|----|----|
+
+### FrontEnd
+
+|**To do**|**Development**|**Done**|
+|---|----|----|
 
 \pagebreak
 ## Gantt Diagram
@@ -121,42 +129,42 @@ Anche se non prettamente Agile, è stato utilizzato un Gantt per avere un'idea a
 %%| fig-width: 6.5in
 %%| fig-height: 6in
 gantt
-  dateFormat DD-MM
+  dateFormat DD-MM-YY
   axisFormat %d-%m
 
   section Analisi dei Requisiti
-  Definizione Obiettivi :done, a0, 23-09, 29-09
-  Definizione Requisiti :done,a1, after a0, 05-10
-  Mock-Up FrontEnd :done,a2, after a1, 10-10 
-  Schema BackEnd :done,a3, after a1, 10-10
-  Documento di Progetto :done,milestone, am, 10-10, 0d
+  Definizione Obiettivi :done, a0, 23-09-22, 29-09-22
+  Definizione Requisiti :done,a1, after a0, 05-10-22
+  Mock-Up FrontEnd :done,a2, after a1, 10-10-22
+  Schema BackEnd :done,a3, after a1, 10-10-22
+  Documento di Progetto :done,milestone, am, 10-10-22, 0d
   
   section Specifica dei Requisiti
   Spec ReqF (UCD) :done,s0, after am, 12d
   Spec ReqNF :done,s1, after s0, 4d
   Diagramma di Contesto :done,s2, after s1, 5d
   Diagramma dei Componenti :done, s3, after s2, 10d
-  Documento di Specifica :done, milestone, sm, 09-11, 0d
+  Documento di Specifica :done, milestone, sm, 09-11-22, 0d
 
   section Progettazione Architettura
   Class Diagrams :done, pa0, after sm, 12d
   OCL :done, pa1, after pa0, 8d
-  Documento di Architettura :done, milestone, pam, 02-12, 0d
+  Documento di Architettura :done, milestone, pam, 02-12-22, 0d
 
   section Sviluppo e Deployment
 
-  User Flows :active, d0, after pam, 12-12
-  Resources Extraction :active, d1, after pam, 12-12
-  Resources Models :d2, after d1, 2d
-  Sviluppo BackEnd :d3, after d2, 2d
-  Sviluppo FrontEnd :d4, after d0, 22-12
-  Deployment :d5, after d0, 22-12
-  Testing :d6, after d0, 22-12
-  Documento di Sviluppo :milestone, dm, 22-12, 0d
+  User Flows :done, d0, after pam, 22-12-22
+  Resources Extraction :done, d1, after pam, 22-12-22
+  Resources Models :done, d2, after pam, 22-12-22
+  Sviluppo BackEnd :done, d3, after d2, 02-01-23
+  Sviluppo FrontEnd :done, d4, after d0, 02-01-23
+  Deployment :done, d5, after d0, 02-01-23
+  Testing :done, d6, after d0, 02-01-23
+  Documento di Sviluppo :done, milestone, dm, 02-01-23, 0d
 
   section Report
-  Closing meeting :i0, 12-12, 1d
-  Report Finale :milestone, fm, 22-12, 0d
+  Closing meeting :done, i0, 12-12-22, 1d
+  Report Finale :done, milestone, fm, 22-12-22, 0d
 ```
 
 
@@ -182,51 +190,55 @@ Dare un work-time ad ogni commit pone due vantaggi:
 Tuttavia, come accennato prima, dato il processo di lavoro Agile sarebbe complicato separare il lavoro impiegato e rendicontato per ogni singolo deliverable. Dunque, per associare un certo `work-time` ad un certo deliverable (uno e uno solo) si considera il branch `d<i>` su cui è stato pubblicato.
 Quindi, il `work-time` calcolato per il deliverable-`<i>` comprende il `work-time` impiegato su tutti i deliverables (da 1 a `<i>`), durante il periodo di scrittura della **prima** versione del deliverable-`<i>`. Fa eccezione il branch `d5` -- che comprende modifiche esclusivamente per il D5.
 
-## WorkTime
+## WorkTime[^1]
 
 ||**D1**|**D2**|**D3**|**D4+BE+FE**|**D5**||**TOT**|
 |---|---|---|---|----|---|---|---|
-|Alessandro Manfucci|D1|D2|D3|D4+BE+FE|D5||TOT|
-|Enrico Cescato|D1|D2|D3|D4+BE+FE|D5||TOT|
-|Matteo Sottocornola|D1|D2|D3|D4+BE+FE|D5||TOT|
+|Alessandro Manfucci|46.5|60|43.5|122.5|9||281.5|
+|Enrico Cescato|31|17|5|1|1.5||55.5|
+|Matteo Sottocornola|16.5|17|0|11.5|1.5||44.5|
 |||||||||
-|**TOT**|D1|D2|D3|D4+BE+FE|D5||TOT|
+|**TOT**|94|94|48.5|135|12||383.5|
 
-I commit `co-authored` (che assegnano un certo `work-time` a più membri contemporaneamente) possono falsare i tempi totali per Deliverable. Questi sono stati utilizzati per lo più nel D1.
-
-<!--
-, per cui, si propone una seconda tabella:
+I commit `co-authored` (che assegnano un certo `work-time` a più membri contemporaneamente) possono falsare i tempi totali per Deliverable. Questi sono stati utilizzati per lo più nel D1. Si propone un'altra tabella:
 
 ||**D1**|**D2**|**D3**|**D4+BE+FE**|**D5**||**TOT**|
 |---|---|---|---|----|---|---|---|
-|Alessandro Manfucci|D1|D2|D3|D4+BE+FE|D5||TOT|
-|Enrico Cescato|D1|D2|D3|D4+BE+FE|D5||TOT|
-|Matteo Sottocornola|D1|D2|D3|D4+BE+FE|D5||TOT|
-|Alessandro ed Enrico|D1|D2|D3|D4+BE+FE|D5||TOT|
-|Alessandro, Enrico e Matteo|D1|D2|D3|D4+BE+FE|D5||TOT|
-|||||||||
-|TOT|
--->
+|Alessandro Manfucci|28|57|43.5|122.5|7.5||258.5|
+|Enrico Cescato|12.5|14|5|1|0||32.5|
+|Matteo Sottocornola|10.5|13|0|11.5|0||35|
+|A+E|12.5|1|0|0|0||13.5|
+|A+E+M|6|2|0|0|1.5||9.5|  
+|**TOT**|69.5|87|48.5|135|9||349|
 
 ### Statistiche
-Si riportano alcune statistiche sui tempi di rendicontazione in ore decimali:
+Si riportano alcune statistiche[^2] sui tempi di rendicontazione in ore decimali:
 
-::: {layout-ncol=2}
-- $N=86$
-- $T_{avg}=2.3$
-- $T_{max}=21.5 ~ (0.0)$
-- $T_{min}=0.33 ~ (0.28)$
-- $\sigma^2=11.4$
+::: {layout="[[30, 70], [1]]"}
 
-![](./work-time.png)
+- $N=138$
+- $N_{T>0}=67$
+- $T_{avg}=5.20$
+- $T_{max}=21.5$
+- $T_{min}=0.5$
+- $\sigma^2=13.06$
+
+![Commits](./stats/stats.png){fig-pos=H}
+
+Quindi, il metodo di rendicontazione è stato usato in maniera costante.[^3]
 :::
 
 
-Ovvero, il metodo di rendicontazione è stato effettivamente usato.
 
+
+[^1]: Database .json disponibile sul repository [github.com/T41-SE22/ardeeno-workondeliverables](https://github.com/T41-SE22/ardeeno-workondeliverables/tree/pm)
+[^2]: Le statistiche sono solo su quei commit con $T>0$
+[^3]: Ulteriori statistiche su [docs.google.com](https://docs.google.com/spreadsheets/d/1O5r_BDMIMENvxUmjvj8a4XtzIWNgU3B9tlZclZ6AVfE/edit?usp=sharing)
+
+\pagebreak
 # Autovalutazione
 ||**Voto**|
 |------|---|
 |Alessandro Manfucci|30|
-|Enrico Cescato|25|
-|Matteo Sottocornola|23|
+|Enrico Cescato|23|
+|Matteo Sottocornola|21|
