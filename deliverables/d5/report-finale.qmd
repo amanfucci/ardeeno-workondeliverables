@@ -231,7 +231,7 @@ Quindi, il metodo di rendicontazione è stato usato in maniera costante.[^3]
 
 
 
-[^1]: Database .json disponibile sul repository [github.com/T41-SE22/ardeeno-workondeliverables](https://github.com/T41-SE22/ardeeno-workondeliverables/tree/pm)
+[^1]: Database .json disponibile sul repository [github.com/T41-SE22/ardeeno-workondeliverables](https://github.com/T41-SE22/ardeeno-workondeliverables/tree/d5/deliverables/d5)
 [^2]: Le statistiche sono solo su quei commit con $T>0$
 [^3]: Ulteriori statistiche su [docs.google.com](https://docs.google.com/spreadsheets/d/1O5r_BDMIMENvxUmjvj8a4XtzIWNgU3B9tlZclZ6AVfE/edit?usp=sharing)
 
