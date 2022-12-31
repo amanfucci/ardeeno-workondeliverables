@@ -5,12 +5,12 @@ const assign = require('./assign')
 const analyze = require('./analyze');
 
 (async()=>{
-  //exp()
-  //await setTimeout(3000)
-  //assign()
-  //await setTimeout(1000)
-  //await analyze()
-  //await setTimeout(2000)
+  exp()
+  await setTimeout(3000)
+  assign()
+  await setTimeout(1000)
+  await analyze()
+  await setTimeout(2000)
   const stats = JSON.parse(fs.readFileSync('./stats.json').toString())
 
   console.log(stats.authorsca.m.list);

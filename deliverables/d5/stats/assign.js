@@ -57,6 +57,7 @@ module.exports = () => {
         try{
           await Commit.create({
             sha: com.sha,
+            link: com.link,
             authors: com.authors,
             authorDate: com.authorDate,
             summary: com.summary,

@@ -194,34 +194,35 @@ Quindi, il `work-time` calcolato per il deliverable-`<i>` comprende il `work-tim
 
 ||**D1**|**D2**|**D3**|**D4+BE+FE**|**D5**||**TOT**|
 |---|---|---|---|----|---|---|---|
-|Alessandro Manfucci|46.5|60|43.5|122.5|9||281.5|
+|Alessandro Manfucci|46.5|60|43.5|122.5|15.5||288|
 |Enrico Cescato|31|17|5|1|1.5||55.5|
 |Matteo Sottocornola|16.5|17|0|11.5|1.5||44.5|
 |||||||||
-|**TOT**|94|94|48.5|135|12||383.5|
+|**TOT**|94|94|48.5|135|18.5||388|
 
-I commit `co-authored` (che assegnano un certo `work-time` a più membri contemporaneamente) possono falsare i tempi totali per Deliverable. Questi sono stati utilizzati per lo più nel D1. Si propone un'altra tabella:
+I commit `co-authored` (che assegnano un certo `work-time` a più membri contemporaneamente) possono falsare i tempi totali per Deliverable. Questi sono stati utilizzati per lo più nel D1. Si propone una seconda tabella:
 
 ||**D1**|**D2**|**D3**|**D4+BE+FE**|**D5**||**TOT**|
 |---|---|---|---|----|---|---|---|
-|Alessandro Manfucci|28|57|43.5|122.5|7.5||258.5|
+|Alessandro Manfucci|28|57|43.5|122.5|14||265|
 |Enrico Cescato|12.5|14|5|1|0||32.5|
 |Matteo Sottocornola|10.5|13|0|11.5|0||35|
 |A+E|12.5|1|0|0|0||13.5|
-|A+E+M|6|2|0|0|1.5||9.5|  
-|**TOT**|69.5|87|48.5|135|9||349|
+|A+E+M|6|2|0|0|1.5||9.5|
+|||||||||  
+|**TOT**|69.5|87|48.5|135|15.5||355.5|
 
 ### Statistiche
 Si riportano alcune statistiche[^2] sui tempi di rendicontazione in ore decimali:
 
 ::: {layout="[[30, 70], [1]]"}
 
-- $N=138$
-- $N_{T>0}=67$
-- $T_{avg}=5.20$
+- $N=140$
+- $N_{T>0}=68$
+- $T_{avg}=5.22$
 - $T_{max}=21.5$
 - $T_{min}=0.5$
-- $\sigma^2=13.06$
+- $\sigma^2=12.89$
 
 ![Commits](./stats/stats.png){fig-pos=H}
 
